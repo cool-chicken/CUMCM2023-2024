@@ -1,0 +1,377 @@
+%\documentclass{cumcmthesis}
+\documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页，电子版提交的时候使用。
+\usepackage[superscript]{cite}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{url}   % 网页链接
+\usepackage{subcaption} % 子标题
+\title{数学建模论文排版}
+ 
+\begin{document}
+\maketitle
+\begin{abstract}
+	
+	这里写摘要，国赛论文摘要要求是一页最好，不要多也不要太少。
+	
+%\keywords{ 科幻小说 \quad  摘要 \quad 三体  \quad  关键字 \quad 科学边界}
+\noindent{ \textbf{关键词：} Fisher精确检验\quad   多元线性回归\quad 系统聚类 \quad 灰色关联分析\quad}   
+\end{abstract}
+ 
+%目录  2019 明确不要目录，我觉得这个规定太好了
+%\tableofcontents
+ 
+%\newpage
+ 
+\section{问题重述}
+
+ 
+问题重述部分正文
+\section{问题分析}
+\subsection{问题一的分析}
+这里是第一段的内容。
+ 
+ 
+\subsection{问题二的分析}
+ 
+\subsection{问题三的分析}
+ 
+\section{基本假设与符号说明}
+\subsection{基本假设}
+$\bullet$ 假设理论物理跟泵不存在；
+ 
+$\bullet$ 假设数据中未填写的数据项为 0；
+ 
+$\bullet$ 假设所提供的数据准确无误；
+ 
+$\bullet$ 不考虑因检验手段等原因对数据值的影响。
+ 
+\subsection{符号说明}
+	
+	\begin{table}[H]
+		%\caption{标准三线表格}\label{tab:001}  符号说明是不需要标题的
+		\centering
+		\setlength{\tabcolsep}{20mm}%调整长度
+		\begin{tabular}{cc}
+			\toprule[1.5pt]
+			\textbf{符号}& \textbf{含义} 	       \\  %textbf可以给文字加粗
+			\midrule[1pt]
+			$W_{j}$    & 基站${j}$的服务量         \\
+			$m_{j}$    & 第${j}$个基站的成本       \\
+			$W$        & 最大的总服务量            \\
+			$p_{i}$    & 选择该基站  		      \\
+			$q_{i}$    & 不选择该基站   		     \\
+			$S_{i}$    & 数据到簇中心的平均距离     \\
+			$\delta$   & 时间复杂度                \\
+			$T_{i}$    & 模拟退火温度控制参数       \\		
+			$R_{ij}$   & 相似度衡量值              \\
+			\bottomrule[1.5pt]
+		\end{tabular}
+	\end{table}
+	
+\section{问题一模型的建立与求解}
+	\begin{figure}[H]
+		\centering
+		%\includegraphics[width=0.6\textwidth]{}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
+		\caption{问题一的流程图}
+	\end{figure}
+我们初始对铅钡玻璃聚类分析时，直接用 14 组化学成分作为聚类指标，可结果不
+如人意。这种结果是显然的，在数据可视化阶段就容易发现。为使聚类分析得以顺利进
+行，应首先选择可以进行亚分类的主要化学成分。下面首先说明聚类分析具体步骤，后
+分别对未风化的高钾和铅钡玻璃进行系统聚类。
+ 
+\subsection{模型的建立}
+\subsection*{step1:确定母序列和子序列}
+ 
+\subsection*{step2:对各指标赋以权重}
+ 
+\subsection*{step3:计算灰色关联系数}
+ 
+\subsection{模型的求解}
+ 
+\subsection{结果展示}
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[c]{0.48\textwidth}
+		\centering
+		%\includegraphics[height=0.15\textheight]{错误1}
+		\subcaption{错误1}
+	\end{minipage}
+	\begin{minipage}[c]{0.48\textwidth}
+		\centering
+		%\includegraphics[height=0.15\textheight]{错误2}
+		\subcaption{错误2}
+	\end{minipage}
+	\caption{执行过程中可能出现的错误}
+\end{figure}
+ 
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[c]{0.48\textwidth}
+		\centering
+		%\includegraphics[height=0.12\textheight]{乐观锁}
+		\subcaption{乐观锁}
+	\end{minipage}
+	\begin{minipage}[c]{0.48\textwidth}
+		\centering
+		%\includegraphics[height=0.12\textheight]{悲观锁}
+		\subcaption{悲观锁}
+	\end{minipage}
+	\caption{乐观锁和悲观锁的插图}
+\end{figure}
+ 
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[c]{0.3\textwidth}
+		\centering
+		%\includegraphics[width=0.95\textwidth]{狗狗}
+		\subcaption{狗狗1}
+		\label{fig:sample-figure-a}
+	\end{minipage}
+	\begin{minipage}[c]{0.3\textwidth}
+		\centering
+		%\includegraphics[width=0.95\textwidth]{狗狗}
+		\subcaption{狗狗2}
+		\label{fig:sample-figure-b}
+	\end{minipage}
+	\begin{minipage}[c]{0.3\textwidth}
+		\centering
+		%\includegraphics[width=0.95\textwidth]{狗狗}
+		\subcaption{狗狗3}
+		\label{fig:sample-figure-c}
+	\end{minipage}
+	\caption{多狗三行并排示例}
+	\label{fig:sample-figure}
+\end{figure}
+ 
+\subsection{表格的展示}
+$
+\begin{array}{cc||cc||cc}%latex竖线如何加粗
+	\toprule[1.5pt] 
+	\textbf { 欧式距离 } & \textbf { 门限小于10 } & \textbf { 欧式距离 } & \textbf { 门限小于10 }& \textbf { 欧式距离 } & \textbf { 门限小于10 } \\%textbf表示加粗
+	\midrule[1.5pt]
+	66	     &1486  &922 &	834 	&	2538  	&	 787  \\
+	67       &1486  &921 &	834 	&	2537 	&    787 \\
+	177	     &1486  &834 &	752 	&   2441 	&    701 \\
+	187      &1486  &827 &	745 	&	2432  	&	 694 \\
+	284      &1486  &755 &	680 	&	2348	&    625\\ 
+	309	     &1486  &738 &	664 	&	2326 	&	609 \\
+	1400	 &1486  &790 &	866 	&	1499 	&	841 \\
+	1418     &1486  &803 &	880	 	&	1488 	&	857 \\
+	1419	 &1486  &804 &	881 	&	1488 	&	857 \\
+	1464	 &1486	&838 &	917 	&	1461 	&	895 \\
+	1483	 &1486	&853 &	933 	&	1450 	&	912 \\
+	1554	 &1486	&909 &	992 	&	1411 	&	973 \\
+	1571	 &1486	&923 &	1007 	&	1402 	&	988 \\
+	1582	 &1486	&932 &	1016 	&	1397 	&	998 \\
+	1584	 &1486	&934 &	1018 	&	1396 	&	1000 \\
+	1610	 &1486	&955 &	1040 	&	1382 	&	1023 \\
+	1611	 &1486	&956 &	1041 	&	1382 	&	1024 \\
+	1615	 &1486	&959 &	1045 	&	1380 	&	1027 \\
+	1618	 &1486	&962 &	1047 	&	1378 	&	1030 \\
+	\cdots &\cdots &\cdots &\cdots &\cdots& \cdots \\
+	1624	&	1486	&	967 	&	1052 	&	1375 	&	1035 \\
+	\bottomrule[1.5pt]
+\end{array}
+$
+ 
+\begin{table}[H]
+	\caption{卡方检验表}\label{tab:001} \centering
+	\centering
+	\setlength{\tabcolsep}{1mm}%调整长度
+	%    \includegraphics[width=0.7\linewidth]{figure/jietu1}  //图片的大小
+	\begin{tabular}{cccccc}
+		\toprule[1.5pt]
+		&\textbf{值}& \textbf{自由度} &\textbf{渐进显著性}&\textbf{精确显著性} &\textbf{精确显著性（单侧）} \\  %textbf可以给文字加粗
+		\midrule[1pt]
+		\textbf{皮尔逊卡方} & 6.880& 1&0.009 & &                    \\
+		\textbf{连续性修正} & 5.452& 1&0.020 & &                    \\
+		\textbf{似然比} & 6.889 &1 & 0.009 & &                    \\
+		\textbf{费希尔精确检验} &  & &  &0.011 &0.010                    \\
+		\textbf{有效个案数} & 58 & &  & &                    \\
+		\bottomrule[1.5pt]
+	\end{tabular}
+\end{table}
+ 
+
+
+吧吧吧吧吧吧吧宝宝宝宝宝宝\ref{tab:001}
+\begin{table}[H]
+	\caption{纹饰与表面风化3$\times$2列联表}\label{tab:001} \centering
+	\centering
+	\setlength{\tabcolsep}{10mm}%调整长度
+	%    \includegraphics[width=0.7\linewidth]{figure/jietu1}  //图片的大小
+	\begin{tabular}{c|ccc}
+		\toprule[1.5pt]
+		\textbf{纹饰表面}& \textbf{未风化} &\textbf{风化}&\textbf{总和}  \\  %textbf可以给文字加粗
+		\midrule[1pt]
+		\textbf{A} & 11&11&22                    \\
+		\textbf{B} & 0&6 &6                      \\
+		\textbf{C} & 13 &17 & 30                     \\
+		\textbf{总和} & 24 &34 & 58                     \\
+		\bottomrule[1.5pt]
+	\end{tabular}
+\end{table}
+ 
+ 
+ 
+\begin{table}
+	\caption{未风化高钾玻璃描述统计}\label{tab:001} \centering
+	\centering
+	\setlength{\tabcolsep}{3mm}%调整长度
+	%    \includegraphics[width=0.7\linewidth]{figure/jietu1}  //图片的大小
+	\begin{tabular}{cccccc}
+		\toprule[1.5pt]
+		
+		\textbf{化学成分}&\textbf{总数}& \textbf{最小值} &\textbf{最大值}&\textbf{均值}&\textbf{标准偏差}  \\  %textbf可以给文字加粗
+		\midrule[1pt]
+		\textbf{二氧化硅($SiO_2$)}&	12&	60.12839&	87.05&	69.23145&	8.701645\\
+		\textbf{氧化钠($Na_2O$)}&12&	0&	3.414141&	0.70519	&1.305063\\
+		\textbf{氧化钾($K_2O$)}&12&	0&	14.7546	&9.515034&	4.001147\\
+		\textbf{氧化钙($CaO$) }&12&	0&	8.864887&	5.440412&	3.163654\\
+		\textbf{ 氧化镁($MgO$)}&12&	0&	2.001617&	1.102537&	0.692212\\
+		\textbf{氧化铝($Al_2O_3$) } &12&	3.136247&	11.27173&	6.738553&	2.515071\\
+		\textbf{氧化铁($Fe_2O_3$) }  &12&	0&	6.110886&	1.968776&	1.690123\\
+		\textbf{ 氧化铜($CuO$)} &12&	0&	5.147654&	2.500335&	1.691155\\
+		\textbf{氧化铅($PbO$) } &12&	0&	1.636364&	0.416285&	0.595673\\
+		\textbf{ 氧化钡($BaO$)} &12&	0&	2.892395&	0.605703&	0.994125\\
+		\textbf{ 五氧化二磷($P2O_5$)} &12&	0&	4.552813&	1.426007&	1.448627\\
+		\textbf{ 氧化锶($SrO$)} &12&	0&	0.121408&	0.042378&	0.049065\\
+		\textbf{ 氧化锡($SnO_2$)} &12&	0&	2.426735&	0.202228&	0.700538\\
+		\textbf{二氧化硫($SO_2$) } &12&	0&	0.486996&	0.105109&	0.191805\\
+		
+		
+		\bottomrule[1.5pt]
+	\end{tabular}
+\end{table}
+ 
+ 
+\begin{table}[H]
+	\caption{第一亚类}\label{tab:001} \centering
+	\centering
+	\setlength{\tabcolsep}{3mm}%调整长度
+	%    \includegraphics[width=0.7\linewidth]{figure/jietu1}  //图片的大小
+	\begin{tabular}{cc|cccccc}
+		\toprule[1.5pt]
+		\textbf{文物编号}&\textbf{表面风化}& \textbf{$CaO$} &\textbf{$MgO$}&\textbf{$Al_2O3$}&\textbf{$Fe_2O_3$} & \textbf{$CuO$}& \textbf{$P_2O_5$} \\  %textbf可以给文字加粗
+		\midrule[1pt]
+		\textbf{32} & \textbf{无风化} & 0.466 &	0&	2.392&1.014&	0.111&	0.172 \\
+		
+		\textbf{35} & \textbf{无风化} &0.395&	0&	1.497&	0.177&	0.166&	0.437\\
+		
+		\textbf{37} & \textbf{无风化} &0.890&	0&	2.721&	0&	3.011&	1.460 \\
+		
+		\textbf{55} & \textbf{无风化} &1.172&	0&	1.504&	0	&0.892 &	0.363 \\
+		
+		\textbf{45} & \textbf{无风化} &0.854&	0.753	&5.084 &	0&	0.539&	0\\
+		
+		\textbf{47} & \textbf{无风化} &0.895&	0.627 &	3.146 &	0&	0.668 &	0.103\\
+		\bottomrule[1.5pt]
+	\end{tabular}
+\end{table}
+ 
+ 
+\begin{table}[H]
+	\centering
+	\caption{交叉表}\label{tab:001} \centering
+	\setlength{\tabcolsep}{6mm}%调整长度
+	\begin{tabular}{c|cc|ccc} 
+		\toprule[1.5pt]
+	%\multicolumn{1}{c}{}      &         &           &  \textbf{风化}         &  \textbf{未风化}}         &   \textbf{总计}           \\[-\rowheight]
+	%			\multicolumn{1}{c}{\printcelltop} & \printcellmiddle  & \printcellmiddle & \printcellmiddle & \printcellmiddle & \printcellmiddle  \\ 
+	\midrule[1pt]
+	%\multirow{6}{*}{\textbf{类型}}                 & \multirow{3}{*}{\textbf{高钾}} &   \textbf{计数}        & {6}         &  12       & 18           \\[-\rowheight]
+	&                   &        \textbf{期望计数}           &     10.6            &            7.4      &     18.0              \\
+	&                   &             \textbf{占类型百分比}      &           33.3\%       &     66.7\%             &        100.0\%           \\ 
+	\cline{2-3}
+	& \multirow{3}{*}{\textbf{铅钡}} &              \textbf{计数}    &         28       &  12              &   40                \\
+	&                   &                \textbf{期望计数}  &            23.4      &     16.6             &   40.0                \\
+	&                   &                \textbf{占类型百分比}  &      70.0\%            &           30.0\%       &    100.0\%               \\ 
+	\cline{1-3}
+	\multirow{3}{*}{\textbf{总计}}                 & \multicolumn{2}{c|}{\textbf{计数}}                &     34             &      24            &           58        \\
+	& \multicolumn{2}{c|}{\textbf{期望值}}                & 34.0                &           24.0       &           58.0        \\
+	& \multicolumn{2}{c|}{\textbf{占类型百分比}}                &        58.6\%          &      41.4\%            &        100.0\%           \\
+	\bottomrule[1.5pt]
+	\end{tabular}
+\end{table}
+ 
+ 
+ 
+ 
+ 
+\section{问题二模型的建立与求解}
+\begin{equation}
+	E = mc^2 \label{eq:emc2}
+\end{equation}
+根据公式 \eqref{eq:emc2}，我们可以得出结论：能量和质量之间存在着等价关系。
+\section{问题三模型的建立与求解}
+ 
+\section{模型的评价}
+
+\section{模型的推广}
+哈哈哈哈哈哈哈哈哈\cite{luojiawei2019latex}
+\textsubscript{雨雨雨雨}
+hhhhhh\cite{yue}
+ 
+%参考文献
+\begin{thebibliography}{9}%宽度9
+\bibitem[1]{luojiawei2019latex}
+    
+\bibitem[2]{yue}
+
+%       \bibitem{3} \url{https://www.latexstudio.net}
+\bibitem[3]{}
+
+\bibitem[4]{}
+
+\bibitem[5]{}
+
+\bibitem[6]{}
+
+\bibitem[7]{}
+
+\bibitem[8]{}
+
+\end{thebibliography}
+
+
+\newpage
+%附录
+\begin{appendices}
+ 
+\section{模板所用的宏包}
+\begin{table}[htbp]
+    \centering
+    \caption{宏包罗列}
+    \begin{tabular}{ccccc}
+        \toprule
+        \multicolumn{5}{c}{模板中已经加载的宏包} \\
+        \midrule
+        amsbsy & amsfonts & {amsgen} & {amsmath} & {amsopn} \\
+        amssymb & amstext & {appendix} & {array} & {atbegshi} \\
+        \bottomrule
+    \end{tabular}%
+    \label{tab:addlabel}%
+\end{table}%
+ 
+以上宏包都已经加载过了，不要重复加载它们。
+ 
+\section{排队算法--matlab 源程序}
+ 
+\begin{lstlisting}[language=matlab]
+kk=2;[mdd,ndd]=size(dd);
+ 
+ \end{lstlisting}
+ 
+ \section{规划解决程序--lingo源代码}
+ 
+\begin{lstlisting}[language=c]
+kk=2;
+[mdd,ndd]=size(dd);
+ \end{lstlisting}
+\end{appendices}
+ 
+\end{document} 
