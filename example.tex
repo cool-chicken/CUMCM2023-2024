@@ -1,0 +1,68 @@
+%\documentclass{cumcmthesis}
+\documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页，电子版提交的时候使用。
+\usepackage[superscript]{cite}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{url}   % 网页链接
+\usepackage{subcaption} % 子标题
+\title{数学建模论文排版}
+ 
+\begin{document}
+\maketitle
+\begin{abstract}
+
+	这里写摘要，国赛论文摘要要求是一页最好，不要多也不要太少。
+
+	%\keywords{ 科幻小说 \quad  摘要 \quad 三体  \quad  关键字 \quad 科学边界}
+	\noindent{ \textbf{关键词：} Fisher精确检验\quad   多元线性回归\quad 系统聚类 \quad 灰色关联分析\quad}
+\end{abstract}
+
+
+\section{问题重述}
+某电子产品的生产企业需要综合诸多考虑购置零部件、产品抽检、产品拆解、报废等问题，以确保产品质量的同时降低成本。
+
+\textbf{问题一：}考虑到零配件供应商所述次品率不高于既定标称值，企业拟采用抽样检测方法以验收此批零配件。因为企业寻承担检测费用，企业希望应用数学模型得到最少抽检次数的抽样方案。
+
+已知标称值为 10\%，结合以下两种不同情况，分别设计出具体的抽样检测方案：
+
+1. 拒收条件：在95\%的置信水平下，如果检测结果表明零配件的次品率超出了标称值，那么这批零配件将被拒收。
+
+2. 接收条件：在90\%的置信水平下，如果检测结果表明零配件的次品率未超过标称值，那么这批零配件将被接收。
+
+\textbf{问题二：}在已知零配件及成品次品率情况下，在电子产品生产的零配件检测、装配、成品检测、不合格品拆解的各个阶段为企业作出最优决策。
+并且结合判断依据及相应的指标对表1中企业在生产中遇到的情况作出相应的最优决策方案。
+
+\textbf{问题三：}在零配件、半成品和成品的次品率已知情况下，重复问题2的生产决策方案以适配有m道工序、
+n个零配件的问题。并且应用此方法针对表2中情况给出判断依据和指标得到最优的决策方案。
+
+\textbf{问题四：}在零配件、半成品和成品的次品率均由抽样检测获得的情况下，重新考虑问题2、3的生产决策方案。
+\section{问题分析}
+\subsection{问题一的分析}
+这里是第一段的内容。
+
+
+\subsection{问题二的分析}
+hahahah
+\subsection{问题三的分析}
+
+\section{基本假设与符号说明}
+\subsection{基本假设}
+$\bullet$ 假设理论物理跟泵不存在；
+
+$\bullet$ 假设数据中未填写的数据项为 0
+
+$\bullet$ 假设所提供的数据准确无误；
+
+$\bullet$ 不考虑因检验手段等原因对数据值的影响。
+
+\subsection{符号说明}
+
+
+\section{问题一模型的建立与求解}
+
+
+\end{document}
