@@ -70,14 +70,14 @@ $\bullet$ 不考虑因检验手段等原因对数据值的影响。
 	\setlength{\tabcolsep}{20mm}%调整长度
 	\begin{tabular}{cc}
 		\toprule[1.5pt]
-		\textbf{符号} & \textbf{含义} \\  %textbf可以给文字加粗
+		\textbf{符号} & \textbf{含义}   \\  %textbf可以给文字加粗
 		\midrule[1pt]
-		$N$     & 每批供应商提供的零配件总量 \\
-		$D_{i}$ & 第$i$次抽检的零配件数量 \\
-		$\mu$   & 次品率 \\
-		$A$     & 拒真的决策边界 \\
-		$B$     & 纳伪的决策边界 \\
-		$LR$    & 似然比 \\
+		$N$         & 每批供应商提供的零配件总量 \\
+		$D_{i}$     & 第$i$次抽检的零配件数量 \\
+		$\mu$       & 次品率           \\
+		$A$         & 拒真的决策边界       \\
+		$B$         & 纳伪的决策边界       \\
+		$LR$        & 似然比           \\
 		\bottomrule[1.5pt]
 	\end{tabular}
 \end{table}
@@ -118,7 +118,7 @@ $$ A = \ln \frac{\beta}{1 - \alpha} \ \ \ \  B = \ln \frac{1 - \beta}{\alpha}$$
 \end{equation}
 需要注意的是，在原生的$SPRT$场景中，$H_0$和$H_1$一般被认定为较为复杂的参数估计$\theta_0$和$\theta_1$，这取决于它们事先假定样本服从一个较为严谨且高度可表达的
 概率分布。然而基于问题一，在没有明确历史数据和概率分布的先验情况下，我们只能将其建模为一般二项分布，
-为了遵循$SPRT$的使用场景，我们将二项分布参数建模为$\mu_0=0.1+\Delta \mu$ , $\mu_1=0.1-\Delta \mu$。通过轻微扰动量来拟合样本的分布与所报标称值
+为了遵循$SPRT$的使用场景，我们将二项分布参数建模为$\mu_0=0.1+\Delta \mu_0$ , $\mu_1=0.1-\Delta \mu_1$。通过轻微扰动量来拟合样本的分布与所报标称值
 的差异，扰动量的设置取决于样本量的大小，这点我们将在后续给出实验和说明。
 
 尽管在许多场景中单样本取样策略以及被证明取得了很好的效果，但考虑到题干背景，我们依然选择样本集作为采样标准。遵循$SPRT$方法，给定总零配件量$N$,初次取样
@@ -133,14 +133,14 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 \end{equation}
 检验的完整流程可以作出如下表表示：
 
-\begin{adjustbox}{width=16cm,height=6cm}
+\begin{adjustbox}{width=16cm,height=6.5cm}
 	\centering
 	\begin{algorithm}[H]
 		\SetAlgoLined
-		\KwIn{总零配件数量 $N$，显著性水平 $\alpha$，第二类错误概率 $\beta$，扰动量 $\Delta \mu$}
+		\KwIn{总零配件数量 $N$，显著性水平 $\alpha$，第二类错误概率 $\beta$，扰动量 $\Delta \mu_0,\Delta \mu_1$}
 		\KwOut{接受的假设 ($H_0$ 或 $H_1$)}
 		计算决策边界 $A \gets \ln \frac{\beta}{1 - \alpha}$, $B \gets \ln \frac{1 - \beta}{\alpha}$\;
-		设置 $\mu_0 \gets 0.1 + \Delta \mu$, $\mu_1 \gets 0.1 - \Delta \mu$\;
+		设置 $\mu_0 \gets 0.1 + \Delta \mu_0$, $\mu_1 \gets 0.1 - \Delta \mu_1$\;
 		初始样本量 $D_1 \gets 0.01N$n\;
 		$i \gets 1$\;
 		\While{TRUE}{
@@ -176,9 +176,8 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 \section{问题二的模型建立与求解}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
+	\includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
 	\caption{电子器件生产的流程图}
 	\label{fig:pro2}
 \end{figure}
-
 \end{document}

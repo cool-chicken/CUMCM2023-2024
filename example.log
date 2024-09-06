@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.12)  6 SEP 2024 19:29
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.12)  6 SEP 2024 22:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1372,8 +1372,8 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removed on input line 67.
 
 [3] [4]
-File: pro2.png Graphic file (type bmp)
-<pro2.png>
+File: Fig/pro2.png Graphic file (type bmp)
+<Fig/pro2.png>
 
 Package fontspec Info: Could not resolve font "SimSun/BI" (it probably doesn't
 (fontspec)             exist).
@@ -1415,8 +1415,8 @@ Package rerunfilecheck Info: File `example.out' has not changed.
 (rerunfilecheck)             Checksum: BF0A7108BFFDC83CA0CC13227DA4A33E;1246.
  ) 
 Here is how much of TeX's memory you used:
- 36177 strings out of 478630
- 758795 string characters out of 5846875
+ 36178 strings out of 478630
+ 758859 string characters out of 5846875
  1872012 words of memory out of 5000000
  55622 multiletter control sequences out of 15000+600000
  522316 words of font info for 127 fonts, out of 8000000 for 9000
