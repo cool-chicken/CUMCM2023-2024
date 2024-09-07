@@ -12,6 +12,8 @@
 \usepackage[linesnumbered,ruled,vlined]{algorithm2e} 
 \usepackage{adjustbox}
 \usepackage{algpseudocode}
+
+
 \title{数学建模论文排版}
  
 \begin{document}
@@ -54,6 +56,7 @@ n个零配件的问题。并且应用此方法针对表2中情况给出判断依
 我们预先设置对零配件、成品的抽样检测参数（即：抽检/不抽检），通过多次模拟迭代实验得到最优的检测方案，以此来减少检测次数。
 \subsection{问题三的分析}
 
+\subsection{问题四的分析}
 \section{基本假设与符号说明}
 \subsection{基本假设}
 $\bullet$ 假设理论物理跟泵不存在；
@@ -78,6 +81,7 @@ $\bullet$ 不考虑因检验手段等原因对数据值的影响。
 		$A$         & 拒真的决策边界       \\
 		$B$         & 纳伪的决策边界       \\
 		$LR$        & 似然比           \\
+		$C$		 & 决策向量          \\
 		\bottomrule[1.5pt]
 	\end{tabular}
 \end{table}
@@ -200,43 +204,119 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 首先，我们可以将电子产品加工过程分为三个阶段，即：零配件、成品、市场。每当生产过程从一个阶段进入到另一个阶段均需要决策是否需要
 进行抽检，将此过程抽象为图\ref{fig:pro2}。
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
-	\caption{电子器件生产的流程图}
-	\label{fig:pro2}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
+    \caption{电子器件生产的流程图}
+    \label{fig:pro2}
 \end{figure}
 \subsection{模型的建立}
-在生产过程中我们设置一个列向量$C=(c_{1},c_{2},c_{3},c_{4})^{T}$，其中的元素$c_i$分别表示
+在生产过程中我们设置一个列向量$\vec{C}=(c_{1},c_{2},c_{3},c_{4})^{T}$，其中的元素$c_i$分别表示
 零配件1、零配件2、成品是否抽检及检测到不合格的成品是否拆解($c_{i}$的值为0时表示为不抽检/不拆解(丢弃)，值为1时表示检测/拆解)。
 我们的目标是通过合理的决策方案使得纯利润的期望值最最大。
 
 因为零部件及成品的次品率已知，在每批零配件数目$N$足够大的情况下，我们可以通过对正次品进行排列组合，算出成品中的正次品零部件各种组合的概率。
 在这里假设每批投入零部件1和零部件2的数目分别为$N_{1}$和$N_{2}$（这里的$N$足够大），其中$\mu_{1}$和$\mu_{2}$分别为零部件1、2的次品率，
-则近似可以认为供应商提供的零部件1、2的次品数目为$N_{1}\cdot\mu_{1}$和$N_{2}\cdot\mu_{2}$。先考虑对零部件不进行检测直接拼装为成品的
-情况，可以得出存在零部件次品的成品数目$k$的值域为$[\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \},N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}]$。
+则近似可以认为供应商提供的零部件1、2的次品数目为$N_{1}\cdot\mu_{1}$和$N_{2}\cdot\mu_{2}$。先考虑对零部件不进行检测直接拼装为成品并且成品不拆除的
+情况$\vec{C}=(0,0,0,0)^{T}$，可以得出存在零部件次品的成品数目$k$的值域为$[\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \},N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}]$。
 令$k$个成品中存在$i$和$j$个零配件1、2的次品个数。可以得到成品中有$i$个零配件1和$j$个零配件2的概率为$P_{i,j}$，计算公式如下：
 \begin{equation}
-	P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
-	\label{eq:1}
+    P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+    \label{eq:1}
 \end{equation}
 则$i$和$j$应当满足$i+j\ge k,i\le k,j\le k$，经过计算得到i和j的取值范围为$[k-j,k]$和$[\frac{k}{2},k]$。
 我们假设$P_{k}$为存在次品零部件的成品数目为$k$的概率，计算公式如下：
 \begin{equation}
-	P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
-	\label{eq:2}
+    P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+    \label{eq:2}
 \end{equation}
-
+由此可以得到成品中的不合格产品的期望值$M$为（$\mu_{3}$为成品次品率）：
+\begin{equation}
+M=\sum_{k=\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \}}^{N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}}k\cdot P_{k} + (\min \{ N1,N2\}-k)\cdot \mu_{3}\\
+	\label{eq:3}
+\end{equation}
+令:产品售价为$p_{1}$检测零配件1、2及成品的费用分别为$f_{1}$、$f_{2}$和$f_{3}$，$f_{4}$和$f_{5}$为调换损失及拆解费用，则可以构造产生费用的行向量$\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5}]$
+由此能够得到此轮次获利$Profit$：
+\begin{equation}
+	\textit{Profit}=(\min \{N_{1},N_{2}\}-M)\cdot p_{1}-\vec{F}\cdot \vec{C}-M\cdot f_{4}
+	\label{eq:4}
+\end{equation}
+使函数适配16中不同的决策方案，我们需要定义每轮零配件池中所含数量$N'_{1}$、$N'_{2}$即包含每轮次固定补充数量$N_{1}$、$N_{2}$也包含上一轮次零产品拆解后补进的配件（即：$N'=N+M$）。
+$M'$为新轮次中成品次品数目。则零配件池中为次品的平配件数目$n_{1}$、$n_{2}$的计算公式如下：
+\begin{equation}
+	n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \qquad
+	n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}
+\end{equation}
+在此基础上我们可以构造每轮次的收益$Profit$：
+\begin{equation}
+\left\{\begin{matrix}
+	 \textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M')\cdot p_{1}-\vec{F}\cdot \vec{C}-M'\cdot f_{4}\\
+   	M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}
+	\end{matrix}\right.
+		\label{eq:5}
+\end{equation}
 为了更直观的得到不同决策向量对电子产品生产的收益的影响，我们将图\ref{fig:pro2}中的单次生产流程抽象为一个生产轮次。在每个轮次中我们假设每轮
 接受供应商提供的配件数目为固定的$N_{1}$、$N_{2}$，经过上一轮被检测为次品的零部件全部被舍弃，被拆解的成品中的零配件投入下一轮次的零配件池进入生产。
-在每轮次生产中我们需要确定不同决策向量以保证电子产品生产的收益，于是我们拟定$t$个生产轮次为一个生产周期，每个生产周期中决策向量$C^{*}=(c_{1},c_{2},\dots,c_{4t})$
+在每轮次生产中我们需要确定不同决策向量以保证电子产品生产的收益，于是我们拟定$t$个生产轮次为一个生产周期，每个生产周期中决策向量$\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})^{T}$
 为$t$个生产轮次中决策列向量$C$的叠加，如图\ref{fig:pro2-2}。
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{Fig/pro2-2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
-	\caption{产品迭代周期图}
-	\label{fig:pro2-2}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Fig/pro2-2.png}      
+    \caption{产品决策周期图}
+    \label{fig:pro2-2}
 \end{figure}
+综上我们构建了一个基于生产周期的决策模型，通过对每个生产周期中的决策向量$C^{*}$进行优化，就能够得到最优的决策方案。
+$$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{n},N'_{2}-n_{2}\cdot c_{n}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}}\\$$
+\begin{equation*}
+	s.t.\begin{cases}
+		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}\\
+		n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \quad n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}\\
+		N'_{1}=N_{1}+M \quad N'_{2}=N_{2}+M \\
+		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})\\
+		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots]\\
+		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}\\
+		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+	\end{cases}
+\end{equation*}
+\subsection{模型的求解}
+我们拟应用微生物遗传算法进行不断的迭代优化来寻找最优解，算法流程:
 
+\begin{adjustbox}{width=16cm,height=6.5cm}
+	\centering
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\KwIn{每个段产生成本、检测成本、不合格品调换拆解费用和次品率$\mu$}
+		\KwOut{单周期的成品收益$Profit$最优的决策向量$\vec{C^{*}}$}
+		初始化一个周期为t轮次的决策列向量 $C^{*}$ 的种群，种群中的个体是随机生成的\;
+		\While{TRUE}{
+			从种群中随机选择两个个体 $\vec{C_{A}^{*}}$ 和 $\vec{C_{B}^{*}}$\;
+			计算两个个体的$Profit$ \;
+			\If{$ \textit{Profit}_{A} \le \textit{Profit}_{B}$}{
+				winner $\gets \vec{C_{B}^{*}}$ \\
+				loser $\gets \vec{C_{A}^{*}}$
+			}
+			\Else{
+				winner $\gets \vec{C_{A}^{*}}$ \\
+				loser $\gets \vec{C_{B}^{*}}$
+			}
+			\For{每个在loser的向量g}{
+				\If{随机数 $r < \textit{crossoverRate}$}{
+					随机选择winner中的一个向量h\;
+					对g和h进行交叉操作\;
+				}
+			}
+		}
+		\Return 最优的决策向量$\vec{C^{*}}$
+		\label{alg:sprt}
+		\caption{微生物遗传算法 (MGA) 流程}
+	\end{algorithm}
+\end{adjustbox}
+
+
+
+
+
+\section{问题三的模型建立与求解}
+\subsection{模型的建立}
 \subsection{模型的求解}
 
 \end{document}
