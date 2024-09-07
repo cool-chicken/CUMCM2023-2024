@@ -173,21 +173,16 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 	\Delta \mu = f(N,\theta) \ \ \ \ \ \ s.t. \ \underset{\theta}{\operatorname{argmax}} \ (\frac{1}{D} \times \mathbf{1}_H)
 \end{equation}
 这里的$\mathbf{1}_H$是对假设H的指示函数，用以表示最终选取的假设是否为真。
-<<<<<<< HEAD
 我们使用多层感知机（MLP）去拟合函数$f(N,\theta)$，自定虚拟数据集的范围遵循前文中给出的零件数量$N$和真实标称值的波动范围。
-
 在1000个epoch中，我们选取测试集中精度最高的MLP模型作为评估基线以衡量SPRT的表现情况。最终结果如图所示：
-=======
-
->>>>>>> 801cb7be930cf8bf6a84602732ea6354265361d7
 \section{问题二的模型建立与求解}
 首先，我们可以将电子产品加工过程分为三个阶段，即：零配件、成品、市场。每当生产过程从一个阶段进入到另一个阶段均需要决策是否需要
 进行抽检，将此过程抽象为图\ref{fig:pro2}。
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
-    \caption{电子器件生产的流程图}
-    \label{fig:pro2}
+	\centering
+	\includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
+	\caption{电子器件生产的流程图}
+	\label{fig:pro2}
 \end{figure}
 \subsection{模型的建立}
 在生产过程中我们设置一个列向量$C=(c_{1},c_{2},c_{3},c_{4})^{T}$，其中的元素$c_i$分别表示
@@ -200,14 +195,14 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 情况，可以得出存在零部件次品的成品数目$k$的值域为$[\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \},N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}]$。
 令$k$个成品中存在$i$和$j$个零配件1、2的次品个数。可以得到成品中有$i$个零配件1和$j$个零配件2的概率为$P_{i,j}$，计算公式如下：
 \begin{equation}
-    P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
-    \label{eq:1}
+	P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+	\label{eq:1}
 \end{equation}
 则$i$和$j$应当满足$i+j\ge k,i\le k,j\le k$，经过计算得到i和j的取值范围为$[k-j,k]$和$[\frac{k}{2},k]$。
 我们假设$P_{k}$为存在次品零部件的成品数目为$k$的概率，计算公式如下：
 \begin{equation}
-    P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
-    \label{eq:2}
+	P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+	\label{eq:2}
 \end{equation}
 
 为了更直观的得到不同决策向量对电子产品生产的收益的影响，我们将图\ref{fig:pro2}中的单次生产流程抽象为一个生产轮次。在每个轮次中我们假设每轮
@@ -215,10 +210,10 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 在每轮次生产中我们需要确定不同决策向量以保证电子产品生产的收益，于是我们拟定$t$个生产轮次为一个生产周期，每个生产周期中决策向量$C^{*}=(c_{1},c_{2},\dots,c_{4t})$
 为$t$个生产轮次中决策列向量$C$的叠加，如图\ref{fig:pro2-2}。
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Fig/pro2-2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
-    \caption{产品迭代周期图}
-    \label{fig:pro2-2}
+	\centering
+	\includegraphics[width=0.8\textwidth]{Fig/pro2-2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
+	\caption{产品迭代周期图}
+	\label{fig:pro2-2}
 \end{figure}
 
 \subsection{模型的求解}
