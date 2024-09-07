@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.3.24)  7 SEP 2024 13:38
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.3.24)  7 SEP 2024 16:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1468,47 +1468,57 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 2.00876pt
 (hyperref)                removed on input line 280.
 
+File: Fig/pro3-1.png Graphic file (type bmp)
+<Fig/pro3-1.png>
+[9]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 319.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 319.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 319.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 326.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 319.
+(hyperref)                removed on input line 326.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 320.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 320.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 320.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 326.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 320.
+(hyperref)                removed on input line 326.
+
+[10]
+Overfull \hbox (25.40799pt too wide) in paragraph at lines 348--351
+\TU/SongtiSCLight(0)/m/n/12.05 接 着 我 们 能 够 通 过 不 合 格 产 品 的 期 望 算 出 各 个 半 成 品 中 存 在 次 品 的 概 率 为 $\OML/cmm/m/it/12.05 ^^W[] \OT1/cmr/m/n/12.05 = []$\TU/TimesNewRoman(0)/m/n/12.05 ,
+ []
+
+File: Fig/pro3-2.png Graphic file (type bmp)
+<Fig/pro3-2.png>
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 371.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern 2.00876pt
+(hyperref)                removed on input line 371.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 371.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern 2.00876pt
+(hyperref)                removed on input line 371.
 
 
 Package caption Warning: Unused \captionsetup[sub] on input line 12.
 See the caption package documentation for explanation.
 
-[9] [10] (./example.aux)
+[11] (./example.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -1516,12 +1526,12 @@ Package rerunfilecheck Info: File `example.out' has not changed.
 (rerunfilecheck)             Checksum: 2DEAE57B368E24CC1AAE0A0C5B35234D;2009.
  ) 
 Here is how much of TeX's memory you used:
- 36240 strings out of 476683
- 761456 string characters out of 5804047
+ 36270 strings out of 476683
+ 761887 string characters out of 5804047
  1872018 words of memory out of 5000000
- 55803 multiletter control sequences out of 15000+600000
+ 55831 multiletter control sequences out of 15000+600000
  522308 words of font info for 126 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  108i,19n,113p,470b,763s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on example.pdf (10 pages).
+Output written on example.pdf (11 pages).
