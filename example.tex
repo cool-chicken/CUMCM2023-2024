@@ -319,7 +319,7 @@ $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot 
 首先沿用问题二的思路我们将生产加工过程分为四个阶段，即：零配件准备、半成品、成品、市场。每个阶段都需要决策出抽检方案，此过程可抽象为图\ref{fig:pro3-1}。
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Fig/pro3-1.png}      
+	\includegraphics[width=0.8\textwidth]{Fig/pro3-1.png}
 	\caption{电子器件生产四阶段的流程图}
 	\label{fig:pro3-1}
 \end{figure}
@@ -329,75 +329,95 @@ $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot 
 我们首先考虑对所有零配件、半成品、成品不进行检测不拆除的情况，即$\vec{C}=(0,0,\dots,0)^{T}$。这里假设半成品中存在次品零部件的半成品数目分别为$k_{1}$、$k_{2}$、$k_{3}$，
 成品中存在次品零部件的成品数目为$k$。令8种零配件的次品率为$\mu_{1}$、$\mu_{2}$、$\dots$、$\mu_{8}$，半成品的次品率为$\mu'_{1}$、$\mu'_{2}$、$\mu'_{3}$，成品的次品率为$\mu''$。
 与第二问相同我们假定每一轮次投入的零配件数是固定的数值$N_{1}$、$N_{2}$、$\dots$、$N_{8}$，则能够计算出零配件中存在次品的数目为$n_{1}$$\sim$$n_{8}$，其中$n_{i}=N_{i}\cdot\mu_{i}$
-以第一个半成品为例，可以得到存在次品零部件的半成品数目为$k_{1}$的概率$P_{k_{1}}$为：
-\begin{equation}
-	P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\mu_{1}^{i}\mu_{2}^{j}\mu_{3}^{z}(1-\mu_{1})^{k_{1}-i}(1-\mu_{2})^{k_{1}-j}(1-\mu_{3})^{k_{1}-z}
-	\label{eq:6}
-\end{equation}
-其中$k_{1}$个半成品中存在的三个零配件情况为$i$、$j$、$z$,则需要满足$i+j+z \ge k_{1}$,$i\le k_{1}$,$j\le k_{1}$,$z\le k_{1}$。
-由此能够算出半成品1中不合格品的期望值$M_{1}$为：
-\begin{equation}
-	M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1}
-	\label{eq:7}
-\end{equation}
-同理可以得到半成品2、半成品3和成品的不合格品的期望值$M_{2}$、$M_{3}$:
-\begin{align}
-	M_{2}&=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
-	M_{3}&=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3} 
-	\label{eq:8}
-\end{align}
-接着我们能够通过不合格产品的期望算出各个半成品中存在次品的概率为$\nu_{1}=\frac{M_{1}}{\min \{N_{1},N_{2},N_{3}\}}$, $\nu_{2}=\frac{M_{2}}{\min \{N_{4},N_{5},N_{6}\}}$
-和$\nu_{3}=\frac{M_{3}}{\min \{N_{7},N_{8}\}}$。由此我们能够计算出成品中存在次品零部件的成品数目为$k$的概率$P_{k}$为：
-\begin{equation}
-	P_{k}=\sum_{i}\sum_{j}\sum_{z}C_{M_{1}}^{i}C_{M_{2}}^{j}C_{M_{3}}^{z}\nu_{1}^{i}\nu_{2}^{j}\nu_{3}^{z}(1-\nu_{1})^{k_{1}-i}(1-\nu_{2})^{k_{1}-j}(1-\nu_{3})^{k_{1}-z}
-	\label{eq:9}
-\end{equation}
-其中$k$个成品中存在的三个次半成品情况为$i$、$j$、$z$,则需要满足$i+j+z \ge k$,$i\le k$,$j\le k$,$z\le k$。
-由此能够算出成品中不合格品的期望值$M$为：
-\begin{equation}
-	M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{nM_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''
-	\label{eq:10}
-\end{equation}
+		以第一个半成品为例，可以得到存在次品零部件的半成品数目为$k_{1}$的概率$P_{k_{1}}$为：
+		\begin{equation}
+			P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\mu_{1}^{i}\mu_{2}^{j}\mu_{3}^{z}(1-\mu_{1})^{k_{1}-i}(1-\mu_{2})^{k_{1}-j}(1-\mu_{3})^{k_{1}-z}
+			\label{eq:6}
+		\end{equation}
+		其中$k_{1}$个半成品中存在的三个零配件情况为$i$、$j$、$z$,则需要满足$i+j+z \ge k_{1}$,$i\le k_{1}$,$j\le k_{1}$,$z\le k_{1}$。
+		由此能够算出半成品1中不合格品的期望值$M_{1}$为：
+		\begin{equation}
+			M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1}
+			\label{eq:7}
+		\end{equation}
+		同理可以得到半成品2、半成品3和成品的不合格品的期望值$M_{2}$、$M_{3}$:
+		\begin{align}
+			M_{2} & =\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
+			M_{3} & =\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}
+			\label{eq:8}
+		\end{align}
+		接着我们能够通过不合格产品的期望算出各个半成品中存在次品的概率为$\nu_{1}=\frac{M_{1}}{\min \{N_{1},N_{2},N_{3}\}}$, $\nu_{2}=\frac{M_{2}}{\min \{N_{4},N_{5},N_{6}\}}$
+		和$\nu_{3}=\frac{M_{3}}{\min \{N_{7},N_{8}\}}$。由此我们能够计算出成品中存在次品零部件的成品数目为$k$的概率$P_{k}$为：
+		\begin{equation}
+			P_{k}=\sum_{i}\sum_{j}\sum_{z}C_{M_{1}}^{i}C_{M_{2}}^{j}C_{M_{3}}^{z}\nu_{1}^{i}\nu_{2}^{j}\nu_{3}^{z}(1-\nu_{1})^{k_{1}-i}(1-\nu_{2})^{k_{1}-j}(1-\nu_{3})^{k_{1}-z}
+			\label{eq:9}
+		\end{equation}
+		其中$k$个成品中存在的三个次半成品情况为$i$、$j$、$z$,则需要满足$i+j+z \ge k$,$i\le k$,$j\le k$,$z\le k$。
+		由此能够算出成品中不合格品的期望值$M$为：
+		\begin{equation}
+			M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{nM_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''
+			\label{eq:10}
+		\end{equation}
 
 
 
-与问题二类似构建产品生产决策周期图，如图\ref{fig:pro3-2}。
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{Fig/pro3-2.png}      
-	\caption{产品决策周期图}
-	\label{fig:pro3-2}
-\end{figure}
-\subsection{模型的求解}
-\section{问题四的模型建立与求解}
-\subsection{模型的建立}
-本问题中我们需要考虑到抽样检测的准确性和应对风险的鲁棒性，而不能直接获取真实次品率:相比于对每个阶段的抽样进行风险建模，
-一个更为直观的想法是对每一步的预测次品率$\mu$进行概率建模，这样做的好处是便于拟合我们在工序每阶段的概率分布(
-这可以被看作是相互独立事件间的概率分布的传播)---我们选用
-高斯分布拟合之。事实上，如果我们假定阶段p的期望为问题二及三中给定的次品率，那么:
+		与问题二类似构建产品生产决策周期图，如图\ref{fig:pro3-2}。
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.8\textwidth]{Fig/pro3-2.png}
+			\caption{产品决策周期图}
+			\label{fig:pro3-2}
+		\end{figure}
+		\subsection{模型的求解}
+		\section{问题四的模型建立与求解}
+		本问题中我们需要考虑到抽样检测的准确性和应对风险的鲁棒性，而不能直接获取真实次品率:相比于对每个阶段的抽样进行风险建模，
+		一个更为直观的想法是对每一步的预测次品率$\mu$进行概率建模，这样做的好处是便于拟合我们在工序每阶段的概率分布(
+		这可以被看作是相互独立事件间的概率分布的传播)---我们选用
+		高斯分布拟合之。事实上，如果我们假定阶段p的期望为问题二及三中给定的次品率，那么初阶段不合格率:
+		\begin{equation}
+			z_p = \mu_p + \sigma_p \odot \epsilon, \epsilon \sim \mathcal{N}(0, \mathbf{I})
+		\end{equation}
+		对于每次评估的$\mu_p$，我们只需计算出相应的风险参数$\sigma_p$，就可以重新从标准高斯分布中采样出噪声施加在其上：
+		\begin{equation}
+			z \sim \mathcal{N}(z; \mu_p, \sigma_p^2 \mathbf{I})
+		\end{equation}
+		这样，实际的工序流程中次品率就被建模成了高斯分布，在优化过程中从中采样即可。接下来，我们论证该分布在工序流程中的可传播性。
+		事实上，如果我们把零配件的组装和成品看作一个马尔可夫过程，那么，合格与否概率分布的传播就可以视为一个前向动力学模型，针对任意的相邻两个工序（
+		我们暂且搁置对于一般的偏置项的考虑）：
+		\begin{equation}
+			\begin{split}
+				P(z_{p+1} | z_p) &= \mathcal{N}(z_{p+1};z_p, \sigma_p^2 \mathbf{I}) \\
+				&= \mu_{p+1}z_p + \sigma_{p+1} \odot \epsilon \\
+				& = \mu_{p+1}(\mu_p + \sigma_p \odot \epsilon) + \sigma_{p+1} \odot \epsilon \\
+				& = \mu_{p+1}\mu_p + (\mu_{p+1}\sigma_p + \sigma_{p+1} )\odot \epsilon
+			\end{split}
+		\end{equation}
+		而又根据独立高斯分布的可加性：$\mathcal{N}(0, \sigma_1^2 \mathbf{I}) + \mathcal{N}(0, \sigma_2^2 \mathbf{I}) \sim \mathcal{N}(0, (\sigma_1^2 + \sigma_2^2) \mathbf{I})$
+		我们便可以得到$z_{p+1}$的分布：
+		\begin{equation}
+			z_{p+1} \sim \mathcal{N}(z_{p+1}; \mu_{p+1}\mu_p, \sqrt{(\mu_{p+1}\sigma_p)^2 +\sigma_{p+1}^2}\mathbf{I})
+		\end{equation}
+		于是，我们的风险就可以通过前向动力学模型来传播了，$\mu$的期望依然遵循于预先设定的标准，而风险可以通过标准差逐层传递。
+
+		我们假设对问题二的零配件1，零配件2，成品；问题三的各种零配件，半成品，成品的次品率都采用$SPRT$进行抽样，我们预先设定$H_0$边界范围为:$[S_1,S_2]$;
+		取其初始值为$\frac{S_1+S_2}{2}$,每次确定其相对预设值的大小后，我们采用二分法逐渐收缩范围，重复10次，设定最终结果为$\mu_i$,并根据与样本集的真实误差
+		确定$\sigma_i$，在总样本中确定反复取得样本集，获得$\sigma_1,\sigma_2......\sigma_n$,考虑其拟合上文中的高斯分布：
+		\begin{equation}
+			f(x; \sigma_p) = \frac{1}{\sigma_p \sqrt{2\pi}} \exp\left(-\frac{x^2}{2\sigma_p^2}\right)
+		\end{equation}
+		观测数据的似然函数是参数 $\sigma_p$ 的函数，它表示在给定参数 $\sigma_p$ 的情况下，观测到数据的概率。由于观测数据独立同分布，因此似然函数可以写成：
+		\begin{equation}
+			L(\sigma_p) = \prod_{i=1}^n f(\sigma_i; \sigma_p) = \prod_{i=1}^n \frac{1}{\sigma_p \sqrt{2\pi}} \exp\left(-\frac{\sigma_i^2}{2\sigma_p^2}\right)
+		\end{equation}
+		取其对数似然:
+		\begin{equation}
+			\begin{split}
+				\ln L(\sigma_p) &= \sum_{i=1}^n \ln(f(\sigma_i; \sigma_p)) = \sum_{i=1}^n \left[ \ln\left(\frac{1}{\sigma_p \sqrt{2\pi}}\right) - \frac{\sigma_i^2}{2\sigma_p^2} \right] \\
+				&= -n \ln(\sigma_p) - n \ln(\sqrt{2\pi}) - \frac{1}{2\sigma_p^2} \sum_{i=1}^n \sigma_i^2
+			\end{split}
+		\end{equation}
+		求解上述方程，得到参数 $\sigma_p$ 的 MLE 估计值：
 \begin{equation}
-	z_p = \mu_p + \sigma_p \odot \epsilon, \epsilon \sim \mathcal{N}(0, \mathbf{I})
+	\hat{\sigma}_p = \sqrt{\frac{\sum_{i=1}^n \sigma_i^2}{n}}
 \end{equation}
-对于每次评估的$\mu_p$，我们只需计算出相应的风险参数$\sigma_p$，就可以重新从标准高斯分布中采样出噪声施加在其上：
-\begin{equation}
-	z \sim \mathcal{N}(z; \mu_p, \sigma_p^2 \mathbf{I})
-\end{equation}
-这样，实际的工序流程中次品率就被建模成了高斯分布，在优化过程中从中采样即可。接下来，我们论证该分布在工序流程中的可传播性。
-事实上，如果我们把零配件的组装和成品看作一个马尔可夫过程，那么，概率分布的传播就可以视为一个前向动力学模型，针对任意的相邻两个工序（
-我们暂且搁置对于一般的偏置项的考虑）：
-\begin{equation}
-	\begin{split}
-		P(z_{p+1} | z_p) &= \mathcal{N}(z_{p+1};z_p, \sigma_p^2 \mathbf{I}) \\
-		&= \mu_{p+1}z_p + \sigma_{p+1} \odot \epsilon \\
-		& = \mu_{p+1}(\mu_p + \sigma_p \odot \epsilon) + \sigma_{p+1} \odot \epsilon \\
-		& = \mu_{p+1}\mu_p + (\mu_{p+1}\sigma_p + \sigma_{p+1} )\odot \epsilon
-	\end{split}
-\end{equation}
-而又根据独立高斯分布的可加性：$\mathcal{N}(0, \sigma_1^2 \mathbf{I}) + \mathcal{N}(0, \sigma_2^2 \mathbf{I}) \sim \mathcal{N}(0, (\sigma_1^2 + \sigma_2^2) \mathbf{I})$
-我们便可以得到$z_{p+1}$的分布：
-\begin{equation}
-	z_{p+1} \sim \mathcal{N}(z_{p+1}; \mu_{p+1}\mu_p, \sqrt{(\mu_{p+1}\sigma_p)^2 +\sigma_{p+1}^2}\mathbf{I})
-\end{equation}
-于是，我们的风险就可以通过前向动力学模型来传播了，$\mu$的期望依然遵循于预先设定的标准，而风险可以通过标准差逐层传递。
-\subsection{模型的求解}
 \end{document}
