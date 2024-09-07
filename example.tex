@@ -364,8 +364,8 @@ $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot 
 \end{equation}
 同理可以得到半成品2、半成品3和成品的不合格品的期望值$M_{2}$、$M_{3}$:
 \begin{align}
-	M_{2}&=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
-	M_{3}&=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3} 
+	M_{2} & =\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
+	M_{3} & =\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}
 	\label{eq:8}
 \end{align}
 接着我们能够通过不合格产品的期望算出各个半成品中存在次品的概率$\nu_{2,i}$为:
@@ -382,8 +382,8 @@ $$\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1
 	\label{eq:10}
 \end{equation}
 在理想情况下，多有的成品都进入市场，此时所产生的检测、退换、拆解费用为$\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\dots,N_{8}\cdot f_{8},
-\min \{ N_{1},N_{2},N_{3}\}\cdot f_{9},\min \{ N_{4},N_{5},N_{6}\}\cdot f_{10},\min \{ N_{7},N_{8}\}\cdot f_{11},\\
-\min \{N_{1},N_{2},\dots,N_{8}\}\cdot f_{12},M_{1}\cdot f_{13},M_{2}\cdot f_{14},M_{3}\cdot f_{15},M\cdot f_{16}]$，此行向量
+	\min \{ N_{1},N_{2},N_{3}\}\cdot f_{9},\min \{ N_{4},N_{5},N_{6}\}\cdot f_{10},\min \{ N_{7},N_{8}\}\cdot f_{11},\\
+	\min \{N_{1},N_{2},\dots,N_{8}\}\cdot f_{12},M_{1}\cdot f_{13},M_{2}\cdot f_{14},M_{3}\cdot f_{15},M\cdot f_{16}]$，此行向量
 中$f_{1}$$\sim$$f_{12}$均为抽样检测所产生的费用，$f_{13}$$\sim$$f_{16}$为次品拆解费用,$f_{16}$为退换产生费用。由此能够算出生产线检测、拆解、退换费$R$为：
 \begin{equation}
 	R=\vec{F}\cdot \vec{C} + M\cdot f_{17}
@@ -405,19 +405,19 @@ $$\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1
 综合上述算式，我们能够得到每轮次的收益$Profit$：
 $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R$$
 \begin{equation*}
-s.t.\begin{cases}
-	 R=\vec{F}\cdot \vec{C} + M\cdot f_{17}\\
-	 M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{M_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''\\
-	 M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1}\\
-	 M_{2}=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2}\\
-	 M_{3}=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}\\
-	 P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\nu_{1,1}^{i}\nu_{1,2}^{j}\nu_{1,3}^{z}(1-\nu_{1,1})^{k_{1}-i}(1-\nu_{1,2})^{k_{1}-j}(1-\nu_{
-	 1,3})^{k_{1}-z}\\
-	 P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
-	 2,3})^{k_{2}-z}\\
-	 P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}\\
-	 \nu_{1,i}=\frac{M_{i}^{-1}+N_{i}\mu_{i}}{M_{i}^{-1}+N_{i}} ,i=1,2,3\\
-	\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3\\
+	s.t.\begin{cases}
+		R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
+		M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{M_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''                  \\
+		M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1} \\
+		M_{2}=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
+		M_{3}=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}                   \\
+		P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\nu_{1,1}^{i}\nu_{1,2}^{j}\nu_{1,3}^{z}(1-\nu_{1,1})^{k_{1}-i}(1-\nu_{1,2})^{k_{1}-j}(1-\nu_{
+		1,3})^{k_{1}-z}                                                                                                                        \\
+		P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
+		2,3})^{k_{2}-z}                                                                                                                        \\
+		P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
+		\nu_{1,i}=\frac{M_{i}^{-1}+N_{i}\mu_{i}}{M_{i}^{-1}+N_{i}} ,i=1,2,3                                                                    \\
+		\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3                                 \\
 	\end{cases}
 \end{equation*}
 \subsection{模型的求解}
@@ -484,72 +484,98 @@ s.t.\begin{cases}
 $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}}\\$$
 \begin{equation*}
 	s.t.\begin{cases}
-		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-k)\cdot (\mu_{3}+\sigma_{3}\varepsilon )]\cdot c_{3}                                \\
-		n_{1}=N_{1}\cdot (\mu_{1}+\sigma_{1}\varepsilon )+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \quad n_{2}=N_{2}\cdot (\mu_{2}+\sigma_{2}\varepsilon )+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}                                                    \\
-		N'_{1}=N_{1}+M \quad N'_{2}=N_{2}+M                                                                                                                                                    \\
-		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})                                                                                                                                                 \\
-		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots] \\
-		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j}                               \\
-		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j}   
+		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-k)\cdot (\mu_{3}+\sigma_{3}\varepsilon )]\cdot c_{3}                                                                     \\
+		n_{1}=N_{1}\cdot (\mu_{1}+\sigma_{1}\varepsilon )+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \quad n_{2}=N_{2}\cdot (\mu_{2}+\sigma_{2}\varepsilon )+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}                                                                \\
+		N'_{1}=N_{1}+M \quad N'_{2}=N_{2}+M                                                                                                                                                                                                                  \\
+		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})                                                                                                                                                                                                               \\
+		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots]                                                               \\
+		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j} \\
+		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j}
 	\end{cases}
 \end{equation*}
 同理在第三问中，我们可以将决策方案的目标函数及约束条件改为：
 $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R$$
 \begin{equation*}
-s.t.\begin{cases}
-	 R=\vec{F}\cdot \vec{C} + M\cdot f_{17}\\
-	 M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{M_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''\\
-	 M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1}\\
-	 M_{2}=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2}\\
-	 M_{3}=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}\\
-	 P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\nu_{1,1}^{i}\nu_{1,2}^{j}\nu_{1,3}^{z}(1-\nu_{1,1})^{k_{1}-i}(1-\nu_{1,2})^{k_{1}-j}(1-\nu_{
-	 1,3})^{k_{1}-z}\\
-	 P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
-	 2,3})^{k_{2}-z}\\
-	 P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}\\
-	 \nu_{1,i}=\frac{M_{i}^{-1}+N_{i}(\mu_{i}+\sigma_{i})}{M_{i}^{-1}+N_{i}} ,i=1,2,3\\
-	\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3\\
+	s.t.\begin{cases}
+		R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
+		M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{M_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''                  \\
+		M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1} \\
+		M_{2}=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
+		M_{3}=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}                   \\
+		P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\nu_{1,1}^{i}\nu_{1,2}^{j}\nu_{1,3}^{z}(1-\nu_{1,1})^{k_{1}-i}(1-\nu_{1,2})^{k_{1}-j}(1-\nu_{
+		1,3})^{k_{1}-z}                                                                                                                        \\
+		P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
+		2,3})^{k_{2}-z}                                                                                                                        \\
+		P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
+		\nu_{1,i}=\frac{M_{i}^{-1}+N_{i}(\mu_{i}+\sigma_{i})}{M_{i}^{-1}+N_{i}} ,i=1,2,3                                                       \\
+		\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3                                 \\
 	\end{cases}
 \end{equation*}
 经过求解可以得到最优的决策向量$\vec{C}$
 \section{灵敏度分析}
+在问题一中，我们考虑$\Delta \mu$的变化对采样准确率和采样量占比的影响。
+具体来说，
+我们将$\Delta \mu_1,\Delta \mu_2$的值分别向上和向下浮动0-10\%，
+同时对$N$的值做出相应浮动以进行测试，在每个测试点，对标称值在5\%-15\%内
+均匀采样，最终求得相关指标在各个测试点的均值。
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.48\textwidth]{Fig/pro1_sensi_acc.png}
+	\includegraphics[width=0.48\textwidth]{Fig/pro1_sensi_ocu.png}
+	\begin{minipage}[b]{0.48\textwidth}
+		\centering
+		(a) 采样准确率分析
+	\end{minipage}
+	\begin{minipage}[b]{0.48\textwidth}
+		\centering
+		(b) 采样量占比分析
+	\end{minipage}
+	\caption{\textit{SPRT}灵敏度分析}
+	\label{Pro1_sensi}
+\end{figure}
+可以发现，我们的模型在面对大跨度的样本量时有较强的鲁棒性；针对某一特定的真实次品率，采样量占比和采样准确率对样本量的变化
+都不敏感，这充分说明我们的模型能够适应不同的工业生产要求情况。另一方面，考虑到$\Delta \mu$在不同浮动值下模型的表现，我们发现
+在两项指标上模型对$\Delta \mu$的浮动都较为敏感。在10\%的浮动率内足以使模型的策略准确率明显降低和采样量显著增大。这证实了该参数
+对模型的影响是相当深刻的。在问题一中我们采用未经扰动的，由MLP直接输出的$\Delta \mu$参与$SPRT$抽样时，策略准确率维持在0.8以上的
+较高水平，而采样量维持在3\%以下的较低水平。这足以证明MLP对于$\Delta \mu$的拟合相当有效，它的拟合误差在极其小的范围内，因此不会
+出现以上浮动所带来的不稳定结果。
 \section{模型评价}
 
 %参考文献
 \begin{thebibliography}{9}%宽度9
-    \bibitem[1]{luojiawei2019latex}
-    
-    \bibitem[2]{}
+	\bibitem[1]{luojiawei2019latex}
 
-    \bibitem[3]{}
-    
-    \bibitem[4]{}
-   
-    \bibitem[5]{}
-   
-    \bibitem[6]{}
-   
-    \bibitem[7]{}
-   
-    \bibitem[8]{}
-   
+	\bibitem[2]{}
+
+	\bibitem[3]{}
+
+	\bibitem[4]{}
+
+	\bibitem[5]{}
+
+	\bibitem[6]{}
+
+	\bibitem[7]{}
+
+	\bibitem[8]{}
+
 \end{thebibliography}
 
 \newpage
 %附录
 \begin{appendices}
 	\section{代码2}
-	 
+
 	\begin{lstlisting}[language=matlab]
 	kk=2;[mdd,ndd]=size(dd);
 	 
 	 \end{lstlisting}
-	 
-	 \section{代码2}
-	 
+
+	\section{代码2}
+
 	\begin{lstlisting}[language=c]
 	kk=2;
 	[mdd,ndd]=size(dd);
 	 \end{lstlisting}
-	\end{appendices}
+\end{appendices}
 \end{document}
