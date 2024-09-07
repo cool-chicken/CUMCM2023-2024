@@ -81,7 +81,7 @@ $\bullet$ 不考虑因检验手段等原因对数据值的影响。
 		$A$         & 拒真的决策边界       \\
 		$B$         & 纳伪的决策边界       \\
 		$LR$        & 似然比           \\
-		$C$		 & 决策向量          \\
+		$C$         & 决策向量          \\
 		\bottomrule[1.5pt]
 	\end{tabular}
 \end{table}
@@ -135,7 +135,7 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 \begin{equation}
 	D_{i+1}=D_i-n_i
 \end{equation}
-检验的完整流程可以作出如下表表示：
+检验的完整流程可以作出如下表所示：
 
 \begin{adjustbox}{width=16cm,height=6.5cm}
 	\centering
@@ -204,10 +204,10 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 首先，我们可以将电子产品加工过程分为三个阶段，即：零配件、成品、市场。每当生产过程从一个阶段进入到另一个阶段均需要决策是否需要
 进行抽检，将此过程抽象为图\ref{fig:pro2}。
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
-    \caption{电子器件生产的流程图}
-    \label{fig:pro2}
+	\centering
+	\includegraphics[width=0.6\textwidth]{Fig/pro2.png}      %获得的图片花括号中的名称为figure文件夹中重命名后的图片
+	\caption{电子器件生产的流程图}
+	\label{fig:pro2}
 \end{figure}
 \subsection{模型的建立}
 在生产过程中我们设置一个列向量$\vec{C}=(c_{1},c_{2},c_{3},c_{4})^{T}$，其中的元素$c_i$分别表示
@@ -220,18 +220,18 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 情况$\vec{C}=(0,0,0,0)^{T}$，可以得出存在零部件次品的成品数目$k$的值域为$[\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \},N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}]$。
 令$k$个成品中存在$i$和$j$个零配件1、2的次品个数。可以得到成品中有$i$个零配件1和$j$个零配件2的概率为$P_{i,j}$，计算公式如下：
 \begin{equation}
-    P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
-    \label{eq:1}
+	P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+	\label{eq:1}
 \end{equation}
 则$i$和$j$应当满足$i+j\ge k,i\le k,j\le k$，经过计算得到i和j的取值范围为$[k-j,k]$和$[\frac{k}{2},k]$。
 我们假设$P_{k}$为存在次品零部件的成品数目为$k$的概率，计算公式如下：
 \begin{equation}
-    P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
-    \label{eq:2}
+	P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+	\label{eq:2}
 \end{equation}
 由此可以得到成品中的不合格产品的期望值$M$为（$\mu_{3}$为成品次品率）：
 \begin{equation}
-M=\sum_{k=\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \}}^{N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}}k\cdot P_{k} + (\min \{ N1,N2\}-k)\cdot \mu_{3}\\
+	M=\sum_{k=\max \{N_{1}\cdot\mu_{1},N_{2}\cdot\mu_{2} \}}^{N_{1}\cdot\mu_{1}+N_{2}\cdot\mu_{2}}k\cdot P_{k} + (\min \{ N1,N2\}-k)\cdot \mu_{3}\\
 	\label{eq:3}
 \end{equation}
 令:产品售价为$p_{1}$检测零配件1、2及成品的费用分别为$f_{1}$、$f_{2}$和$f_{3}$，$f_{4}$和$f_{5}$为调换损失及拆解费用，则可以构造产生费用的行向量$\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5}]$
@@ -248,32 +248,32 @@ $M'$为新轮次中成品次品数目。则零配件池中为次品的平配件�
 \end{equation}
 在此基础上我们可以构造每轮次的收益$Profit$：
 \begin{equation}
-\left\{\begin{matrix}
-	 \textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M')\cdot p_{1}-\vec{F}\cdot \vec{C}-M'\cdot f_{4}\\
-   	M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}
+	\left\{\begin{matrix}
+		\textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M')\cdot p_{1}-\vec{F}\cdot \vec{C}-M'\cdot f_{4} \\
+		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}
 	\end{matrix}\right.
-		\label{eq:5}
+	\label{eq:5}
 \end{equation}
 为了更直观的得到不同决策向量对电子产品生产的收益的影响，我们将图\ref{fig:pro2}中的单次生产流程抽象为一个生产轮次。在每个轮次中我们假设每轮
 接受供应商提供的配件数目为固定的$N_{1}$、$N_{2}$，经过上一轮被检测为次品的零部件全部被舍弃，被拆解的成品中的零配件投入下一轮次的零配件池进入生产。
 在每轮次生产中我们需要确定不同决策向量以保证电子产品生产的收益，于是我们拟定$t$个生产轮次为一个生产周期，每个生产周期中决策向量$\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})^{T}$
 为$t$个生产轮次中决策列向量$C$的叠加，如图\ref{fig:pro2-2}。
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Fig/pro2-2.png}      
-    \caption{产品决策周期图}
-    \label{fig:pro2-2}
+	\centering
+	\includegraphics[width=0.8\textwidth]{Fig/pro2-2.png}
+	\caption{产品决策周期图}
+	\label{fig:pro2-2}
 \end{figure}
 综上我们构建了一个基于生产周期的决策模型，通过对每个生产周期中的决策向量$C^{*}$进行优化，就能够得到最优的决策方案。
 $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{n},N'_{2}-n_{2}\cdot c_{n}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}}\\$$
 \begin{equation*}
 	s.t.\begin{cases}
-		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}\\
-		n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \quad n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}\\
-		N'_{1}=N_{1}+M \quad N'_{2}=N_{2}+M \\
-		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})\\
-		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots]\\
-		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}\\
+		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}                                      \\
+		n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \quad n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}                                                    \\
+		N'_{1}=N_{1}+M \quad N'_{2}=N_{2}+M                                                                                                                                                    \\
+		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})                                                                                                                                                 \\
+		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots] \\
+		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}                               \\
 		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
 	\end{cases}
 \end{equation*}
@@ -318,5 +318,35 @@ $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot 
 \section{问题三的模型建立与求解}
 \subsection{模型的建立}
 \subsection{模型的求解}
-
+\section{问题四的模型建立与求解}
+\subsection{模型的建立}
+本问题中我们需要考虑到抽样检测的准确性和应对风险的鲁棒性，而不能直接获取真实次品率:相比于对每个阶段的抽样进行风险建模，
+一个更为直观的想法是对每一步的预测次品率$\mu$进行概率建模，这样做的好处是便于拟合我们在工序每阶段的概率分布(
+这可以被看作是相互独立事件间的概率分布的传播)---我们选用
+高斯分布拟合之。事实上，如果我们假定阶段p的期望为问题二及三中给定的次品率，那么:
+\begin{equation}
+	z_p = \mu_p + \sigma_p \odot \epsilon, \epsilon \sim \mathcal{N}(0, \mathbf{I})
+\end{equation}
+对于每次评估的$\mu_p$，我们只需计算出相应的风险参数$\sigma_p$，就可以重新从标准高斯分布中采样出噪声施加在其上：
+\begin{equation}
+	z \sim \mathcal{N}(z; \mu_p, \sigma_p^2 \mathbf{I})
+\end{equation}
+这样，实际的工序流程中次品率就被建模成了高斯分布，在优化过程中从中采样即可。接下来，我们论证该分布在工序流程中的可传播性。
+事实上，如果我们把零配件的组装和成品看作一个马尔可夫过程，那么，概率分布的传播就可以视为一个前向动力学模型，针对任意的相邻两个工序（
+我们暂且搁置对于一般的偏置项的考虑）：
+\begin{equation}
+	\begin{split}
+		P(z_{p+1} | z_p) &= \mathcal{N}(z_{p+1};z_p, \sigma_p^2 \mathbf{I}) \\
+		&= \mu_{p+1}z_p + \sigma_{p+1} \odot \epsilon \\
+		& = \mu_{p+1}(\mu_p + \sigma_p \odot \epsilon) + \sigma_{p+1} \odot \epsilon \\
+		& = \mu_{p+1}\mu_p + (\mu_{p+1}\sigma_p + \sigma_{p+1} )\odot \epsilon
+	\end{split}
+\end{equation}
+而又根据独立高斯分布的可加性：$\mathcal{N}(0, \sigma_1^2 \mathbf{I}) + \mathcal{N}(0, \sigma_2^2 \mathbf{I}) \sim \mathcal{N}(0, (\sigma_1^2 + \sigma_2^2) \mathbf{I})$
+我们便可以得到$z_{p+1}$的分布：
+\begin{equation}
+	z_{p+1} \sim \mathcal{N}(z_{p+1}; \mu_{p+1}\mu_p, \sqrt{(\mu_{p+1}\sigma_p)^2 +\sigma_{p+1}^2}\mathbf{I})
+\end{equation}
+于是，我们的风险就可以通过前向动力学模型来传播了，$\mu$的期望依然遵循于预先设定的标准，而风险可以通过标准差逐层传递。
+\subsection{模型的求解}
 \end{document}
