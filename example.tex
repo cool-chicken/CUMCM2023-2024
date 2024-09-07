@@ -168,11 +168,14 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 先验的，所以我们暂且假定它的范围波动为$[1000,1000000]$；（2）真实标称值(Ground Truth) 我们也预先假定它的范围
 波动为$[5\%,15\%]$。$\Delta \mu$的确定直接意味着SPRT策略的固定,面对庞大的搜索空间这样做显然是欠鲁棒的，因此寻找一种
 对$\Delta \mu$的拟合$\Delta \mu = f(N,\theta)$是迫在眉睫的。其中N作为零配件总数是我们面临实际场景时的唯一自变量。$\theta$是拟合函数
-的待优化参数。目标函数应该考虑到：（1）优化项：即尽可能减少搜索次数i；（2）惩罚项：即不出现误判的情况。于是它可以设计为：
+的待优化参数。目标函数应该考虑到：（1）优化项：即尽可能减少取样量$D$；（2）惩罚项：即不出现误判的情况。于是它可以设计为：
 \begin{equation}
-	\Delta \mu = f(N,\theta) \ \ \ \ \ \ s.t. \ \underset{\theta}{\operatorname{argmax}} \ (\frac{1}{i} \times \mathbf{1}_H)
+	\Delta \mu = f(N,\theta) \ \ \ \ \ \ s.t. \ \underset{\theta}{\operatorname{argmax}} \ (\frac{1}{D} \times \mathbf{1}_H)
 \end{equation}
 这里的$\mathbf{1}_H$是对假设H的指示函数，用以表示最终选取的假设是否为真。
+我们使用多层感知机（MLP）去拟合函数$f(N,\theta)$，自定虚拟数据集的范围遵循前文中给出的零件数量$N$和真实标称值的波动范围。
+
+在1000个epoch中，我们选取测试集中精度最高的MLP模型作为评估基线以衡量SPRT的表现情况。最终结果如图所示：
 \section{问题二的模型建立与求解}
 \begin{figure}[H]
 	\centering
