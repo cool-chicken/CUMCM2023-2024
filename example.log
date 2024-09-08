@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.12)  8 SEP 2024 15:12
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.12)  8 SEP 2024 15:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1433,36 +1433,38 @@ File: Fig/pro2.png Graphic file (type bmp)
 [6] [7]
 File: Fig/pro2-2.png Graphic file (type bmp)
 <Fig/pro2-2.png>
-
-Overfull \hbox (1.93925pt too wide) detected at line 289
+ [8]
+Overfull \hbox (1.93925pt too wide) detected at line 292
 [] [] \OT1/cmr/m/n/12.05 = [] [] \OMS/cmsy/m/n/12.05 ^^@ [] ^^A [] ^^@ \OML/cmm/m/it/12.05 cost[] 
  []
 
-[8]
-Overfull \hbox (53.79736pt too wide) detected at line 301
-\OML/cmm/m/it/12.05 s:t: []
- []
-
+[9]
 File: Fig/pro3-1.png Graphic file (type bmp)
 <Fig/pro3-1.png>
-[9] [10]
+ [10] [11]
 File: Fig/pro3-2.png Graphic file (type bmp)
 <Fig/pro3-2.png>
- [11] [12] [13]
-Overfull \hbox (1.93925pt too wide) detected at line 506
-[] [] \OT1/cmr/m/n/12.05 = [] [] \OMS/cmsy/m/n/12.05 ^^@ [] ^^A [] ^^@ \OML/cmm/m/it/12.05 cost[] 
- []
 
-[14]
-Overfull \hbox (53.79736pt too wide) detected at line 518
+Overfull \hbox (10.50377pt too wide) detected at line 424
 \OML/cmm/m/it/12.05 s:t: []
  []
 
+[12] [13] [14]
+Overfull \hbox (1.93925pt too wide) detected at line 511
+[] [] \OT1/cmr/m/n/12.05 = [] [] \OMS/cmsy/m/n/12.05 ^^@ [] ^^A [] ^^@ \OML/cmm/m/it/12.05 cost[] 
+ []
+
+
+Overfull \hbox (53.79736pt too wide) detected at line 523
+\OML/cmm/m/it/12.05 s:t: []
+ []
+
+[15]
 File: Fig/pro1_sensi_acc.png Graphic file (type bmp)
 <Fig/pro1_sensi_acc.png>
 File: Fig/pro1_sensi_ocu.png Graphic file (type bmp)
 <Fig/pro1_sensi_ocu.png>
-[15] [16] [17] (d:/textlive/texlive/2023/texmf-dist/tex/latex/listings/lstlang1.sty
+ [16] [17] (d:/textlive/texlive/2023/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 
