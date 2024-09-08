@@ -299,37 +299,6 @@ $$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3
 		cost=d_{1}\cdot N_{1}+d_{2}\cdot N_{2}+\min \{ N_{1},N_{2}\}\cdot d_{3}
 	\end{cases}
 \end{equation*}
-我们拟应用微生物遗传算法进行不断的迭代优化来寻找最优解，算法流程:
-
-\begin{adjustbox}{width=16cm,height=6.5cm}
-	\centering
-	\begin{algorithm}[H]
-		\SetAlgoLined
-		\KwIn{每个段产生成本、检测成本、不合格品调换拆解费用和次品率$\mu$}
-		\KwOut{单周期的成品收益$Profit$最优的决策向量$\vec{C^{*}}$}
-		初始化一个周期为t轮次的决策列向量 $C^{*}$ 的种群，种群中的个体是随机生成的\;
-		\While{TRUE}{
-			从种群中随机选择两个个体 $\vec{C_{A}^{*}}$ 和 $\vec{C_{B}^{*}}$\;
-			计算两个个体的$Profit$ \;
-			\If{$ \textit{Profit}_{A} \le \textit{Profit}_{B}$}{
-				winner $\gets \vec{C_{B}^{*}}$ \\
-				loser $\gets \vec{C_{A}^{*}}$
-			}
-			\Else{
-				winner $\gets \vec{C_{A}^{*}}$ \\
-				loser $\gets \vec{C_{B}^{*}}$
-			}
-			\For{每个在loser的向量g}{
-				\If{随机数 $r < \textit{crossoverRate}$}{
-					随机选择winner中的一个向量h\;
-					对g和h进行交叉操作\;
-				}
-			}
-		}
-		\Return 最优的决策向量$\vec{C^{*}}$
-		\caption{微生物遗传算法 (MGA) 流程}
-	\end{algorithm}
-\end{adjustbox}
 我们将周期设置为$1,2,3,\dots$轮次时发现每个周期的最佳决策向量$\vec{C^{*}}$中每轮次的决策向量趋近于一个定量值，
 这意味着在同一情况下投入生产中无需变换决策向量来获得最大收益，在实际生产中也能够根据具体情况定期制定出一套检测、拆解标准方案。
 结合问题中提供的6种不同情况我们得到以下决策方案：
