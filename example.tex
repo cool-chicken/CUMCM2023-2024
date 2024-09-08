@@ -25,12 +25,13 @@
 	次品的概率分布预测次品期望值，其后用$MGA$算法迭代找到最佳决策方案。最后建立了次品率波动曲线，再次迭代寻找的
 	最优决策，增加了方案的可是配性。
 
-	针对问题一，题目给出了两种情况，我们设计了基于$SPRT$的方法动态地作出抽样决策的方案，因为单次实验成功的期望服从二项分布，则利用
-	标称值及扰动构建二项分布参数模型。依据题干中的情况我们假定了零假设和备择假设第i次取样的似然比，经过SPRT流程得到接受的假设。
+	针对问题一，题目给出了两种情况，我们设计了基于$SPRT$\cite{SPRT}的方法动态地作出抽样决策的方案，因为单次实验成功的期望服从二项分布，则利用
+	标称值及扰动构建二项分布参数模型。依据题干中的情况我们假定了零假设和备择假设第i次取样的似然比，经过$SPRT$流程得到接受的假设。
 	最后应用多层感知机$(MLP)$来拟合扰动函数得到最优表现的模型。经过假设检验，模型采样率小于3\%，且具备80\%以上的成功率，证实了策略的稳健性。
 
-	针对问题二，题目已知平配件及成品的次品率，我们构建了单轮次决策向量，通过次品的概率分布能够计算出相应阶段的次品期望。为了能直观的
+	针对问题二，题目已知零配件及成品的次品率，我们构建了单轮次决策向量，通过次品的概率分布能够计算出相应阶段的次品期望。为了能直观的
 	体现决策方案对生产的影响，我们将多个生产轮次整合一个生产周期得到周期决策向量，由此列出不同决策下的净利润函数。通过$MGA$优化算法找到最优决策方案。
+	题目中情况6的在平配件、成品阶段均不抽检也不拆解退回成品的决策下，最大纯利润达到18.69元/件。
 
 	针对问题三，本题与问题二一脉相承，增加了生产阶段和零配件的种类，与第二问类似构造单轮次决策向量并且整合为周期决策向量。在此基础上
 	每轮零配件池及半成品池中的次品期望的要继承来自上一阶段的拆解零件，由此更新了产品净利润目标函数。最后通过遗传算法找到最优决策方案。
@@ -216,7 +217,7 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 具体来说，我们在$N$和真实标称值的预测范围内均匀采样；对于每个样本点，我们模拟100种样本集情况（这体现在零配件次品的分布次序上）;在100种样本集中
 由于$N$固定，我们拟合的$\Delta \mu$也固定，因此$SPRT$策略也是固定的，我们充分评估此基准上的假设判断成功率，发现在绝大多数情况下我们的策略都具备
 80\%以上的成功率；由于总样本量的跨度较大，我们用策略共采集的样本量在总样本中的占比作为衡量指标，我们的采样占比绝大多数情况小于3\%,这充分体现了
-我们采样策略的高效。此外根据我国工业检测国标：对于一般工业零件需要达到2\%-5\%的抽检率，对于高风险零件需要达到10\%以上的抽检率；我们的采样策略是
+我们采样策略的高效。此外根据我国工业检测国标：对于一般工业零件需要达到2\%-5\%的抽检率\cite{GB/T2828.1-2012}，对于高风险零件需要达到10\%以上的抽检率；我们的采样策略是
 合乎标准且稳健的。
 \section{问题二的模型建立与求解}
 首先，我们可以将电子产品加工过程分为三个阶段，即：零配件、成品、市场。每当生产过程从一个阶段进入到另一个阶段均需要决策是否需要
@@ -252,9 +253,11 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 	\label{eq:3}
 \end{equation}
 令:产品售价为$p_{1}$检测零配件1、2及成品的费用分别为$f_{1}$、$f_{2}$和$f_{3}$，$f_{4}$和$f_{5}$为调换损失及拆解费用，则可以构造产生费用的行向量$\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5}]$
-，考虑产品在上一轮需要退换，我们设置$M^{-1}$为上一轮需要退换产品数（第一轮中$M^{-1}=0$）。的由此能够得到此轮次获利$Profit$：
+，考虑产品在上一轮需要退换，我们设置$M^{-1}$为上一轮需要退换产品数（第一轮中$M^{-1}=0$）。同时需要计算零配件成本及装配成本，设零配件1、2的成本分别为$d_{1}$、$d_{2}$，装配成本为$d_{3}$，
+则可以算出本轮生产的成本函数$cost=d_{1}\cdot N_{1}+d_{2}\cdot N_{2}+\min \{ N_{1},N_{2}\}\cdot d_{3}$
+由此能够得到此轮次获利$Profit$：
 \begin{equation}
-	\textit{Profit}=(\min \{N_{1},N_{2}\}-M^{-1})\cdot p_{1}-\vec{F}\cdot \vec{C}-M\cdot f_{4}
+	\textit{Profit}=(\min \{N_{1},N_{2}\}-M^{-1})\cdot p_{1}-\vec{F}\cdot \vec{C}-M\cdot f_{4}-cost
 	\label{eq:4}
 \end{equation}
 使函数适配16中不同的决策方案，我们需要定义每轮零配件池中所含数量$N'_{1}$、$N'_{2}$即包含每轮次固定补充数量$N_{1}$、$N_{2}$也包含上一轮次零产品拆解后补进的配件（即：$N'=N+M$）。
@@ -266,7 +269,7 @@ $M'$为新轮次中成品次品数目。则零配件池中为次品的平配件�
 在此基础上我们可以构造每轮次的收益$Profit$：
 \begin{equation}
 	\left\{\begin{matrix}
-		\textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M')\cdot p_{1}-\vec{F}\cdot \vec{C}-M'\cdot f_{4} \\
+		\textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M')\cdot p_{1}-\vec{F}\cdot \vec{C}-M'\cdot f_{4}-cost \\
 		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}]\cdot c_{3}
 	\end{matrix}\right.
 	\label{eq:5}
@@ -282,7 +285,7 @@ $M'$为新轮次中成品次品数目。则零配件池中为次品的平配件�
 	\label{fig:pro2-2}
 \end{figure}
 综上我们构建了一个基于生产周期的决策模型，通过对每个生产周期中的决策向量$C^{*}$进行优化，就能够得到最优的决策方案。
-$$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}}\\$$
+$$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}} -cost \\$$
 \begin{equation*}
 	s.t.\begin{cases}
 		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-k)\cdot \mu_{3}]\cdot c_{3}                                \\
@@ -291,7 +294,8 @@ $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot 
 		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})                                                                                                                                                 \\
 		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots] \\
 		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}                               \\
-		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}
+		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}\mu_{1}^{i}\mu_{2}^{j}(1-\mu_{1})^{k-i}(1-\mu_{2})^{k-j}\\
+		cost=d_{1}\cdot N_{1}+d_{2}\cdot N_{2}+\min \{ N_{1},N_{2}\}\cdot d_{3}
 	\end{cases}
 \end{equation*}
 我们拟应用微生物遗传算法进行不断的迭代优化来寻找最优解，算法流程:
@@ -410,9 +414,10 @@ $$\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1
 			R=\vec{F}\cdot \vec{C} + M\cdot f_{17}
 			\label{eq:11}
 		\end{equation}
+每个阶段所产生的成本可以用$d_{i}\cdot N_{i}$来表示，其中$d_{i}$为每个零配件、半成品、成品的成本费用$i=1,2,\dots,12$，则单轮次成本$cost = \sum_{i=1}^{12}d_{i}\cdot N_{i}$。
 		综合考虑我们每轮需要调换上一轮里面次品的产品，而这一部分产品无法获利，这里我们用$M^{-1}$来表示上一轮退换回的产品数（第一轮里面$M^{-1}=0$），于是我们能够得到每轮次的收益$Profit$：
 		\begin{equation}
-			\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M^{-1})\cdot p_{1}-R
+			\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M^{-1})\cdot p_{1}-R-cost
 			\label{eq:12}
 		\end{equation}
 		与问题二类似构建产品生产决策周期图，如图\ref{fig:pro3-2}。在这里我们将t个轮次的决策向量叠加到一起成为单周期决策向量$\vec{C}$。
@@ -424,7 +429,7 @@ $$\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1
 			\label{fig:pro3-2}
 		\end{figure}
 		综合上述算式，我们能够得到每轮次的收益$Profit$：
-$$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R$$
+$$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R-cost$$
 \begin{equation*}
 	s.t.\begin{cases}
 		R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
@@ -439,9 +444,37 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 		P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
 		\nu_{1,i}=\frac{M_{i}^{-1}+N_{i}\mu_{i}}{M_{i}^{-1}+N_{i}} ,i=1,2,3                                                                    \\
 		\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3                                 \\
+		cost = \sum_{i=1}^{12}d_{i}\cdot N_{i}
 	\end{cases}
 \end{equation*}
-与问题二中的求解方法类似，我们可以通过微生物遗传算法(MGA)进行不断遗传、竞争、重复、变异来寻找最优解，算法流程参见问题二中Algorithm 2中的描述。
+与问题二中的求解方法类似，但是因为问题三中的决策向量维度更高，我们需要更加精确的遗传算法来求解最优解，其算法流程如下：
+
+\begin{adjustbox}{width=16cm,height=6.5cm}
+	\centering
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\KwIn{每个段决策产生费用成本和次品率$\mu$，变异率和交叉率，周期数t}
+		\KwOut{单周期的成品收益$Profit$最优的决策向量$\vec{C}$}
+		初始化一个周期为t轮次的决策列向量 $C$ 的种群，种群中的个体是随机生成的\;
+		\For{每一代}{
+			计算种群中所有个体的$Profit$ 并且将其归一化得到适应度\;
+			选择适应度高的个体进行交叉和变异操作\;
+			\If{交叉率满足要求}{
+				对该父代进行交叉操作形成子代;
+			}
+			\If{变异率满足要求}{
+				以一定变异率使后代变异;
+			}
+			选择适应度最高的父代和子代作为新的种群 \;
+			直到找到最优解; \textbf{break}
+		}
+	    \Return 最优的决策向量$\vec{C}$
+		\caption{遗传算法 (GA) 流程}
+	\end{algorithm}
+\end{adjustbox}	
+首先设置合理的变异率、交叉率、周期数t及各成本参数。通过对随机生成的决策向量进行适应度计算，选择适应度高的个体进行交叉和变异操作，
+最后选择最优的个体组成新的种群，直到得到最优决策向量$\vec{C}$为止。
+
 
 
 
@@ -499,7 +532,7 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 根据上述的次品率的模型能够算出每个阶段产品的标称值，由此我们给原本各阶段的次品率加上标准差的估计值。
 因为标准差的估计是分阶段判断的，现在拟将零配件阶段的，半成品阶段和成品阶段的标准差定位为$\sigma_{1}$，$\sigma_{2}$，$\sigma_{3}$。
 则第二问可以将决策方案的目标函数及约束条件改为：
-$$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}}\\$$
+$$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}} -cost\\$$
 \begin{equation*}
 	s.t.\begin{cases}
 		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-k)\cdot (\mu_{3}+\sigma_{3}\varepsilon )]\cdot c_{3}                                                                     \\
@@ -508,11 +541,12 @@ $$	\max \quad  \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot 
 		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})                                                                                                                                                                                                               \\
 		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots]                                                               \\
 		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j} \\
-		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j}
+		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j}\\
+		cost = \sum_{i=1}^{3}d_{i}\cdot N_{i}
 	\end{cases}
 \end{equation*}
 同理在第三问中，我们可以将决策方案的目标函数及约束条件改为：
-$$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R$$
+$$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R -cost$$
 \begin{equation*}
 	s.t.\begin{cases}
 		R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
@@ -527,6 +561,7 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 		P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
 		\nu_{1,i}=\frac{M_{i}^{-1}+N_{i}(\mu_{i}+\sigma_{i})}{M_{i}^{-1}+N_{i}} ,i=1,2,3                                                       \\
 		\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3                                 \\
+		cost = \sum_{i=1}^{12}d_{i}\cdot N_{i}
 	\end{cases}
 \end{equation*}
 经过求解可以得到最优的决策向量$\vec{C}$
@@ -561,21 +596,19 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 
 %参考文献
 \begin{thebibliography}{9}%宽度9
-	\bibitem[1]{luojiawei2019latex}
+	\bibitem[1]{SPRT}D.-M. Ding, Y.-G. Wang, W. Zhang and Q. Chen, "Fall Detection System on Smart Walker Based on Multisensor Data Fusion and SPRT Method," in 
+	\emph{IEEE Access}, vol. 10, pp. 80932--80948, 2022, doi: 10.1109/ACCESS.2022.3195674.
+	
 
-	\bibitem[2]{}
+	\bibitem[2]{GB/T2828.1-2012}国家标准，
+    \textit{计数抽样检验程序 第1部分:按接收质量限(AQL)检索的逐批检验抽样计划 (GB/T 2828.1-2012)}. 中国标准出版社. 
+	\url{https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D7D7DAD3A7E05397BE0A0AB82A}.
 
 	\bibitem[3]{}
 
 	\bibitem[4]{}
 
 	\bibitem[5]{}
-
-	\bibitem[6]{}
-
-	\bibitem[7]{}
-
-	\bibitem[8]{}
 
 \end{thebibliography}
 
