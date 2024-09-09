@@ -376,7 +376,7 @@ def Objective_Function(X):
     Defect_Rate_S8 = 0.1
 
     Simulation_Number = 100
-    Time = 10
+    Time = 1
     Profits = 0
     Costs = 0
     Purchase_Price_S1 = 2
@@ -410,14 +410,14 @@ def Objective_Function(X):
             random.seed(i * Time + k)
             np.random.seed(i * Time + k)
 
-            Perturbed_Defect_Rate_S1 = Defect_Rate_S1 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S2 = Defect_Rate_S2 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S3 = Defect_Rate_S3 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S4 = Defect_Rate_S4 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S5 = Defect_Rate_S5 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S6 = Defect_Rate_S6 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S7 = Defect_Rate_S7 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S8 = Defect_Rate_S8 + np.random.normal(0, 0.01)
+            Perturbed_Defect_Rate_S1 = Defect_Rate_S1 + np.random.normal(0, 0.01123)
+            Perturbed_Defect_Rate_S2 = Defect_Rate_S2 + np.random.normal(0, 0.01012)
+            Perturbed_Defect_Rate_S3 = Defect_Rate_S3 + np.random.normal(0, 0.01021)
+            Perturbed_Defect_Rate_S4 = Defect_Rate_S4 + np.random.normal(0, 0.01156)
+            Perturbed_Defect_Rate_S5 = Defect_Rate_S5 + np.random.normal(0, 0.01382)
+            Perturbed_Defect_Rate_S6 = Defect_Rate_S6 + np.random.normal(0, 0.01122)
+            Perturbed_Defect_Rate_S7 = Defect_Rate_S7 + np.random.normal(0, 0.01302)
+            Perturbed_Defect_Rate_S8 = Defect_Rate_S8 + np.random.normal(0, 0.01241)
             Bad_S1 = int(Perturbed_Defect_Rate_S1 * S1)
             Bad_S2 = int(Perturbed_Defect_Rate_S2 * S2)
             Bad_S3 = int(Perturbed_Defect_Rate_S3 * S3)

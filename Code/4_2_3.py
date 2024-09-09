@@ -14,7 +14,7 @@ def Solve(Element_S1, Element_S2, Test_Mark_S1, Test_Mark_S2, Test_Mark_Finished
     Finished_Product_Sell_Price = 56
     Finished_Product_Exchange_Loss = 30
     Finished_Product_Dismantle_cost = 5
-    Perturbed_Finished_Product_Defect_Rate = Finished_Product_Defect_Rate + np.random.normal(0, 0.01)
+    Perturbed_Finished_Product_Defect_Rate = Finished_Product_Defect_Rate + np.random.normal(0, 0.01032)
 
     # 零件阶段
     if Test_Mark_S1 == 1:
@@ -123,8 +123,8 @@ for i in range(0, 16):
         while k < Simulation_Number:
             random.seed(j * Time + k)
             np.random.seed(j * Time + k)
-            Perturbed_Defect_Rate_S1 = Defect_Rate_S1 + np.random.normal(0, 0.01)
-            Perturbed_Defect_Rate_S2 = Defect_Rate_S2 + np.random.normal(0, 0.01)
+            Perturbed_Defect_Rate_S1 = Defect_Rate_S1 + np.random.normal(0, 0.01009)
+            Perturbed_Defect_Rate_S2 = Defect_Rate_S2 + np.random.normal(0, 0.01091)
             Bad_S1 = int(Perturbed_Defect_Rate_S1 * S1)
             Bad_S2 = int(Perturbed_Defect_Rate_S2 * S2)
             Prepared_Element_S1 = np.ones(S1)
