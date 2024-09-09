@@ -21,27 +21,24 @@
 \maketitle
 \begin{abstract}
 	电子产品生产线面临零部件次品率、生产过程抽检及次品率、产品退换与拆解回收等多重质量控制问题。
-	本文针对以上问题，构建了基于序贯概率比检验$SPRT$,
+	本文针对以上问题，构建了基于序贯概率比检验$SPRT$\cite{SPRT},
 	优化算法和高斯过程的综合决策模型。该模型通过动态调整零部件抽样方案、优化生产过程中的检测与拆解策略，
 	并在考虑次品率波动的情况下，最大化生产净利润。实验结果验证了模型在降低抽检成本、提高决策效率和增强鲁棒性方面的有效性。
 
-	针对问题一提出的零部件抽样验收问题，本文构建了基于序贯概率比检验$SPRT$的动态抽样决策模型，
+	针对问题一提出的零部件抽样验收问题，本文构建了基于序贯概率比检验\textbf{$SPRT$}的动态抽样决策模型，
 	利用给定的标称次品率与引入的扰动量构建零假设与备择假设下的似然函数以拟合问题设置的两种情况，
-	进而确定$SPRT$的决策边界。为提升模型泛化能力，本文采用多层感知机$MLP$对扰动量进行函数拟合，最终实现在3\%以下抽样占比下对零部件批次做出平均
+	进而确定\textbf{$SPRT$}的决策边界。为提升模型泛化能力，本文采用\textbf{多层感知机$MLP$}对扰动量进行函数拟合，最终实现在3\%以下抽样占比下对零部件批次做出平均
 	精度超过90\%的决策。
 
-	针对问题二，题目已知零配件及成品的次品率，我们构建了单轮次决策向量，通过次品的概率分布能够计算出相应阶段的次品期望。为了能直观的
-	体现决策方案对生产的影响，我们将多个生产轮次整合一个生产周期得到周期决策向量，由此列出不同决策下的净利润函数。通过$MGA$优化算法找到最优决策方案。
-	题目中情况6的在平配件、成品阶段均不抽检也不拆解退回成品的决策下，最大纯利润达到18.69元/件。
-
-	针对问题三，本题与问题二一脉相承，增加了生产阶段和零配件的种类，与第二问类似构造单轮次决策向量并且整合为周期决策向量。在此基础上
-	每轮零配件池及半成品池中的次品期望的要继承来自上一阶段的拆解零件，由此更新了产品净利润目标函数。最后通过遗传算法找到最优决策方案。
-
-	针对问题四，我们将各阶段由于抽样误差所引起的归纳误差建模为马尔可夫过程，将单次的偏差量化高斯分布。通过前向扩散过程论证了误差传递策略
-	的有效性。对于单次误差分布的建模，我们依据$SRPT$在多次二分采样后的误差与真实值的偏差作为样本值，通过对样本序列的最大似然估计回归出
+	针对问题二，我们构建了包含零配件1、零配件2、成品是否检测以及成品是否拆解，共四个生产流程决策变量。对于题目中给出的6种情况，本文首先计算出了在不同情况下，投入零件在自然组合状态下组装得到次品数量的概率分布，确保每个生产周期投入生产的零件都符合对应的概率分布。本文模拟了在连续生产过程中所有可能的决策变量组合，以最大化单件成品的纯利润为目标，计算出了在每种情况下的最优决策方案以及对应的单件成品的纯利润。
+	
+	针对问题三，本文扩展了生产流程决策变量，包含了8个零件、3个半成品和1个成品的相关决策，共16个生产流程决策变量。本文首先计算出了投入零件在自然组合状态下组装得到不同半成品次品数量的概率分布，确保每个生产周期投入生产的零件都分别符合对应的概率分布。本文模拟了企业的连续生产过程，基于遗传算法，以最大化单件成品的纯利润为目标，计算出了最优决策方案以及对应的单件成品的纯利润。
+	
+	针对问题四，我们将各阶段由于抽样误差所引起的归纳误差建模为\textbf{马尔可夫过程}，将单次的偏差量化高斯分布。通过\textbf{前向扩散}过程论证了误差传递策略
+	的有效性。对于单次误差分布的建模，我们依据\textbf{$SPRT$}在多次二分采样后的误差与真实值的偏差作为样本值，通过对样本序列的最大似然估计回归出
 	单次误差分布，通过对问题二和三的优化模型引入该误差分布，我们获得了更具备鲁棒性的决策方案。
 
-	\noindent{ \textbf{关键词：} $SPRT$\quad  多层感知机\quad }
+	\noindent{ \textbf{关键词：} $SPRT$\quad  多层感知机\quad 遗传算法\quad 马尔可夫过程\quad 前向扩散过程}
 \end{abstract}
 
 
@@ -69,12 +66,12 @@ $n$个零配件的问题。并且应用此方法针对表2中情况给出判断�
 ，拟采用异常检测的经典取样方法：序贯概率比检测$SPRT$来动态地作出抽样决策。
 \subsection{问题二的分析}
 由于已知各零配件以及成品的次品率，依据排列组合我们能够得知在生产成品时零配件优劣的组合情况以及对应的概率分布。
-又由于可能出现两个好的零部件组成一个坏的成品，综合成本考量我们是否需要考虑对成品进行拆解。
-我们预先设置对零配件、成品的抽样检测及拆解参数（即：抽检（拆解）/不抽检（不拆解）），通过模拟迭代实验得到最优的决策方案。
+我们通过构建一个包含零配件1、零配件2、成品检测和成品拆解的生产流程决策模型，分析了六种不同情况下的次品概率分布。
+通过模拟所有可能的决策组合，我们旨在最大化单件成品的纯利润，并为每种情况确定了最优的生产策略。
 \subsection{问题三的分析}
-问题三实际上是对问题二的一个延伸问题，增加了生产流程的阶段和零配件的数量，不过依然能够继承问题二中的思路。我们通过已知的平配件、半成品以及成品
-的次品率对每一轮次生产多产生的次品情况分布进行考虑，计算出每个阶段的次品期望值。结合多轮次为一周期的决策向量及成本收益，我们运用优化算法
-得到最优的决策方案。
+问题三实际上是对问题二的一个延伸问题，增加了生产流程的阶段和零配件的数量，不过依然能够继承问题二中的思路。我们通过已知的零配件、半成品以及成品
+的次品率对每一生产轮次中零配件、半成品以及成品的次品情况分布进行考虑，计算出每个阶段的次品期望值。结合生产决策向量及成本收益，构造最大化
+收益的目标函数，最后我们运用优化遗传算法得到最优的决策方案。
 \subsection{问题四的分析}
 在问题四中我们需要根据抽样检测来确定，鉴于问题一中我们讨论的是单次检验的情况，我们能够构造零配件、半成品以及成品的次品率概率分布波动曲线。
 将此处构造的次品率概率分布波动曲线代入问题二、三中的模型，求得更加符合实际的决策方案。
@@ -85,6 +82,8 @@ $\bullet$ 假定每批零配件的次品率严格服从二项分布
 $\bullet$ 假定每次抽检结果为次品的事件之间相互独立
 
 $\bullet$ 假定每次生产的产品都能够流通到市场上（被客户购买）
+
+$\bullet$ 假定生产过程中检测、组装、拆解不会对零配件造成损伤
 
 \subsection{符号说明}
 \begin{longtable}{m{3.5cm}<{\centering}m{10cm}<{\centering}}
@@ -264,8 +263,8 @@ $D_i$应为按照标称值所取的总样本配比，我们取$D_1=0.01N$,而后
 	\textit{Profit}=(\min \{N_{1},N_{2}\}-M^{-1})\cdot p_{1}-R-cost
 	\label{eq:4}
 \end{equation}
-使函数适配16中不同的决策方案，我们需要定义每轮零配件池中所含数量$N'_{1}$、$N'_{2}$即包含每轮次固定补充数量$N_{1}$、$N_{2}$也包含上一轮次零产品拆解后补进的配件（即：$N'=N+M$）。
-$M'$为新轮次中成品次品数目。则零配件池中次品的平配件数$n_{1}$、$n_{2}$为：
+使函数适配16中不同的决策方案，我们需要定义每轮零配件池中所含数量$N'_{1}$、$N'_{2}$即包含每轮次固定补充数量$N_{1}$、$N_{2}$也包含上一轮次零产品拆解后补进的配件（即：$N'=N+M^{-1}\cdot c_{3}$）。
+$M$为新轮次中成品次品数目。则零配件池中为次品的平配件数目$n_{1}$、$n_{2}$的计算公式如下：
 \begin{equation}
 	n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}M\cdot P_{i,j} \qquad
 	n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}M\cdot P_{i,j}
@@ -273,8 +272,8 @@ $M'$为新轮次中成品次品数目。则零配件池中次品的平配件数$
 在此基础上我们可以构造每轮次的收益$Profit$：
 \begin{equation}
 	\left\{\begin{matrix}
-		\textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M'\cdot c_{3})\cdot p_{1}-R-cost                            \\
-		M=\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3} \\
+		\textit{Profit}=(\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M'\cdot c_{3})\cdot p_{1}-R-cost \\
+		M=\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}\\
 	\end{matrix}\right.
 	\label{eq:5}
 \end{equation}
@@ -288,17 +287,17 @@ $M'$为新轮次中成品次品数目。则零配件池中次品的平配件数$
 	\caption{产品次品率迭代流程图}
 	\label{fig:pro2-2}
 \end{figure}
-综上所述，我们建立了一个基于生产周期的决策模型。通过优化每个生产周期内的决策向量 $C^{*}$，我们能够获得使预期净利润最大化的最优决策方案：
-$$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}} -cost \\$$
+综上我们构建了一个以最大获利期望为目标函数的生产的决策模型：
+$$	\max \textit{Profit}=\mathbb{E}((\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M'\cdot c_{3})\cdot p_{1}-R-cost )\\$$
 \begin{equation*}
 	s.t.\begin{cases}
-		M=\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3} \\
-		n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}M\cdot P_{i,j} \quad n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}M\cdot P_{i,j} \\
-		N'_{1}=N_{1}+M^{-1}\cdot c_{3} ,\qquad N'_{2}=N_{2}+M^{-1}\cdot c_{3}                                                                 \\
-		\vec{C}=(c_{1},c_{2},c_{3},c_{4})                                                                                                     \\
-		\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5}]                                              \\
-		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{n_{1}}^{i}C_{n_{2}}^{j}\nu_{1}^{i}\nu_{2}^{j}(1-\nu_{1})^{k-i}(1-\nu_{2})^{k-j}      \\
-		P_{i,j}=C_{n_{1}}^{i}C_{n_{2}}^{j}\nu_{1}^{i}\nu_{2}^{j}(1-\nu_{1})^{k-i}(1-\nu_{2})^{k-j}                                            \\
+		M=\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}                              \\
+		n_{1}=N_{1}\cdot \mu_{1}+\sum_{j=\frac{k}{2}}^{k}M\cdot P_{i,j} \quad n_{2}=N_{2}\cdot \mu_{2}+\sum_{i=\frac{k}{2}}^{k}M\cdot P_{i,j}                                                    \\
+		N'_{1}=N_{1}+M^{-1}\cdot c_{3} ,\qquad N'_{2}=N_{2}+M^{-1}\cdot c_{3}                                                                                                                                             \\
+		\vec{C}=(c_{1},c_{2},c_{3},c_{4})                                                                                                                                                 \\
+		\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5}]                                                                                         \\
+		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{n_{1}}^{i}C_{n_{2}}^{j}\nu_{1}^{i}\nu_{2}^{j}(1-\nu_{1})^{k-i}(1-\nu_{2})^{k-j}                               \\
+		P_{i,j}=C_{n_{1}}^{i}C_{n_{2}}^{j}\nu_{1}^{i}\nu_{2}^{j}(1-\nu_{1})^{k-i}(1-\nu_{2})^{k-j}     \\
 		cost=d_{1}\cdot N_{1}+d_{2}\cdot N_{2}+\min \{ N_{1},N_{2}\}\cdot d_{3}
 	\end{cases}
 \end{equation*}
@@ -322,8 +321,8 @@ $$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3
 	2  & 1    & 1    & 0  & 1  & 8.65       \\
 	3  & 1    & 1    & 0  & 1  & 13.46      \\
 	4  & 1    & 1    & 1  & 1  & 11.33      \\
-	5  & 0    & 1    & 0  & 0  & 7.08       \\
-	6  & 0    & 0    & 0  & 0  & 18.69      \\ \hline
+	5  & 0    & 1    & 0  & 0  & 7.12      \\
+	6  & 0    & 0    & 0  & 0  & 18.67     \\ \hline
 \end{longtable}
 根据结果表\ref{tab:my-table}中结果显示，我们通过对比情况1，2，3得知在零配件和成品的次品率相同时，次品率对最大纯利润的影响远远大于调换损失
 的影响，对比情况2和4，在次品率相同的情况下，产品检测成本的降低比调换损失的增加影响更显著，由此证明了此决策方案在零配件次品率较小，检测成本较低的情况下具有较好的稳健性。
@@ -345,7 +344,7 @@ $$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3
 我们首先考虑对所有零配件、半成品、成品不进行检测不拆除的情况，即$\vec{C}=(0,0,\dots,0)^{T}$。这里假设半成品中存在次品零部件的半成品数目分别为$k_{1}$、$k_{2}$、$k_{3}$，
 成品中存在次品零部件的成品数目为$k$。令8种零配件的次品率为$\mu_{1}$、$\mu_{2}$、$\dots$、$\mu_{8}$，半成品的次品率为$\mu'_{1}$、$\mu'_{2}$、$\mu'_{3}$，成品的次品率为$\mu''$。
 与第二问相同我们假定每一轮次投入的零配件数是固定的数值$N_{1}$、$N_{2}$、$\dots$、$N_{8}$，则能够计算出零配件中存在次品的数目为$n_{1}$$\sim$$n_{8}$，其中$n_{i}=N_{i}\cdot\mu_{i}$
-我么设置零配件池中的真实次品占比为$\nu_{1,1},\nu_{1,2},\dots,\nu_{1,8}$（在第一代时$\nu_{1,i}=\mu_{i}$）$\nu_{1,i}=\frac{M_{i}^{-1}\cdot c+N_{i}\mu_{i}}{M_{i}^{-1}\cdot c+N_{i}}$
+		我么设置零配件池中的真实次品占比为$\nu_{1,1},\nu_{1,2},\dots,\nu_{1,8}$（在第一代时$\nu_{1,i}=\mu_{i}$）$\nu_{1,i}=\frac{M_{i}^{-1}\cdot c+N_{i}\mu_{i}}{M_{i}^{-1}\cdot c+N_{i}}$
 这里我们用$M^{-1}$来表示上一轮退换回的产品数（第一轮里面$M^{-1}=0$）
 以第一个半成品为例，可以得到存在次品零部件的半成品数目为$k_{1}$的概率$P_{k_{1}}$为：
 \begin{equation}
@@ -393,16 +392,15 @@ $$\nu_{2,3}=\frac{M^{-1}\cdot c_{12}+\min \{ n_{7},n_{8}\}}{M^{-1}\cdot c_{12}+\
 	\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M^{-1})\cdot p_{1}-R-cost
 	\label{eq:12}
 \end{equation}
-与问题二类似构建产品生产决策周期图，如图\ref{fig:pro3-2}。在这里我们将t个轮次的决策向量叠加到一起成为单周期决策向量$\vec{C}$。
-随后，根据周期决策向量能够算出每一个周期的收益$Profit$，进过遗传进化算法能够找到最优的周期所含轮次$t$及最优的周期决策向量$\vec{C}$。
+与问题二类似构建产品动态生产流程图，因为需要考虑的多维参数，我们拟通过遗传进化算法\cite{GA}帮助快速找到最优的生产决策向量$\vec{C}$。
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Fig/pro3-2.png}
-	\caption{产品决策周期图}
+	\caption{产品动态生产里路程图图}
 	\label{fig:pro3-2}
 \end{figure}
 综合上述算式，我们能够得到每轮次的收益$Profit$：
-$$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R-cost$$
+$$\max	\textit{Profit}=\mathbb{E}((\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R-cost)$$
 \begin{equation*}
 	s.t.\begin{cases}
 		R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
@@ -415,42 +413,46 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 		P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
 		2,3})^{k_{2}-z}                                                                                                                        \\
 		P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
-		\nu_{1,i}=\frac{M_{i}^{-1}\cdot c_{j}+N_{i}\mu_{i}}{M_{i}^{-1}\cdot c_{j}+N_{i}} ,i=1\sim8                                             \\
-		\nu_{2,1}=\frac{M^{-1}\cdot c_{15}+\min \{ n_{1},n_{2},n_{3}\}}{M^{-1}\cdot c_{12}+\min \{N_{1},N_{2},N_{3}\}}\quad
-		\nu_{2,2}=\frac{M^{-1}\cdot c_{15}+\min \{ n_{4},n_{5},n_{6}\}}{M^{-1}\cdot c_{12}+\min \{N_{4},N_{5},N_{6}\}}\quad
-		\nu_{2,3}=\frac{M^{-1}\cdot c_{15}+\min \{ n_{7},n_{8}\}}{M^{-1}\cdot c_{12}+\min \{N_{7},N_{8}\}}                                     \\
+		\nu_{1,i}=\frac{M_{i}^{-1}\cdot c_{j}+N_{i}\mu_{i}}{M_{i}^{-1}\cdot c_{j}+N_{i}} ,i=1\sim8                                                                   \\
+\nu_{2,1}=\frac{M^{-1}\cdot c_{15}+\min \{ n_{1},n_{2},n_{3}\}}{M^{-1}\cdot c_{12}+\min \{N_{1},N_{2},N_{3}\}}\quad
+\nu_{2,2}=\frac{M^{-1}\cdot c_{15}+\min \{ n_{4},n_{5},n_{6}\}}{M^{-1}\cdot c_{12}+\min \{N_{4},N_{5},N_{6}\}}\quad
+\nu_{2,3}=\frac{M^{-1}\cdot c_{15}+\min \{ n_{7},n_{8}\}}{M^{-1}\cdot c_{12}+\min \{N_{7},N_{8}\}}                       \\
 		cost = \sum_{i=1}^{8}d_{i}\cdot N_{i}+d_{9}\cdot N_{9}+d_{11}\cdot N_{11}+d_{13}\cdot N_{13}+d_{15}\cdot N_{15}
 	\end{cases}
 \end{equation*}
 与问题二中的求解方法类似，但是因为问题三中的决策向量维度更高，我们需要更加精确的遗传算法来求解最优解，其算法流程如下：
 
 \begin{adjustbox}{width=16cm,height=6.5cm}
-	\centering
-	\begin{algorithm}[H]
-		\SetAlgoLined
-		\KwIn{每个段决策产生费用成本和次品率$\mu$，变异率和交叉率，种群数t}
-		\KwOut{单周期的成品收益$Profit$最优的决策向量$\vec{C}$}
-		初始化一个数目t的决策列向量 $C$ 的种群，种群中的个体是随机生成的\;
-		\For{每一代}{
-			计算种群中所有个体的$Profit$ 并且将其归一化得到适应度\;
-			选择适应度高的个体进行交叉和变异操作\;
-			\If{交叉率满足要求}{
-				对该父代进行交叉操作形成子代;
-			}
-			\If{变异率满足要求}{
-				以一定变异率使后代变异;
-			}
-			选择适应度最高的父代和子代作为新的种群 \;
-			直到找到最优解; \textbf{break}
-		}
-		\Return 最优的决策向量$\vec{C}$
-		\caption{遗传算法 (GA) 流程}
-	\end{algorithm}
+    \centering
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        \KwIn{每个阶段决策成本 $Cost_i$, 次品率 $\mu_i$, 变异率 $p_m$, 交叉率 $p_c$, 种群数目 $t$}
+        \KwOut{最优决策向量 $\vec{C}^*$, 最大化每轮生产收益 $Profit_{max}$}
+        初始化决策向量种群 $P = \{\vec{C}_1, \vec{C}_2, ..., \vec{C}_n\}$, 其中 $\vec{C}_i$ 为随机生成的长度为 $4t$ 的二进制向量 \;
+        \While{未达到终止条件}{
+            \For{每个个体 $\vec{C}_i \in P$}{
+                计算每轮收益 $Profit(\vec{C}_i)$ \;
+            }
+            计算种群适应度 $Fitness(P)$ \;
+            选择父代个体: $Parents \leftarrow Select(P, Fitness(P))$ \;
+            \If{$rand() < p_c$}{
+                执行交叉操作: $Offspring \leftarrow Crossover(Parents)$ \;
+            }
+            \If{$rand() < p_m$}{
+                执行变异操作: $Offspring \leftarrow Mutate(Offspring)$ \;
+            }
+            更新种群: $P \leftarrow Update(P, Offspring, Fitness(P \cup Offspring))$ \;
+        }
+		$\vec{C}^* \leftarrow \underset{\vec{C} \in P}{\operatorname{argmax}}  Profit(\vec{C})$ \;
+        $Profit_{max} \leftarrow Profit(\vec{C}^*)$ \;
+        \Return $\vec{C}^*, Profit_{max}$
+        \caption{遗传算法 (GA) 流程}
+    \end{algorithm}
 \end{adjustbox}
-首先，我们需要设定合理的变异率、交叉率、生产周期长度 t 以及各项成本参数。随后，我们随机生成初始决策向量种群，
-并计算每个个体的适应度。基于适应度，我们选择优良个体进行交叉和变异操作，生成新的子代种群。最后，我们从父代和子代
-种群中选择适应度最高的个体组成新的父代种群，并重复上述过程，直至找到最优决策向量 $\vec{C}$ 。
-
+首先设置合理的变异率、交叉率、种群数目t及各成本参数。通过对随机生成的决策向量进行适应度计算，选择适应度高的个体进行交叉和变异操作，
+最后选择最优的个体组成新的种群，直到得到最优决策向量$\vec{C}$为止。我们得到最优的决策向量为$\vec{C}=(1111111100000011)$
+，并且最大获利为58.73元/件。此结果表明因为题目中零配件检测单价较低，所以我们选择对8中零配件均进行检测，因而组成半成品的零部件都是
+合格品，由此我们不需要对半成品进行检测和拆解，然而考虑到成品的退换成本及零部件成本较高，我们对成品也进行检测并且在检测到次品时进行拆解回收。
 
 
 
@@ -466,8 +468,14 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 \begin{equation}
 	z \sim \mathcal{N}(z; \mu_p, \sigma_p^2 \mathbf{I})
 \end{equation}
-这样，实际的工序流程中次品率就被建模成了高斯分布，在优化过程中从中采样即可。接下来，我们论证该分布在工序流程中的可传播性。
-事实上，如果我们把零配件的组装和成品看作一个马尔可夫过程，那么，概率分布的传播就可以视为一个前向动力学模型，针对任意的相邻两个工序（
+这样，实际的工序流程中次品率就被建模成了高斯分布，在优化过程中从中采样即可。
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{Fig/pro4.png}
+	\caption{工序流程的马尔可夫过程}
+	\label{fig:pro4}
+\end{figure}
+接下来，我们论证该分布在工序流程中的可传播性。
+事实上，如果我们把零配件的组装和成品看作一个马尔可夫过程\cite{Markov},如图\ref{fig:pro4}，那么，概率分布的传播就可以视为一个前向动力学模型，针对任意的相邻两个工序（
 我们暂且搁置对于一般的偏置项的考虑）：
 \begin{equation}
 	\begin{split}
@@ -482,7 +490,7 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 \begin{equation}
 	z_{p+1} \sim \mathcal{N}(z_{p+1}; \mu_{p+1}\mu_p, \sqrt{(\mu_{p+1}\sigma_p)^2 +\sigma_{p+1}^2}\mathbf{I})
 \end{equation}
-于是，我们的风险就可以通过前向动力学模型来传播了，$\mu$的期望依然遵循于预先设定的标准，而风险可以通过标准差逐层传递。
+于是，我们的风险就可以通过前向动力学模型来传播了，$\mu$的期望依然遵循于预先设定的标准，而风险可以通过标准差逐层传递\cite{diffusion}。
 
 我们假设对问题二的零配件1，零配件2，成品；问题三的各种零配件，半成品，成品的次品率都采用$SPRT$进行抽样，我们预先设定$H_0$边界范围为:$[S_1,S_2]$;
 取其初始值为$\frac{S_1+S_2}{2}$,每次确定其相对预设值的大小后，我们采用二分法逐渐收缩范围，重复10次，设定最终结果为$\mu_i$,并根据与样本集的真实误差
@@ -501,46 +509,73 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 		&= -n \ln(\sigma_p) - n \ln(\sqrt{2\pi}) - \frac{1}{2\sigma_p^2} \sum_{i=1}^n \sigma_i^2
 	\end{split}
 \end{equation}
-求解上述方程，得到参数 $\sigma_p$ 的 MLE 估计值：
+求解上述方程，得到参数 $\sigma_p$ 的 MLE\cite{MLE} 估计值：
 \begin{equation}
 	\hat{\sigma}_p = \sqrt{\frac{\sum_{i=1}^n \sigma_i^2}{n}}
 \end{equation}
 根据上述的次品率的模型能够算出每个阶段产品的标称值，由此我们给原本各阶段的次品率加上标准差的估计值。
 因为标准差的估计是分阶段判断的，现在拟将零配件阶段的，半成品阶段和成品阶段的标准差定位为$\sigma_{1}$，$\sigma_{2}$，$\sigma_{3}$。
 则第二问可以将决策方案的目标函数及约束条件改为：
-$$	\max \textit{Profit}=\sum_{n=1}^{t}\left [  (\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-M')\cdot p_{1}-M'\cdot f_{4} \right ] -\vec{F}\cdot \vec{C^{*}} -cost\\$$
+$$	\max \textit{Profit}=\mathbb{E}((\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-M'\cdot c_{3})\cdot p_{1}-R-cost )\\$$
 \begin{equation*}
 	s.t.\begin{cases}
-		M'=[\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k}+(\min \{N'_{1}-n_{1}\cdot c_{4n-3},N'_{2}-n_{2}\cdot c_{4n-2}\}-k)\cdot (\mu_{3}+\sigma_{3}\varepsilon )]\cdot c_{3}                                                                     \\
-		n_{1}=N_{1}\cdot (\mu_{1}+\sigma_{1}\varepsilon )+\sum_{j=\frac{k}{2}}^{k}\cdot P_{i,j} \quad n_{2}=N_{2}\cdot (\mu_{2}+\sigma_{2}\varepsilon )+\sum_{i=\frac{k}{2}}^{k}\cdot P_{i,j}                                                                \\
-		N'_{1}=N_{1}+M \quad N'_{2}=N_{2}+M                                                                                                                                                                                                                  \\
-		\vec{C^{*}}=(c_{1},c_{2},\dots,c_{4t})                                                                                                                                                                                                               \\
-		\vec{F^{*}}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5},N'_{1}\cdot f_{1},N'_{2}\cdot f_{2},\min \{N'_{1},N'_{2}\}\cdot f_{3},M'\cdot f_{5},\dots]                                                               \\
-		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j} \\
-		P_{i,j}=C_{N_{1}\cdot\mu_{1}}^{i}C_{N_{2}\cdot\mu_{2}}^{j}(\mu_{1}+\sigma_{1}\varepsilon)^{i}(\mu_{2}+\sigma_{2}\varepsilon)^{j}(1-\mu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\mu_{2}+\sigma_{2}\varepsilon)^{k-j}                                       \\
-		cost = \sum_{i=1}^{3}d_{i}\cdot N_{i}
+
+		M=\sum_{k=\max \{n_{1},n_{2}\}}^{n_{1}+n_{2}}k\cdot P_{k} + (\min \{N'_{1}-n_{1}\cdot c_{1},N'_{2}-n_{2}\cdot c_{2}\}-k)\cdot \mu_{3}                              \\
+		n_{1}=N_{1}\cdot (\mu_{1}+\sigma_{1}\varepsilon)+\sum_{j=\frac{k}{2}}^{k}M\cdot P_{i,j} \quad n_{2}=N_{2}\cdot (\mu_{2}+\sigma_{1}\varepsilon)+\sum_{i=\frac{k}{2}}^{k}M\cdot P_{i,j}                                                    \\
+		N'_{1}=N_{1}+M^{-1}\cdot c_{3} ,\qquad N'_{2}=N_{2}+M^{-1}\cdot c_{3}                                                                                                                                             \\
+		\vec{C}=(c_{1},c_{2},c_{3},c_{4})                                                                                                                                                 \\
+		\vec{F}=[N_{1}\cdot f_{1},N_{2}\cdot f_{2},\min \{N_{1},N_{2}\}\cdot f_{3},M\cdot f_{5}]                                                                                         \\
+		P_{k}=\sum_{i=k-j}^{k}\sum_{j=\frac{k}{2}}^{k}C_{n_{1}}^{i}C_{n_{2}}^{j}(\nu_{1}+\sigma_{1}\varepsilon)^{i}(\nu_{2}+\sigma_{2}\varepsilon)^{j}(1-\nu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\nu_{2}+\sigma_{2}\varepsilon)^{k-j}      \\
+		P_{i,j}=C_{n_{1}}^{i}C_{n_{2}}^{j}(\nu_{1}+\sigma_{1}\varepsilon)^{i}(\nu_{2}+\sigma_{2}\varepsilon)^{j}(1-\nu_{1}+\sigma_{1}\varepsilon)^{k-i}(1-\nu_{2}+\sigma_{2}\varepsilon)^{k-j}                                       \\
+		cost=d_{1}\cdot N_{1}+d_{2}\cdot N_{2}+\min \{ N_{1},N_{2}\}\cdot d_{3}
 	\end{cases}
 \end{equation*}
-同理在第三问中，我们可以将决策方案的目标函数及约束条件改为：
-$$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R -cost$$
+最终结果如表\ref{n_2}所示：
+\begin{longtable}{m{1.5cm}<{\centering}ccm{1.5cm}<{\centering}m{1.5cm}<{\centering}c}
+    \label{n_2}                             \\
+    \hline
+    情况 & 零配件1 & 零配件2 & 成品 & 拆解 & 最大纯利润（元/件） \\ \hline
+    \endfirsthead
+    \endhead
+    \hline
+    \endfoot
+    \endlastfoot
+    1  & 1    & 1    & 0  & 1  & 15.55      \\
+    2  & 1    & 1    & 0  & 1  & 8.37       \\
+    3  & 1    & 1    & 0  & 1  & 13.14      \\
+    4  & 1    & 1    & 1  & 1  & 11.03      \\
+    5  & 0    & 1    & 0  & 0  & 7.06       \\
+    6  & 0    & 0    & 0  & 0  & 18.68      \\ \hline
+    \caption{引入误差的决策结果图}
+\end{longtable}
+我们同样地处理问题三:
+$$\max    \sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{-1})\cdot p_{1}-R -cost$$
 \begin{equation*}
-	s.t.\begin{cases}
-		R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
-		M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{M_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''                  \\
-		M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1} \\
-		M_{2}=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
-		M_{3}=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}                   \\
-		P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\nu_{1,1}^{i}\nu_{1,2}^{j}\nu_{1,3}^{z}(1-\nu_{1,1})^{k_{1}-i}(1-\nu_{1,2})^{k_{1}-j}(1-\nu_{
-		1,3})^{k_{1}-z}                                                                                                                        \\
-		P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
-		2,3})^{k_{2}-z}                                                                                                                        \\
-		P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
-		\nu_{1,i}=\frac{M_{i}^{-1}+N_{i}(\mu_{i}+\sigma_{i})}{M_{i}^{-1}+N_{i}} ,i=1,2,3                                                       \\
-		\nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3                                 \\
-		cost = \sum_{i=1}^{12}d_{i}\cdot N_{i}
-	\end{cases}
+    s.t.\begin{cases}
+        R=\vec{F}\cdot \vec{C} + M\cdot f_{17}                                                                                                 \\
+        M=\sum_{k=\max \{M_{1},M_{2},M_{3}\}}^{M_{1}+M_{2}+M_{3}}k\cdot P_{k}+(\min \{N_{1},N_{2},\dots,N_{8}\}-k)\cdot \mu''                  \\
+        M_{1}=\sum_{k_{1}=\max \{n_{1},n_{2},n_{3}\}}^{n_{1}+n_{2}+n_{3}}k_{1}\cdot P_{k_{1}}+(\min \{N_{1},N_{2},N_{3}\}-k_{1})\cdot \mu'_{1} \\
+        M_{2}=\sum_{k_{2}=\max \{n_{4},n_{5},n_{6}\}}^{n_{4}+n_{5}+n_{6}}k_{2}\cdot P_{k_{2}}+(\min \{N_{4},N_{5},N_{6}\}-k_{2})\cdot \mu'_{2} \\
+        M_{3}=\sum_{k_{3}=\max \{n_{7},n_{8}\}}^{n_{7}+n_{8}}k_{3}\cdot P_{k_{3}}+(\min \{N_{7},N_{8}\}-k_{3})\cdot \mu'_{3}                   \\
+        P_{k_{1}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{1}}^{i}C_{n_{2}}^{j}C_{n_{3}}^{z}\nu_{1,1}^{i}\nu_{1,2}^{j}\nu_{1,3}^{z}(1-\nu_{1,1})^{k_{1}-i}(1-\nu_{1,2})^{k_{1}-j}(1-\nu_{
+        1,3})^{k_{1}-z}                                                                                                                        \\
+        P_{k_{2}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{4}}^{i}C_{n_{5}}^{j}C_{n_{6}}^{z}\nu_{2,1}^{i}\nu_{2,2}^{j}\nu_{2,3}^{z}(1-\nu_{2,1})^{k_{2}-i}(1-\nu_{2,2})^{k_{2}-j}(1-\nu_{
+        2,3})^{k_{2}-z}                                                                                                                        \\
+        P_{k_{3}}=\sum_{i}\sum_{j}\sum_{z}C_{n_{7}}^{i}C_{n_{8}}^{j}\nu_{3,1}^{i}\nu_{3,2}^{j}(1-\nu_{3,1})^{k_{3}-i}(1-\nu_{3,2})^{k_{3}-j}   \\
+        \nu_{1,i}=\frac{M_{i}^{-1}+N_{i}(\mu_{i}+\sigma_{i})}{M_{i}^{-1}+N_{i}} ,i=1,2,3                                                       \\
+        \nu_{2,i}=\frac{M_{i}^{-1}+\min \{ n_{1},n_{2},n_{3}\}}{M_{i}^{-1}+\min \{N_{1},N_{2},N_{3}\}} i=1,2,3                                 \\
+        cost = \sum_{i=1}^{12}d_{i}\cdot N_{i}
+    \end{cases}
 \end{equation*}
-经过求解可以得到最优的决策向量$\vec{C}$
+经过求解可以得到最优的决策向量$\vec{C}$与原问题相同，单件最大获利从58.13下降到56.54。
+
+问题二和问题三引入风险后，尽管最优决策向量未发生变化，但单件净利润普遍下降。此现象可由扩散过程中的归纳偏置和风险累计予以解释。
+归纳偏置是指模型对未来预测的隐含假设，本文中体现为对每个工序阶段次品率的先验高斯分布假设。此假设引入了认知不确定性，
+即对真实次品率的估计存在偏差，该偏差以标准差 $\sigma$ 量化并通过前向扩散过程逐层累加。风险累计是指不确定性在扩散过程中不断累积，导致预测的方差增大，
+最终影响净利润期望。具体而言，下一阶段的风险 $\sigma_{p+1}$ 不仅受本阶段风险 $\sigma_p$ 的影响，还受到阶段转移概率 $\mu_{p+1}$ 的放大，
+形成类似“滚雪球”效应。因此，即使最优决策向量未变，但由于风险在每个阶段都被放大并传递至下一阶段，最终导致整体净利润期望下降。
+此现象也符合信息论哲学，即不确定性的增加必然导致预期收益的减少。
+
 \section{灵敏度分析}
 在问题一中，我们考虑$\Delta \mu$的变化对采样准确率和采样量占比的影响。
 具体来说，
@@ -568,37 +603,1821 @@ $$\max	\sum_{n=1}^{t}\textit{Profit}=(\min \{N_{1},N_{2},\dots,N_{8}\}-M_{(n)}^{
 对模型的影响是相当深刻的。在问题一中我们采用未经扰动的，由MLP直接输出的$\Delta \mu$参与$SPRT$抽样时，策略准确率维持在0.8以上的
 较高水平，而采样量维持在3\%以下的较低水平。这足以证明MLP对于$\Delta \mu$的拟合相当有效，它的拟合误差在极其小的范围内，因此不会
 出现以上浮动所带来的不稳定结果。
+\begin{table}[htbp]
+    \centering
+    \renewcommand\arraystretch{1.0}
+    \setlength\tabcolsep{16pt}
+    \footnotesize
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+        \hline
+                & \multicolumn{7}{c}{零配件量$N$}                                                 \\
+        \cline{2-8}
+        工序场景    & 100                         & 200   & 400   & 800   & 1600  & 3200  & 6400  \\
+        \hline
+        问题2-情况1 & 16.03                       & 15.92 & 15.87 & 15.84 & 15.83 & 15.81 & 15.79 \\
+        问题2-情况2 & 8.85                        & 8.74  & 8.69  & 8.66  & 8.63  & 8.62  & 8.61  \\
+        问题2-情况3 & 13.87                       & 13.64 & 13.53 & 13.47 & 13.44 & 13.38 & 13.29 \\
+        问题2-情况4 & 11.47                       & 11.39 & 11.35 & 11.33 & 11.33 & 11.31 & 11.31 \\
+        问题2-情况5 & 7.23                        & 7.17  & 7.14  & 7.07  & 7.05  & 7.07  & 7.05  \\
+        问题2-情况6 & 19.02                       & 18.67 & 18.68 & 18.67 & 18.69 & 18.69 & 18.67 \\
+        问题3     & 59.26                       & 58.85 & 58.84 & 58.73 & 58.69 & 58.69 & 58.68 \\
+        \hline
+    \end{tabular}
+    \caption{零配件总量变化时不同情况下单件利润}
+    \label{pro2_sensi}
+\end{table}
+
+为深入探究零部件总量对模型稳健性的影响，我们针对问题二的六种情况和问题3开展了精细化的灵敏度分析，分析结果如表\ref{pro2_sensi}所示。通过对其进行细致分析，
+我们观察到模型的决策方案在应对不同零部件总量变化时展现出卓越的稳健性。首先，从宏观层面来看， 尽管所有情况下的单件利润都随着零部件总量的增加呈现出下
+降趋势，但值得注意的是，这种下降趋势并非线性关系，而是呈现出一种渐进式下降的趋势，体现了模型决策的精细化和对成本控制的有效性。其次，从微观层面来看，
+针对每种场景，单件利润的下降幅度都较为平缓，进一步印证了模型的稳健性。例如，在情况1中，当零部件总量从100增加到6400时，单件利润仅下降了0.24元，
+下降幅度仅为初始值的1.5\%；在情况6中，即使零部件总量增加64倍，单件利润也仅仅下降了0.35元，下降幅度仅为初始值的1.8\%。
+此外，通过对比不同情况下的下降幅度， 我们发现次品率和产品检测成本对模型稳健性的影响更为显著，而调换损失的影响相对较小。
+这表明模型能够有效地应对次品率和产品检测成本的波动，从而保证企业在不同生产环境下都能获得相对稳定的收益。综上所述， 模型的决策方案在面对
+不同规模的生产需求时能够保持卓越的适应性和稳定性，体现了模型的鲁棒性，为企业在复杂多变的市场环境中制定科学合理的生产决策提供了有力支撑。
+
 \section{模型评价}
+这篇论文针对电子产品生产线的多阶段质量控制问题，提出了一个基于序贯概率比检验 $SPRT$、
+优化算法和高斯过程的综合决策模型。其优势主要体现在以下方面：
 
-\begin{thebibliography}{9}
-	\bibitem[1]{SPRT}Optimum character of the sequential probability ratio test, A Wald, J Wolfowitz - The Annals of Mathematical Statistics, 1948 - JSTOR
+(1)\textbf{动态抽样策略:} 利用 SPRT 构建了动态调整零部件抽样方案的决策模型。通过引入扰动量，构建零假设和备择假设下的似然函数，并采用多层感知机 $MLP$ 对扰动量进行函数拟合，实现了在低抽样率下对零部件批次做出高精度决策。
 
+(2)\textbf{多阶段策略优化:} 针对多阶段生产流程，构建了多轮次决策向量并通过遗传算法找到最优决策方案。该方法能够有效地处理多阶段、多零部件的复杂生产流程，并最大化生产净利润。
+
+(3)\textbf{误差传递建模:} 将各阶段由于抽样误差所引起的归纳误差建模为马尔可夫过程，并将单次偏差量化高斯分布。通过前向扩散过程论证了误差传递策略的有效性，并利用最大似然估计回归出单次误差分布，使得模型更具鲁棒性。
+
+然而在现实应用中，模型也具有明显的不足之处和可发展性：
+
+\textbf{理想模型的简化性:} 模型假设每批零部件的次品率严格服从二项分布，
+并且每次抽检结果为次品的事件之间相互独立。然而，在实际生产过程中，
+次品率可能受到多种因素的影响，例如原材料质量、生产工艺、操作人员等，
+并且次品事件之间可能存在关联性。这些因素可能导致模型的假设与实际情况存在
+偏差，从而影响模型的可靠性。
+
+
+%参考文献
+\begin{thebibliography}{9}%宽度9
+	\bibitem[1]{GA}Genetic algorithms, JH Holland - Scientific american, 1992 - JSTOR
 
 	\bibitem[2]{GB/T2828.1-2012}国家标准，
 	\textit{计数抽样检验程序 第1部分:按接收质量限(AQL)检索的逐批检验抽样计划 (GB/T 2828.1-2012)}. 中国标准出版社.
 
-	\bibitem[3]{}
+	\bibitem[3]{diffusion}The solution-diffusion model: a review, JG Wijmans, RW Baker - Journal of membrane science
 
-	\bibitem[4]{}
+	\bibitem[4]{Markov}Markov processes, EB Dynkin, EB Dynkin - 1965 - Springer
 
-	\bibitem[5]{}
+	\bibitem[5]{Approximation}Approximation theory of the MLP model in neural networks, A Pinkus - Acta numerica, 1999 - cambridge.org
 
+	\bibitem[6]{MLE}The MLE algorithm for the matrix normal distribution,P Dutilleul - Journal of statistical computation and simulation, 1999 - Taylor \& Francis
+
+	\bibitem[7]{SPRT}Optimum character of the sequential probability ratio test, A Wald, J Wolfowitz - The Annals of Mathematical Statistics, 1948 - JSTOR
 \end{thebibliography}
 
 \newpage
+%附录
+\subsection{附录参考说明}
+支撑材料文件目录：
+\begin{itemize}
+	\item \textbf{sprt.py} ——SPRT算法源程序(问题一)
+	\item \textbf{pro1\_sensi.py} ——问题一灵敏度分析源程序
+	\item \textbf{2\_1.py} ——问题二方案一源程序
+	\item \textbf{2\_2.py} ——问题二方案二源程序
+	\item \textbf{2\_3.py} ——问题二方案三源程序
+	\item \textbf{2\_4.py} ——问题二方案四源程序
+	\item \textbf{2\_5.py} ——问题二方案五源程序
+	\item \textbf{2\_6.py} ——问题二方案六源程序
+	\item \textbf{Question\_3.py} ——问题三源程序
+	\item \textbf{4\_2\_1.py} ——问题四针对问题二方案一源程序
+	\item \textbf{4\_2\_2.py} ——问题四针对问题二方案二源程序
+	\item \textbf{4\_2\_3.py} ——问题四针对问题二方案三源程序
+	\item \textbf{4\_2\_4.py} ——问题四针对问题二方案四源程序
+	\item \textbf{4\_2\_5.py} ——问题四针对问题二方案五源程序
+	\item \textbf{4\_2\_6.py} ——问题四针对问题二方案六源程序
+	\item \textbf{4\_3.py} ——问题四针对问题三源程序
+	\item \textbf{gaussion.py} ——问题四高斯分布源程序
+\end{itemize}
 \begin{appendices}
-	\section{代码2}
+	\section{问题一的Python代码}
+\subsection{pro1\_sensi.py(第一问灵敏度分析代码)}
+	\begin{lstlisting}[language=python]
+		import torch
+		import torch.nn as nn
+		import torch.optim as optim
+		import numpy as np
+		from tqdm import tqdm
+		
+		class MLP(nn.Module):
+			def __init__(self, input_size, hidden_size, output_size):
+				super(MLP, self).__init__()
+				self.fc1 = nn.Linear(input_size, hidden_size[0])
+				self.relu1 = nn.ReLU()
+				self.fc2 = nn.Linear(hidden_size[0], hidden_size[1])
+				self.relu2 = nn.ReLU()
+				self.fc3 = nn.Linear(hidden_size[1], output_size)
+		
+			def forward(self, x):
+				x = self.fc1(x)
+				x = self.relu1(x)
+				x = self.fc2(x)
+				x = self.relu2(x)
+				x = self.fc3(x)
+				return x
+		
+		def SPRT(S, delta_mu, alpha=0.05, beta=0.1):
+			A = torch.tensor(np.log((1 - beta) / alpha), dtype=torch.float32).to(device)
+			B = torch.tensor(np.log(beta / (1 - alpha)), dtype=torch.float32).to(device)
+			batch_size = S.shape[0]
+			predictions = torch.zeros(batch_size, dtype=torch.float32, requires_grad=True).to(device)
+			samples_taken = torch.zeros(batch_size, dtype=torch.float32).to(device)
+			for i in range(batch_size):
+				sample = S[i]
+				D1 = int(0.01 * sample.shape[0]) 
+				LR = torch.tensor(0.0, dtype=torch.float32).to(device)
+				hint = 1  
+		
+				j = 1 
+				n1 = sample[:D1]
+				while True:  
+					mu0_pred = torch.tensor(0.1, dtype=torch.float32).to(device) + delta_mu[0]
+					mu1_pred = torch.tensor(0.1, dtype=torch.float32).to(device) - delta_mu[1]
+					LR_numerator = torch.sum(n1 * torch.log(mu0_pred) + (1 - n1) * torch.log(1 - mu0_pred))
+					LR_denominator = torch.sum(n1 * torch.log(mu1_pred) + (1 - n1) * torch.log(1 - mu1_pred))
+					LR = LR_numerator / (LR_denominator + 1e-19)
+		
+					if LR <= A:
+						hint = 0
+						break
+					elif LR >= B:
+						hint = 1
+						break
+					else:
+						j += 1
+						if 2 * D1 - int(torch.sum(n1).item()) >= len(sample):
+							break  
+						n1 = sample[D1: 2 * D1 - int(torch.sum(n1).item())]
+				predictions[i] = hint
+				samples_taken[i] = j * D1 
+		
+			return predictions, samples_taken
+		
+		def train_model(model, optimizer, criterion, epoch, epochs, delta_mu):
+			model.train()
+			running_loss = 0.0
+			for i in tqdm(range(10000), ncols=100, desc="Training"):
+				N = np.random.randint(1000, 100000)
+				gt = np.random.uniform(gt_range[0], gt_range[1])
+				sample = np.random.choice([0, 1], size=N, p=[gt, 1 - gt])
+				if gt > 0.1:
+					gt = 0
+				else:
+					gt = 1
+				inputs = torch.tensor([N], dtype=torch.float32).to(device)
+				targets = torch.tensor([gt], dtype=torch.float32).to(device)
+				outputs = model(inputs) + torch.tensor(delta_mu, dtype=torch.float32).to(device)
+				pred, samples = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs)
+				loss = criterion(pred.float(), targets.float())
+				loss.backward()
+				optimizer.step()
+				optimizer.zero_grad()
+				running_loss += loss.item()
+			return running_loss / 10000
+		
+		
+		def evaluate_model(model, criterion, delta_mu):
+			model.eval()
+			running_loss = 0.0
+			correct = 0
+			total = 0
+			total_samples = 0
+			with torch.no_grad():
+				for i in tqdm(range(1000), ncols=100, desc="Evaluating"):
+					N = np.random.randint(1000, 100000)
+					gt = np.random.uniform(gt_range[0], gt_range[1])
+					sample = np.random.choice([0, 1], size=N, p=[gt, 1 - gt])
+					if gt > 0.1:
+						gt = 0
+					else:
+						gt = 1
+					inputs = torch.tensor([N], dtype=torch.float32).to(device)
+					targets = torch.tensor([gt], dtype=torch.float32).to(device)
+					outputs = model(inputs) + torch.tensor(delta_mu, dtype=torch.float32).to(device)
+					pred, samples = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs)
+					loss = criterion(pred.float(), targets.float())
+					running_loss += loss.item()
+					correct += (pred == targets).sum().item()
+					total += 1
+					total_samples += samples.item()
+			accuracy = correct / total
+			average_samples = total_samples / total
+			return running_loss / 1000, accuracy, average_samples
+		
+		
+		if __name__ == "__main__":
+			gt_range = (0.05, 0.15)
+			input_size = 1
+			hidden_size = [16, 64]
+			output_size = 2
+			learning_rate = 0.001
+			epochs = 10
+			batch_size = 32
+			criterion = nn.MSELoss()
+			device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+		
+			# 灵敏度分析：遍历 delta_mu
+			delta_mu_values = np.arange(0.01, 0.11, 0.01)  
+			results = []
+			for delta_mu in delta_mu_values:
+				print(f"Evaluating delta_mu = {delta_mu:.2f}")
+				
+		
+				model = MLP(input_size, hidden_size, output_size).to(device)
+				optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+				
+				for epoch in range(epochs):
+					train_loss = train_model(model, optimizer, criterion, epoch, epochs, [delta_mu, delta_mu])
+					test_loss, accuracy, average_samples = evaluate_model(model, criterion, [delta_mu, delta_mu])
+					print(
+						f"Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Test Loss: {test_loss:.4f}, "
+						f"Accuracy: {accuracy:.4f}, Average Samples: {average_samples:.2f}"
+					)
+				
+				results.append((delta_mu, accuracy, average_samples))
+		
+			print("\nSensitivity Analysis Results:")
+			print("Delta Mu | Accuracy | Average Samples")
+			print("----------|----------|----------------")
+			for delta_mu, accuracy, average_samples in results:
+				print(f"{delta_mu:.2f}       | {accuracy:.4f}   | {average_samples:.2f}")
+		
+		
+	 \end{lstlisting}
+\subsection{sprt.py}
+	 \begin{lstlisting}[language=python]
+		import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+from tqdm import tqdm  
 
-	\begin{lstlisting}[language=matlab]
-	kk=2;[mdd,ndd]=size(dd);
-	 
+class MLP(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(MLP, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size[0])
+        self.relu1 = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size[0], hidden_size[1])
+        self.relu2 = nn.ReLU()
+        self.fc3 = nn.Linear(hidden_size[1], output_size)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu1(x)
+        x = self.fc2(x)
+        x = self.relu2(x)
+        x = self.fc3(x)
+        return x
+
+def SPRT(S, delta_mu, alpha=0.05, beta=0.1):
+    A = torch.tensor(np.log((1 - beta) / alpha), dtype=torch.float32).to(device)
+    B = torch.tensor(np.log(beta / (1 - alpha)), dtype=torch.float32).to(device)
+    batch_size = S.shape[0]
+    predictions = torch.zeros(batch_size, dtype=torch.float32, requires_grad=True).to(device)
+    for i in range(batch_size):
+        sample = S[i]
+        D1 = int(0.01 * sample.shape[0])  # 初始样本量
+        LR = torch.tensor(0.0, dtype=torch.float32).to(device)
+        hint = 1  # 初始化预测假设为1
+
+        j = torch.ones(batch_size, dtype=torch.float32, requires_grad=True).to(device)
+        n1 = sample[:D1]
+        while j < 10:
+            mu0_pred = torch.tensor(0.1, dtype=torch.float32).to(device) + delta_mu[0]
+            mu1_pred = torch.tensor(0.1, dtype=torch.float32).to(device) - delta_mu[1]
+            LR_numerator = torch.sum(n1 * torch.log(mu0_pred) + (1 - n1) * torch.log(1 - mu0_pred))
+            LR_denominator = torch.sum(n1 * torch.log(mu1_pred) + (1 - n1) * torch.log(1 - mu1_pred))
+            LR = LR_numerator / (LR_denominator + 1e-19)
+
+            if LR <= A:
+                hint = 0
+                break
+            elif LR >= B:
+                hint = 1
+                break
+            else:
+                j += 1
+                n1 = sample[D1 : 2 * D1 - int(torch.sum(n1).item())]
+        predictions[i] = hint
+
+    return predictions,j
+
+def train_model(model, optimizer, criterion, epoch, epochs):
+    model.train()
+    running_loss = 0.0
+    for i in tqdm(range(10000), ncols=100, desc="Training"):
+        N = np.random.randint(1000, 100000)
+        gt = np.random.uniform(gt_range[0], gt_range[1])
+        sample = np.random.choice([0, 1], size=N, p=[gt, 1 - gt])
+        if gt > 0.1:
+            gt = 0
+        else:
+            gt = 1
+        inputs = torch.tensor([N], dtype=torch.float32).to(device)
+        targets = torch.tensor([gt], dtype=torch.float32).to(device)
+        outputs = model(inputs)
+        pred,j = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs)
+        loss = j*criterion(pred.float(), targets.float())
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+        running_loss += loss.item()
+    return running_loss / 10000
+
+
+def evaluate_model(model, criterion):
+    model.eval()
+    running_loss = 0.0
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for i in tqdm(range(1000), ncols=100, desc="Evaluating"):
+            N = np.random.randint(1000, 100000)
+            gt = np.random.uniform(gt_range[0], gt_range[1])
+            sample = np.random.choice([0, 1], size=N, p=[gt, 1 - gt])
+            if gt > 0.1:
+                gt = 0
+            else:
+                gt = 1
+            inputs = torch.tensor([N], dtype=torch.float32).to(device)
+            targets = torch.tensor([gt], dtype=torch.float32).to(device)
+            outputs = model(inputs)
+            pred,_ = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs)
+            loss = criterion(pred.float(), targets.float())
+            running_loss += loss.item()
+            correct += (pred == targets).sum().item()
+            total += 1
+    accuracy = correct / total
+    return running_loss / 1000, accuracy
+
+
+if __name__ == "__main__":
+    gt_range = (0.05, 0.15)
+    input_size = 1
+    hidden_size = [16, 64]
+    output_size = 2
+    learning_rate = 0.001
+    epochs = 1000
+    batch_size = 32
+
+    device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
+
+    model = MLP(input_size, hidden_size, output_size).to(device)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    criterion = nn.MSELoss()
+
+    for epoch in range(epochs):
+        train_loss = train_model(model, optimizer, criterion, epoch, epochs)
+        test_loss, accuracy = evaluate_model(model, criterion)
+        print(
+            f"Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Test Loss: {test_loss:.4f}, Accuracy: {accuracy:.4f}"
+        )
+
+	\end{lstlisting}
+\section{问题二的python代码}
+\subsection{2\_1.py(决策向量求解)}
+\begin{lstlisting}[language=python]
+	import random
+import numpy as np
+from scipy.special import comb
+
+def Solve(Element_S1, Element_S2, Test_Mark_S1, Test_Mark_S2, Test_Mark_Finished_Product, Dismantle_Mark_Finished_Product, Exchange_Quantity):
+
+    Profit = 0
+    Cost = 0
+    Test_Price_S1 = 2
+    Test_Price_S2 = 3
+    Finished_Product_Defect_Rate = 0.1
+    Finished_Product_Assemble_Price = 6
+    Finished_Product_Test_Price = 3
+    Finished_Product_Sell_Price = 56
+    Finished_Product_Exchange_Loss = 6
+    Finished_Product_Dismantle_cost = 5
+
+    # 零件阶段
+    if Test_Mark_S1 == 1:
+        Cost += Test_Price_S1 * len(Element_S1)
+        Element_S1 = [x for x in Element_S1 if x != 0]
+    if Test_Mark_S2 == 1:
+        Cost += Test_Price_S2 * len(Element_S2)
+        Element_S2 = [x for x in Element_S2 if x != 0]
+
+    random.shuffle(Element_S1)
+    random.shuffle(Element_S2)
+
+    if len(Element_S1) == len(Element_S2):
+        Finished_Product = [int(a * b) for a, b in zip(Element_S1, Element_S2)]
+        Finished_Product_Form = np.array([Element_S1, Element_S2])
+        Cost += Finished_Product_Assemble_Price * len(Finished_Product)
+        Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Num_To_Select = int(len(Qualified_Finished_Products_Indices) * Finished_Product_Defect_Rate)
+        Qualified_Finished_Products_Selected_Indices = np.random.choice(Qualified_Finished_Products_Indices, size=Num_To_Select, replace=False)
+        for index in Qualified_Finished_Products_Selected_Indices:
+            Finished_Product[index] = 0
+        Element_S1 = []
+        Element_S2 = []
+    elif len(Element_S1) < len(Element_S2):
+        Selected_Indices_S2 = random.sample(range(len(Element_S2)), len(Element_S1))
+        Selected_Element_S2 = [Element_S2[i] for i in Selected_Indices_S2]
+        Finished_Product = [int(a * b) for a, b in zip(Element_S1, Selected_Element_S2)]
+        Finished_Product_Form = np.array([Element_S1, Selected_Element_S2])
+        Cost += Finished_Product_Assemble_Price * len(Finished_Product)
+        Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Num_To_Select = int(len(Qualified_Finished_Products_Indices) * Finished_Product_Defect_Rate)
+        Qualified_Finished_Products_Selected_Indices = np.random.choice(Qualified_Finished_Products_Indices, size=Num_To_Select, replace=False)
+        for index in Qualified_Finished_Products_Selected_Indices:
+            Finished_Product[index] = 0
+        Element_S1 = []
+        Element_S2 = [Element_S2[i] for i in range(len(Element_S2)) if i not in Selected_Indices_S2]
+    elif len(Element_S1) > len(Element_S2):
+        Selected_Indices_S1 = random.sample(range(len(Element_S1)), len(Element_S2))
+        Selected_Element_S1 = [Element_S1[i] for i in Selected_Indices_S1]
+        Finished_Product = [int(a * b) for a, b in zip(Selected_Element_S1, Element_S2)]
+        Finished_Product_Form = np.array([Selected_Element_S1, Element_S2])
+        Cost += Finished_Product_Assemble_Price * len(Finished_Product)
+        Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Num_To_Select = int(len(Qualified_Finished_Products_Indices) * Finished_Product_Defect_Rate)
+        Qualified_Finished_Products_Selected_Indices = np.random.choice(Qualified_Finished_Products_Indices, size=Num_To_Select, replace=False)
+        for index in Qualified_Finished_Products_Selected_Indices:
+            Finished_Product[index] = 0
+        Element_S1 = [Element_S1[i] for i in range(len(Element_S1)) if i not in Selected_Indices_S1]
+        Element_S2 = []
+
+    # 成品阶段
+    if Test_Mark_Finished_Product == 1:
+        Cost += Finished_Product_Test_Price * len(Finished_Product)
+        Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Unqualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+        Profit += Finished_Product_Sell_Price * (len(Qualified_Finished_Products_Indices) - Exchange_Quantity)
+        Exchange_Quantity = 0
+        if Dismantle_Mark_Finished_Product == 1:
+            Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Products_Indices)
+            Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Products_Indices]
+            Element_S1.extend(Unqualified_Finished_Product_Form[0])
+            Element_S2.extend(Unqualified_Finished_Product_Form[1])
+    else:
+        Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Unqualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+        Profit += Finished_Product_Sell_Price * (len(Finished_Product) - Exchange_Quantity)
+        Exchange_Quantity = 0
+        Cost += Finished_Product_Exchange_Loss * len(Unqualified_Finished_Products_Indices)
+        Exchange_Quantity = len(Unqualified_Finished_Products_Indices)
+        if Dismantle_Mark_Finished_Product == 1:
+            Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Products_Indices)
+            Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Products_Indices]
+            Element_S1.extend(Unqualified_Finished_Product_Form[0])
+            Element_S2.extend(Unqualified_Finished_Product_Form[1])
+
+    return Profit, Cost, Element_S1, Element_S2, Exchange_Quantity
+
+S1 = S2 = 1000
+Defect_Rate_S1 = 0.1
+Defect_Rate_S2 = 0.1
+Bad_S1 = int(Defect_Rate_S1 * S1)
+Bad_S2 = int(Defect_Rate_S2 * S2)
+
+Time = 1
+Simulation_Number = 100
+Profits = np.zeros(16)
+Costs = np.zeros(16)
+Purchase_Price_S1 = 4
+Purchase_Price_S2 = 18
+
+Decision_Matrix = np.zeros((16, 4), dtype=int)
+for i in range(16):
+    Binary_Representation = format(i, '04b')
+    for j in range(4):
+        Decision_Matrix[i, j] = int(Binary_Representation[j])
+
+for i in range(0,16):
+    Test_Mark_S1 = Decision_Matrix[i][0]
+    Test_Mark_S2 = Decision_Matrix[i][1]
+    Test_Mark_Finished_Product = Decision_Matrix[i][2]
+    Dismantle_Mark_Finished_Product = Decision_Matrix[i][3]
+    for j in range(0, Time):
+        Element_S1 = []
+        Element_S2 = []
+        Exchange_Quantity = 0
+        k = 0
+        while k < Simulation_Number:
+            random.seed(j * Time + k)
+            np.random.seed(j * Time + k)
+            Prepared_Element_S1 = np.ones(S1)
+            Random_Indices_S1 = np.random.choice(S1, size=Bad_S1, replace=False)
+            Prepared_Element_S1[Random_Indices_S1] = 0
+            Element_S1.extend(Prepared_Element_S1)
+            Prepared_Element_S2 = np.ones(S2)
+            Random_Indices_S2 = np.random.choice(S2, size=Bad_S2, replace=False)
+            Prepared_Element_S2[Random_Indices_S2] = 0
+            Element_S2.extend(Prepared_Element_S2)
+            Costs[i] += Purchase_Price_S1 * len(Prepared_Element_S1) + Purchase_Price_S2 * len(Prepared_Element_S2)
+            Profit, Cost, Element_S1, Element_S2, Exchange_Quantity = Solve(Element_S1, Element_S2, Test_Mark_S1, Test_Mark_S2, Test_Mark_Finished_Product, Dismantle_Mark_Finished_Product, Exchange_Quantity)
+            Profits[i] += Profit
+            Costs[i] += Cost
+            k += 1
+
+Profits = Profits / (Simulation_Number * Time)
+Costs = Costs / (Simulation_Number * Time)
+Pure_Profits = (Profits - Costs) / S1
+print(Pure_Profits)
+Max_Index = np.argmax(Pure_Profits)
+Binary_Max_Index = format(Max_Index, '04b')
+print("最大值是:", Pure_Profits[Max_Index])
+print("最大值的索引是:", Max_Index)
+print("最大值的索引的二进制表示是:", Binary_Max_Index)
+
+\end{lstlisting}
+\section{问题三的python代码}
+\subsection{Question\_3.py（遗传算法求解过程）}
+\begin{lstlisting}[language=python]
+	import random
+import numpy as np
+from scipy.special import comb
+
+def Solve(Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Decision_Vector, Exchange_Quantity):
+
+    Profit = 0
+    Cost = 0
+    Test_Price_S1 = 1
+    Test_Price_S2 = 1
+    Test_Price_S3 = 2
+    Test_Price_S4 = 1
+    Test_Price_S5 = 1
+    Test_Price_S6 = 2
+    Test_Price_S7 = 1
+    Test_Price_S8 = 2
+    Semi_Finished_Product_S1_Defect_Rate = 0.1
+    Semi_Finished_Product_S1_Assemble_Price = 8
+    Semi_Finished_Product_S1_Test_Price = 4
+    Semi_Finished_Product_S1_Dismantle_cost = 6
+    Semi_Finished_Product_S2_Defect_Rate = 0.1
+    Semi_Finished_Product_S2_Assemble_Price = 8
+    Semi_Finished_Product_S2_Test_Price = 4
+    Semi_Finished_Product_S2_Dismantle_cost = 6
+    Semi_Finished_Product_S3_Defect_Rate = 0.1
+    Semi_Finished_Product_S3_Assemble_Price = 8
+    Semi_Finished_Product_S3_Test_Price = 4
+    Semi_Finished_Product_S3_Dismantle_cost = 6
+    Finished_Product_Defect_Rate = 0.1
+    Finished_Product_Assemble_Price = 8
+    Finished_Product_Test_Price = 6
+    Finished_Product_Dismantle_cost = 10
+    Finished_Product_Sell_Price = 200
+    Finished_Product_Exchange_Loss = 40
+
+    Test_Mark_S1 = Decision_Vector[0]
+    Test_Mark_S2 = Decision_Vector[1]
+    Test_Mark_S3 = Decision_Vector[2]
+    Test_Mark_S4 = Decision_Vector[3]
+    Test_Mark_S5 = Decision_Vector[4]
+    Test_Mark_S6 = Decision_Vector[5]
+    Test_Mark_S7 = Decision_Vector[6]
+    Test_Mark_S8 = Decision_Vector[7]
+    Test_Mark_Semi_Finished_Product_S1 = Decision_Vector[8]
+    Dismantle_Mark_Semi_Finished_Product_S1 = Decision_Vector[9]
+    Test_Mark_Semi_Finished_Product_S2 = Decision_Vector[10]
+    Dismantle_Mark_Semi_Finished_Product_S2 = Decision_Vector[11]
+    Test_Mark_Semi_Finished_Product_S3 = Decision_Vector[12]
+    Dismantle_Mark_Semi_Finished_Product_S3 = Decision_Vector[13]
+    Test_Mark_Finished_Product = Decision_Vector[14]
+    Dismantle_Mark_Finished_Product = Decision_Vector[15]
+
+    # 零件阶段
+    if Test_Mark_S1 == 1:
+        Cost += Test_Price_S1 * len(Element_S1)
+        Element_S1 = [x for x in Element_S1 if x != 0]
+    if Test_Mark_S2 == 1:
+        Cost += Test_Price_S2 * len(Element_S2)
+        Element_S2 = [x for x in Element_S2 if x != 0]
+    if Test_Mark_S3 == 1:
+        Cost += Test_Price_S3 * len(Element_S3)
+        Element_S3 = [x for x in Element_S3 if x != 0]
+    if Test_Mark_S4 == 1:
+        Cost += Test_Price_S4 * len(Element_S4)
+        Element_S4 = [x for x in Element_S4 if x != 0]
+    if Test_Mark_S5 == 1:
+        Cost += Test_Price_S5 * len(Element_S5)
+        Element_S5 = [x for x in Element_S5 if x != 0]
+    if Test_Mark_S6 == 1:
+        Cost += Test_Price_S6 * len(Element_S6)
+        Element_S6 = [x for x in Element_S6 if x != 0]
+    if Test_Mark_S7 == 1:
+        Cost += Test_Price_S7 * len(Element_S7)
+        Element_S7 = [x for x in Element_S7 if x != 0]
+    if Test_Mark_S8 == 1:
+        Cost += Test_Price_S8 * len(Element_S8)
+        Element_S8 = [x for x in Element_S8 if x != 0]
+
+    Min_S1_S2_S3 = min(len(Element_S1), len(Element_S2), len(Element_S3))
+    random.shuffle(Element_S1)
+    random.shuffle(Element_S2)
+    random.shuffle(Element_S3)
+    Selected_Element_S1 = Element_S1[:Min_S1_S2_S3]
+    Selected_Element_S2 = Element_S2[:Min_S1_S2_S3]
+    Selected_Element_S3 = Element_S3[:Min_S1_S2_S3]
+    Semi_Finished_Product_S1.extend([int(a * b * c) for a, b, c in zip(Selected_Element_S1, Selected_Element_S2, Selected_Element_S3)])
+    if len(Semi_Finished_Product_S1_Form) == 0 or (len(Semi_Finished_Product_S1_Form) == 3 and all(len(sublist) == 0 for sublist in Semi_Finished_Product_S1_Form)):
+        Semi_Finished_Product_S1_Form = np.array([Selected_Element_S1, Selected_Element_S2, Selected_Element_S3])
+    else:
+        Semi_Finished_Product_S1_Form = np.concatenate((np.array(Semi_Finished_Product_S1_Form), np.array([Selected_Element_S1, Selected_Element_S2, Selected_Element_S3])), axis=1)
+    Cost += Semi_Finished_Product_S1_Assemble_Price * Min_S1_S2_S3
+    Qualified_Semi_Finished_Product_S1_Indices = [index for index, value in enumerate(Semi_Finished_Product_S1) if value == 1]
+    Num_To_Select = int(len(Qualified_Semi_Finished_Product_S1_Indices) * Semi_Finished_Product_S1_Defect_Rate)
+    Qualified_Semi_Finished_Product_S1_Selected_Indices = np.random.choice(Qualified_Semi_Finished_Product_S1_Indices, size=Num_To_Select, replace=False)
+    for index in Qualified_Semi_Finished_Product_S1_Selected_Indices:
+        Semi_Finished_Product_S1[index] = 0
+    Element_S1 = Element_S1[Min_S1_S2_S3:]
+    Element_S2 = Element_S2[Min_S1_S2_S3:]
+    Element_S3 = Element_S3[Min_S1_S2_S3:]
+
+    Min_S4_S5_S6 = min(len(Element_S4), len(Element_S5), len(Element_S6))
+    random.shuffle(Element_S4)
+    random.shuffle(Element_S5)
+    random.shuffle(Element_S6)
+    Selected_Element_S4 = Element_S4[:Min_S4_S5_S6]
+    Selected_Element_S5 = Element_S5[:Min_S4_S5_S6]
+    Selected_Element_S6 = Element_S6[:Min_S4_S5_S6]
+    Semi_Finished_Product_S2.extend([int(a * b * c) for a, b, c in zip(Selected_Element_S4, Selected_Element_S5, Selected_Element_S6)])
+    if len(Semi_Finished_Product_S2_Form) == 0 or (len(Semi_Finished_Product_S2_Form) == 3 and all(len(sublist) == 0 for sublist in Semi_Finished_Product_S2_Form)):
+        Semi_Finished_Product_S2_Form = np.array([Selected_Element_S4, Selected_Element_S5, Selected_Element_S6])
+    else:
+        Semi_Finished_Product_S2_Form = np.concatenate((np.array(Semi_Finished_Product_S2_Form), np.array([Selected_Element_S4, Selected_Element_S5, Selected_Element_S6])), axis=1)
+    Cost += Semi_Finished_Product_S2_Assemble_Price * Min_S4_S5_S6
+    Qualified_Semi_Finished_Product_S2_Indices = [index for index, value in enumerate(Semi_Finished_Product_S2) if value == 1]
+    Num_To_Select = int(len(Qualified_Semi_Finished_Product_S2_Indices) * Semi_Finished_Product_S2_Defect_Rate)
+    Qualified_Semi_Finished_Product_S2_Selected_Indices = np.random.choice(Qualified_Semi_Finished_Product_S2_Indices, size=Num_To_Select, replace=False)
+    for index in Qualified_Semi_Finished_Product_S2_Selected_Indices:
+        Semi_Finished_Product_S2[index] = 0
+    Element_S4 = Element_S4[Min_S4_S5_S6:]
+    Element_S5 = Element_S5[Min_S4_S5_S6:]
+    Element_S6 = Element_S6[Min_S4_S5_S6:]
+
+    Min_S7_S8= min(len(Element_S7), len(Element_S8))
+    random.shuffle(Element_S7)
+    random.shuffle(Element_S8)
+    Selected_Element_S7 = Element_S7[:Min_S7_S8]
+    Selected_Element_S8 = Element_S8[:Min_S7_S8]
+    Semi_Finished_Product_S3.extend([int(a * b) for a, b in zip(Selected_Element_S7, Selected_Element_S8)])
+    if len(Semi_Finished_Product_S3_Form) == 0 or (len(Semi_Finished_Product_S3_Form) == 2 and all(len(sublist) == 0 for sublist in Semi_Finished_Product_S3_Form)):
+        Semi_Finished_Product_S3_Form = np.array([Selected_Element_S7, Selected_Element_S8])
+    else:
+        Semi_Finished_Product_S3_Form = np.concatenate((np.array(Semi_Finished_Product_S3_Form), np.array([Selected_Element_S7, Selected_Element_S8])), axis=1)
+    Cost += Semi_Finished_Product_S3_Assemble_Price * Min_S7_S8
+    Qualified_Semi_Finished_Product_S3_Indices = [index for index, value in enumerate(Semi_Finished_Product_S3) if value == 1]
+    Num_To_Select = int(len(Qualified_Semi_Finished_Product_S3_Indices) * Semi_Finished_Product_S3_Defect_Rate)
+    Qualified_Semi_Finished_Product_S3_Selected_Indices = np.random.choice(Qualified_Semi_Finished_Product_S3_Indices, size=Num_To_Select, replace=False)
+    for index in Qualified_Semi_Finished_Product_S3_Selected_Indices:
+        Semi_Finished_Product_S3[index] = 0
+    Element_S7 = Element_S7[Min_S7_S8:]
+    Element_S8 = Element_S8[Min_S7_S8:]
+
+    # 半成品阶段
+    if Test_Mark_Semi_Finished_Product_S1 == 1:
+        Cost += Semi_Finished_Product_S1_Test_Price * len(Semi_Finished_Product_S1)
+        Qualified_Semi_Finished_Product_S1_Indices = [index for index, value in enumerate(Semi_Finished_Product_S1) if value == 1]
+        Unqualified_Semi_Finished_Product_S1_Indices = [index for index, value in enumerate(Semi_Finished_Product_S1) if value == 0]
+        Qualified_Semi_Finished_Product_S1 = [Semi_Finished_Product_S1[i] for i in range(len(Semi_Finished_Product_S1)) if i in Qualified_Semi_Finished_Product_S1_Indices]
+        Qualified_Semi_Finished_Product_S1_Form = Semi_Finished_Product_S1_Form[:, Qualified_Semi_Finished_Product_S1_Indices]
+        Passed_Semi_Finished_Product_S1 = Qualified_Semi_Finished_Product_S1
+        Passed_Semi_Finished_Product_S1_Form = Qualified_Semi_Finished_Product_S1_Form
+
+        if Dismantle_Mark_Semi_Finished_Product_S1 == 1:
+            Cost += Semi_Finished_Product_S1_Dismantle_cost * len(Unqualified_Semi_Finished_Product_S1_Indices)
+            Unqualified_Semi_Finished_Product_S1_Form = Semi_Finished_Product_S1_Form[:, Unqualified_Semi_Finished_Product_S1_Indices]
+            Element_S1.extend(Unqualified_Semi_Finished_Product_S1_Form[0])
+            Element_S2.extend(Unqualified_Semi_Finished_Product_S1_Form[1])
+            Element_S3.extend(Unqualified_Semi_Finished_Product_S1_Form[2])
+            Semi_Finished_Product_S1 = []
+            Semi_Finished_Product_S1_Form = [[], [], []]
+        else:
+            Semi_Finished_Product_S1 = []
+            Semi_Finished_Product_S1_Form = [[], [], []]
+    else:
+        Passed_Semi_Finished_Product_S1 = Semi_Finished_Product_S1
+        Passed_Semi_Finished_Product_S1_Form = Semi_Finished_Product_S1_Form
+        Semi_Finished_Product_S1 = []
+        Semi_Finished_Product_S1_Form = [[], [], []]
+
+    if Test_Mark_Semi_Finished_Product_S2 == 1:
+        Cost += Semi_Finished_Product_S2_Test_Price * len(Semi_Finished_Product_S2)
+        Qualified_Semi_Finished_Product_S2_Indices = [index for index, value in enumerate(Semi_Finished_Product_S2) if value == 1]
+        Unqualified_Semi_Finished_Product_S2_Indices = [index for index, value in enumerate(Semi_Finished_Product_S2) if value == 0]
+        Qualified_Semi_Finished_Product_S2 = [Semi_Finished_Product_S2[i] for i in range(len(Semi_Finished_Product_S2)) if i in Qualified_Semi_Finished_Product_S2_Indices]
+        Qualified_Semi_Finished_Product_S2_Form = Semi_Finished_Product_S2_Form[:, Qualified_Semi_Finished_Product_S2_Indices]
+        Passed_Semi_Finished_Product_S2 = Qualified_Semi_Finished_Product_S2
+        Passed_Semi_Finished_Product_S2_Form = Qualified_Semi_Finished_Product_S2_Form
+
+        if Dismantle_Mark_Semi_Finished_Product_S2 == 1:
+            Cost += Semi_Finished_Product_S2_Dismantle_cost * len(Unqualified_Semi_Finished_Product_S2_Indices)
+            Unqualified_Semi_Finished_Product_S2_Form = Semi_Finished_Product_S2_Form[:, Unqualified_Semi_Finished_Product_S2_Indices]
+            Element_S4.extend(Unqualified_Semi_Finished_Product_S2_Form[0])
+            Element_S5.extend(Unqualified_Semi_Finished_Product_S2_Form[1])
+            Element_S6.extend(Unqualified_Semi_Finished_Product_S2_Form[2])
+            Semi_Finished_Product_S2 = []
+            Semi_Finished_Product_S2_Form = [[], [], []]
+        else:
+            Semi_Finished_Product_S2 = []
+            Semi_Finished_Product_S2_Form = [[], [], []]
+    else:
+        Passed_Semi_Finished_Product_S2 = Semi_Finished_Product_S2
+        Passed_Semi_Finished_Product_S2_Form = Semi_Finished_Product_S2_Form
+        Semi_Finished_Product_S2 = []
+        Semi_Finished_Product_S2_Form = [[], [], []]
+
+    if Test_Mark_Semi_Finished_Product_S3 == 1:
+        Cost += Semi_Finished_Product_S3_Test_Price * len(Semi_Finished_Product_S3)
+        Qualified_Semi_Finished_Product_S3_Indices = [index for index, value in enumerate(Semi_Finished_Product_S3) if value == 1]
+        Unqualified_Semi_Finished_Product_S3_Indices = [index for index, value in enumerate(Semi_Finished_Product_S3) if value == 0]
+        Qualified_Semi_Finished_Product_S3 = [Semi_Finished_Product_S3[i] for i in range(len(Semi_Finished_Product_S3)) if i in Qualified_Semi_Finished_Product_S3_Indices]
+        Qualified_Semi_Finished_Product_S3_Form = Semi_Finished_Product_S3_Form[:, Qualified_Semi_Finished_Product_S3_Indices]
+        Passed_Semi_Finished_Product_S3 = Qualified_Semi_Finished_Product_S3
+        Passed_Semi_Finished_Product_S3_Form = Qualified_Semi_Finished_Product_S3_Form
+
+        if Dismantle_Mark_Semi_Finished_Product_S3 == 1:
+            Cost += Semi_Finished_Product_S3_Dismantle_cost * len(Unqualified_Semi_Finished_Product_S3_Indices)
+            Unqualified_Semi_Finished_Product_S3_Form = Semi_Finished_Product_S3_Form[:, Unqualified_Semi_Finished_Product_S3_Indices]
+            Element_S7.extend(Unqualified_Semi_Finished_Product_S3_Form[0])
+            Element_S8.extend(Unqualified_Semi_Finished_Product_S3_Form[1])
+            Semi_Finished_Product_S3 = []
+            Semi_Finished_Product_S3_Form = [[], []]
+        else:
+            Semi_Finished_Product_S3 = []
+            Semi_Finished_Product_S3_Form = [[], []]
+    else:
+        Passed_Semi_Finished_Product_S3 = Semi_Finished_Product_S3
+        Passed_Semi_Finished_Product_S3_Form = Semi_Finished_Product_S3_Form
+        Semi_Finished_Product_S3 = []
+        Semi_Finished_Product_S3_Form = [[], []]
+
+    # 成品阶段
+    Finished_Product_Number = min(len(Passed_Semi_Finished_Product_S1), len(Passed_Semi_Finished_Product_S2), len(Passed_Semi_Finished_Product_S3))
+    random.shuffle(Passed_Semi_Finished_Product_S1)
+    random.shuffle(Passed_Semi_Finished_Product_S2)
+    random.shuffle(Passed_Semi_Finished_Product_S3)
+    Selected_Indices_Semi_Finished_Product_S1 = random.sample(range(len(Passed_Semi_Finished_Product_S1)), Finished_Product_Number)
+    Selected_Semi_Finished_Product_S1 = [Passed_Semi_Finished_Product_S1[i] for i in Selected_Indices_Semi_Finished_Product_S1]
+    Selected_Semi_Finished_Product_S1_Form = Passed_Semi_Finished_Product_S1_Form[:, Selected_Indices_Semi_Finished_Product_S1]
+    Selected_Indices_Semi_Finished_Product_S2 = random.sample(range(len(Passed_Semi_Finished_Product_S2)), Finished_Product_Number)
+    Selected_Semi_Finished_Product_S2 = [Passed_Semi_Finished_Product_S2[i] for i in Selected_Indices_Semi_Finished_Product_S2]
+    Selected_Semi_Finished_Product_S2_Form = Passed_Semi_Finished_Product_S2_Form[:, Selected_Indices_Semi_Finished_Product_S2]
+    Selected_Indices_Semi_Finished_Product_S3 = random.sample(range(len(Passed_Semi_Finished_Product_S3)), Finished_Product_Number)
+    Selected_Semi_Finished_Product_S3 = [Passed_Semi_Finished_Product_S3[i] for i in Selected_Indices_Semi_Finished_Product_S3]
+    Selected_Semi_Finished_Product_S3_Form = Passed_Semi_Finished_Product_S3_Form[:, Selected_Indices_Semi_Finished_Product_S3]
+    Finished_Product = [int(a * b * c) for a, b, c in zip(Selected_Semi_Finished_Product_S1, Selected_Semi_Finished_Product_S2, Selected_Semi_Finished_Product_S3)]
+    Finished_Product_Form = np.concatenate((Selected_Semi_Finished_Product_S1_Form, Selected_Semi_Finished_Product_S2_Form, Selected_Semi_Finished_Product_S3_Form), axis=0)
+    Cost += Finished_Product_Assemble_Price * Finished_Product_Number
+    Qualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+    Num_To_Select = int(len(Qualified_Finished_Product_Indices) * Finished_Product_Defect_Rate)
+    Qualified_Finished_Product_Selected_Indices = np.random.choice(Qualified_Finished_Product_Indices, size=Num_To_Select, replace=False)
+    for index in Qualified_Finished_Product_Selected_Indices:
+        Finished_Product[index] = 0
+    Semi_Finished_Product_S1.extend([Passed_Semi_Finished_Product_S1[i] for i in range(len(Passed_Semi_Finished_Product_S1)) if i not in Selected_Indices_Semi_Finished_Product_S1])
+    Semi_Finished_Product_S2.extend([Passed_Semi_Finished_Product_S2[i] for i in range(len(Passed_Semi_Finished_Product_S2)) if i not in Selected_Indices_Semi_Finished_Product_S2])
+    Semi_Finished_Product_S3.extend([Passed_Semi_Finished_Product_S3[i] for i in range(len(Passed_Semi_Finished_Product_S3)) if i not in Selected_Indices_Semi_Finished_Product_S3])
+    Semi_Finished_Product_S1_Form = np.concatenate((Semi_Finished_Product_S1_Form, Passed_Semi_Finished_Product_S1_Form[:, [Passed_Semi_Finished_Product_S1[i] for i in range(len(Passed_Semi_Finished_Product_S1)) if i not in Selected_Indices_Semi_Finished_Product_S1]]), axis=1)
+    Semi_Finished_Product_S2_Form = np.concatenate((Semi_Finished_Product_S2_Form, Passed_Semi_Finished_Product_S2_Form[:, [Passed_Semi_Finished_Product_S2[i] for i in range(len(Passed_Semi_Finished_Product_S2)) if i not in Selected_Indices_Semi_Finished_Product_S2]]), axis=1)
+    Semi_Finished_Product_S3_Form = np.concatenate((Semi_Finished_Product_S3_Form, Passed_Semi_Finished_Product_S3_Form[:, [Passed_Semi_Finished_Product_S3[i] for i in range(len(Passed_Semi_Finished_Product_S3)) if i not in Selected_Indices_Semi_Finished_Product_S3]]), axis=1)
+
+    if Test_Mark_Finished_Product == 1:
+        Cost += Finished_Product_Test_Price * len(Finished_Product)
+        Qualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Unqualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+        Profit += Finished_Product_Sell_Price * (len(Qualified_Finished_Product_Indices) - Exchange_Quantity)
+        Exchange_Quantity = 0
+        if Dismantle_Mark_Finished_Product == 1:
+            Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Product_Indices)
+            Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Product_Indices]
+            Semi_Finished_Product_S1.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[0], Unqualified_Finished_Product_Form[1], Unqualified_Finished_Product_Form[2])])
+            Semi_Finished_Product_S1_Form = np.concatenate((Semi_Finished_Product_S1_Form, np.array([Unqualified_Finished_Product_Form[0].tolist(), Unqualified_Finished_Product_Form[1].tolist(), Unqualified_Finished_Product_Form[2].tolist()])), axis=1)
+            Semi_Finished_Product_S2.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[3], Unqualified_Finished_Product_Form[4], Unqualified_Finished_Product_Form[5])])
+            Semi_Finished_Product_S2_Form = np.concatenate((Semi_Finished_Product_S2_Form, np.array([Unqualified_Finished_Product_Form[3].tolist(), Unqualified_Finished_Product_Form[4].tolist(), Unqualified_Finished_Product_Form[5].tolist()])), axis=1)
+            Semi_Finished_Product_S3.extend([int(a * b) for a, b in zip(Unqualified_Finished_Product_Form[6], Unqualified_Finished_Product_Form[7])])
+            Semi_Finished_Product_S3_Form = np.concatenate((Semi_Finished_Product_S3_Form, np.array([Unqualified_Finished_Product_Form[6].tolist(), Unqualified_Finished_Product_Form[7].tolist()])), axis=1)
+
+    else:
+        Qualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+        Unqualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+        Profit += Finished_Product_Sell_Price * (len(Finished_Product) - Exchange_Quantity)
+        Exchange_Quantity = 0
+        Cost += Finished_Product_Exchange_Loss * len(Unqualified_Finished_Product_Indices)
+        Exchange_Quantity = len(Unqualified_Finished_Product_Indices)
+
+        if Dismantle_Mark_Finished_Product == 1:
+            Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Product_Indices)
+            Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Product_Indices]
+            Semi_Finished_Product_S1.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[0], Unqualified_Finished_Product_Form[1], Unqualified_Finished_Product_Form[2])])
+            Semi_Finished_Product_S1_Form = np.concatenate((Semi_Finished_Product_S1_Form, np.array([Unqualified_Finished_Product_Form[0].tolist(), Unqualified_Finished_Product_Form[1].tolist(), Unqualified_Finished_Product_Form[2].tolist()])), axis=1)
+            Semi_Finished_Product_S2.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[3], Unqualified_Finished_Product_Form[4], Unqualified_Finished_Product_Form[5])])
+            Semi_Finished_Product_S2_Form = np.concatenate((Semi_Finished_Product_S2_Form, np.array([Unqualified_Finished_Product_Form[3].tolist(), Unqualified_Finished_Product_Form[4].tolist(), Unqualified_Finished_Product_Form[5].tolist()])), axis=1)
+            Semi_Finished_Product_S3.extend([int(a * b) for a, b in zip(Unqualified_Finished_Product_Form[6], Unqualified_Finished_Product_Form[7])])
+            Semi_Finished_Product_S3_Form = np.concatenate((Semi_Finished_Product_S3_Form, np.array([Unqualified_Finished_Product_Form[6].tolist(), Unqualified_Finished_Product_Form[7].tolist()])), axis=1)
+
+    return Profit, Cost, Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Exchange_Quantity
+
+class Genetic_Algorithm:
+    def __init__(self, Objective_Function, Initial_Solution, Population_Size=100, Mutation_Rate=0.1, Crossover_Rate=0.5, Max_Iter=100, Elitism_Rate=0.05):
+        self.Objective_Function = Objective_Function
+        self.Population_Size = Population_Size
+        self.Mutation_Rate = Mutation_Rate
+        self.Crossover_Rate = Crossover_Rate
+        self.Max_Iter = Max_Iter
+        self.Elitism_Rate = Elitism_Rate
+        self.Dim = len(Initial_Solution)
+        self.Population = np.random.randint(2, size=(Population_Size, self.Dim))
+
+    def Select(self, Fitness):
+        Fitness = np.array(Fitness)
+        Fitness = Fitness - np.min(Fitness) + 1e-10
+        Probabilities = Fitness / np.sum(Fitness)
+        Cumulative_Probabilities = np.cumsum(Probabilities)
+        Selected_Indices = []
+        for _ in range(self.Population_Size):
+            r = random.random()
+            for i, cp in enumerate(Cumulative_Probabilities):
+                if r < cp:
+                    Selected_Indices.append(i)
+                    break
+        return self.Population[Selected_Indices]
+
+    def Crossover(self, Parent1, Parent2):
+        if random.random() < self.Crossover_Rate:
+            Cross_Point = random.randint(0, self.Dim - 1)
+            Child1 = np.concatenate((Parent1[:Cross_Point], Parent2[Cross_Point:]))
+            Child2 = np.concatenate((Parent2[:Cross_Point], Parent1[Cross_Point:]))
+            return Child1, Child2
+        else:
+            return Parent1, Parent2
+
+    def Mutate(self, Individual):
+        for i in range(self.Dim):
+            if random.random() < self.Mutation_Rate:
+                Individual[i] = 1 - Individual[i]
+        return Individual
+
+    def Optimize(self):
+        for Generation in range(self.Max_Iter):
+            Fitness = [self.Objective_Function(x) for x in self.Population]
+
+            # 选择精英个体
+            Elite_Size = int(self.Population_Size * self.Elitism_Rate)
+            Elite_Indices = np.argsort(Fitness)[-Elite_Size:]
+            Elite_Population = self.Population[Elite_Indices]
+
+            Selected_Population = self.Select(Fitness)
+            New_Population = []
+            for i in range(0, self.Population_Size - Elite_Size, 2):
+                Parent1 = Selected_Population[i]
+                Parent2 = Selected_Population[i + 1]
+                Child1, Child2 = self.Crossover(Parent1, Parent2)
+                Child1 = self.Mutate(Child1)
+                Child2 = self.Mutate(Child2)
+                New_Population.append(Child1)
+                New_Population.append(Child2)
+
+            # 将精英个体加入新种群
+            New_Population.extend(Elite_Population)
+            self.Population = np.array(New_Population)
+            Best_Solution = self.Population[np.argmax(Fitness)]
+            Best_Fitness = np.max(Fitness)
+
+            print(f"Generation {Generation}: Best_Solution = {Best_Solution}, Best Fitness = {Best_Fitness}")
+
+        return Best_Solution, Best_Fitness
+
+def Objective_Function(X):
+
+    S1 = 100
+    S2 = 100
+    S3 = 100
+    S4 = 100
+    S5 = 100
+    S6 = 100
+    S7 = 100
+    S8 = 100
+    Defect_Rate_S1 = 0.1
+    Defect_Rate_S2 = 0.1
+    Defect_Rate_S3 = 0.1
+    Defect_Rate_S4 = 0.1
+    Defect_Rate_S5 = 0.1
+    Defect_Rate_S6 = 0.1
+    Defect_Rate_S7 = 0.1
+    Defect_Rate_S8 = 0.1
+    Bad_S1 = int(Defect_Rate_S1 * S1)
+    Bad_S2 = int(Defect_Rate_S2 * S2)
+    Bad_S3 = int(Defect_Rate_S3 * S3)
+    Bad_S4 = int(Defect_Rate_S4 * S4)
+    Bad_S5 = int(Defect_Rate_S5 * S5)
+    Bad_S6 = int(Defect_Rate_S6 * S6)
+    Bad_S7 = int(Defect_Rate_S7 * S7)
+    Bad_S8 = int(Defect_Rate_S8 * S8)
+
+    Simulation_Number = 100
+    Time = 1
+    Profits = 0
+    Costs = 0
+    Purchase_Price_S1 = 2
+    Purchase_Price_S2 = 8
+    Purchase_Price_S3 = 12
+    Purchase_Price_S4 = 2
+    Purchase_Price_S5 = 8
+    Purchase_Price_S6 = 12
+    Purchase_Price_S7 = 8
+    Purchase_Price_S8 = 12
+
+    for i in range(0, Time):
+        Decision_Vector = X
+        Element_S1 = []
+        Element_S2 = []
+        Element_S3 = []
+        Element_S4 = []
+        Element_S5 = []
+        Element_S6 = []
+        Element_S7 = []
+        Element_S8 = []
+        Semi_Finished_Product_S1 = []
+        Semi_Finished_Product_S2 = []
+        Semi_Finished_Product_S3 = []
+        Semi_Finished_Product_S1_Form = [[], [], []]
+        Semi_Finished_Product_S2_Form = [[], [], []]
+        Semi_Finished_Product_S3_Form = [[], []]
+        Exchange_Quantity = 0
+        k = 0
+        while k < Simulation_Number:
+            random.seed(i * Time + k)
+            np.random.seed(i * Time + k)
+            Prepared_Element_S1 = np.ones(S1)
+            Random_Indices_S1 = np.random.choice(S1, size=Bad_S1, replace=False)
+            Prepared_Element_S1[Random_Indices_S1] = 0
+            Element_S1.extend(Prepared_Element_S1)
+            Prepared_Element_S2 = np.ones(S2)
+            Random_Indices_S2 = np.random.choice(S2, size=Bad_S2, replace=False)
+            Prepared_Element_S2[Random_Indices_S2] = 0
+            Element_S2.extend(Prepared_Element_S2)
+            Prepared_Element_S3 = np.ones(S3)
+            Random_Indices_S3 = np.random.choice(S3, size=Bad_S3, replace=False)
+            Prepared_Element_S3[Random_Indices_S3] = 0
+            Element_S3.extend(Prepared_Element_S3)
+            Prepared_Element_S4 = np.ones(S4)
+            Random_Indices_S4 = np.random.choice(S4, size=Bad_S4, replace=False)
+            Prepared_Element_S4[Random_Indices_S4] = 0
+            Element_S4.extend(Prepared_Element_S4)
+            Prepared_Element_S5 = np.ones(S5)
+            Random_Indices_S5 = np.random.choice(S5, size=Bad_S5, replace=False)
+            Prepared_Element_S5[Random_Indices_S5] = 0
+            Element_S5.extend(Prepared_Element_S5)
+            Prepared_Element_S6 = np.ones(S6)
+            Random_Indices_S6 = np.random.choice(S6, size=Bad_S6, replace=False)
+            Prepared_Element_S6[Random_Indices_S6] = 0
+            Element_S6.extend(Prepared_Element_S6)
+            Prepared_Element_S7 = np.ones(S7)
+            Random_Indices_S7 = np.random.choice(S7, size=Bad_S7, replace=False)
+            Prepared_Element_S7[Random_Indices_S7] = 0
+            Element_S7.extend(Prepared_Element_S7)
+            Prepared_Element_S8 = np.ones(S8)
+            Random_Indices_S8 = np.random.choice(S8, size=Bad_S8, replace=False)
+            Prepared_Element_S8[Random_Indices_S8] = 0
+            Element_S8.extend(Prepared_Element_S8)
+            Costs += Purchase_Price_S1 * len(Prepared_Element_S1) + Purchase_Price_S2 * len(Prepared_Element_S2)
+            Costs += Purchase_Price_S3 * len(Prepared_Element_S3) + Purchase_Price_S4 * len(Prepared_Element_S4)
+            Costs += Purchase_Price_S5 * len(Prepared_Element_S5) + Purchase_Price_S6 * len(Prepared_Element_S6)
+            Costs += Purchase_Price_S7 * len(Prepared_Element_S7) + Purchase_Price_S8 * len(Prepared_Element_S8)
+            Profit, Cost, Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Exchange_Quantity = Solve(Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Decision_Vector, Exchange_Quantity)
+            Profits += Profit
+            Costs += Cost
+            k += 1
+
+    Profits = Profits / (Simulation_Number * Time)
+    Costs = Costs / (Simulation_Number * Time)
+    Pure_Profits = Profits - Costs
+
+    return Pure_Profits
+
+Period = 1
+Initial_Solution = np.zeros(16 * Period)
+Genetic_Algorithm = Genetic_Algorithm(Objective_Function, Initial_Solution)
+Best_Solution, Best_Fitness = Genetic_Algorithm.Optimize()
+print(f"Best Solution: {Best_Solution}")
+print(f"Best Fitness: {Best_Fitness}")
+
+\end{lstlisting}
+\section{问题四的python代码}
+\subsection{gaussion.py(高斯分布代码)}
+	\begin{lstlisting}[language=python]
+		import torch
+		import torch.nn as nn
+		import torch.optim as optim
+		import numpy as np
+		from tqdm import tqdm  
+		
+		
+		class MLP(nn.Module):
+			def __init__(self, input_size, hidden_size, output_size):
+				super(MLP, self).__init__()
+				self.fc1 = nn.Linear(input_size, hidden_size[0])
+				self.relu1 = nn.ReLU()
+				self.fc2 = nn.Linear(hidden_size[0], hidden_size[1])
+				self.relu2 = nn.ReLU()
+				self.fc3 = nn.Linear(hidden_size[1], output_size)
+		
+			def forward(self, x):
+				x = self.fc1(x)
+				x = self.relu1(x)
+				x = self.fc2(x)
+				x = self.relu2(x)
+				x = self.fc3(x)
+				return x
+		
+		
+		def SPRT(S, delta_mu, alpha=0.05, beta=0.1):
+			A = torch.tensor(np.log((1 - beta) / alpha), dtype=torch.float32).to(device)
+			B = torch.tensor(np.log(beta / (1 - alpha)), dtype=torch.float32).to(device)
+			batch_size = S.shape[0]
+			predictions = torch.zeros(batch_size, dtype=torch.float32, requires_grad=True).to(device)
+			for i in range(batch_size):
+				sample = S[i]
+				D1 = int(0.01 * sample.shape[0]) 
+				LR = torch.tensor(0.0, dtype=torch.float32).to(device)
+				hint = 1  
+		
+				j = torch.ones(batch_size, dtype=torch.float32, requires_grad=True).to(device)
+				n1 = sample[:D1]
+				while j < 10:
+					mu0_pred = torch.tensor(0.1, dtype=torch.float32).to(device) + delta_mu[0]
+					mu1_pred = torch.tensor(0.1, dtype=torch.float32).to(device) - delta_mu[1]
+					LR_numerator = torch.sum(n1 * torch.log(mu0_pred) + (1 - n1) * torch.log(1 - mu0_pred))
+					LR_denominator = torch.sum(n1 * torch.log(mu1_pred) + (1 - n1) * torch.log(1 - mu1_pred))
+					LR = LR_numerator / (LR_denominator + 1e-19)
+		
+					if LR <= A:
+						hint = 0
+						break
+					elif LR >= B:
+						hint = 1
+						break
+					else:
+						j += 1
+						n1 = sample[D1: 2 * D1 - int(torch.sum(n1).item())]
+				predictions[i] = hint
+		
+			return predictions, j
+		
+		
+		def mle_predict(model, N, sigma_seq):
+			inputs = torch.tensor([N], dtype=torch.float32).to(device)
+			outputs = model(inputs)
+			noise = torch.randn(outputs.shape).to(device) * sigma_seq[0]  
+		
+			pred, j = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs + noise)
+		
+			return pred, j
+		
+		def mle_newton(data):
+			n = len(data)
+			mu = np.mean(data)
+			sigma = np.std(data) 
+		
+			for _ in range(100):  
+				f = np.sum((data - mu)**2 / sigma**3) - n / sigma
+				f_prime = -3 * np.sum((data - mu)**2 / sigma**4) + n / sigma**2
+				sigma -= f / f_prime
+		
+			return sigma
+		
+		
+		def train_model_mle(model, optimizer, criterion, epoch, epochs):
+			model.train()
+			running_loss = 0.0
+			for i in tqdm(range(10000), ncols=100, desc="Training"):
+				N = np.random.randint(1000, 100000)
+				gt = np.random.uniform(gt_range[0], gt_range[1])
+				sample = np.random.choice([0, 1], size=N, p=[gt, 1 - gt])
+				if gt > 0.1:
+					gt = 0
+				else:
+					gt = 1
+		
+			  
+				sigma = mle_newton(sample)
+		
+				inputs = torch.tensor([N], dtype=torch.float32).to(device)
+				targets = torch.tensor([gt], dtype=torch.float32).to(device)
+				outputs = model(inputs)
+		
+			 
+				noise = torch.randn(outputs.shape).to(device) * sigma
+		
+				pred, j = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs + noise)
+				loss = j * criterion(pred.float(), targets.float())
+				loss.backward()
+				optimizer.step()
+				optimizer.zero_grad()
+				running_loss += loss.item()
+			return running_loss / 10000
+		
+		
+		def evaluate_model(model, criterion):
+			model.eval()
+			running_loss = 0.0
+			correct = 0
+			total = 0
+			with torch.no_grad():
+				for i in tqdm(range(1000), ncols=100, desc="Evaluating"):
+					N = np.random.randint(1000, 100000)
+					gt = np.random.uniform(gt_range[0], gt_range[1])
+					sample = np.random.choice([0, 1], size=N, p=[gt, 1 - gt])
+					if gt > 0.1:
+						gt = 0
+					else:
+						gt = 1
+					inputs = torch.tensor([N], dtype=torch.float32).to(device)
+					targets = torch.tensor([gt], dtype=torch.float32).to(device)
+					outputs = model(inputs)
+					pred, _ = SPRT(torch.tensor([sample], dtype=torch.float32).to(device), outputs)
+					loss = criterion(pred.float(), targets.float())
+					running_loss += loss.item()
+					correct += (pred == targets).sum().item()
+					total += 1
+			accuracy = correct / total
+			return running_loss / 1000, accuracy
+		
+		if __name__ == "__main__":
+			gt_range = (0.05, 0.15)
+			input_size = 1
+			hidden_size = [16, 64]
+			output_size = 2
+			learning_rate = 0.001
+			epochs = 1000
+			batch_size = 32
+		
+			device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+		
+			model = MLP(input_size, hidden_size, output_size).to(device)
+			optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+			criterion = nn.MSELoss()
+		
+			sigma_seq = torch.tensor([0.01, 0.02, 0.03]) 
+		
+			for epoch in range(epochs):
+				train_loss = train_model_mle(model, optimizer, criterion, epoch, epochs)
+				test_loss, accuracy = evaluate_model(model, criterion)
+				print(
+					f"Epoch {epoch+1}, Train Loss: {train_loss:.4f}, Test Loss: {test_loss:.4f}, Accuracy: {accuracy:.4f}"
+				)
+		
+				N = np.random.randint(1000, 100000) 
+				pred, j = mle_predict(model, N, sigma_seq)
+				print(f"MLE Prediction for N={N}: {pred.item()}, Sampling Times: {j.item()}") 
 	 \end{lstlisting}
 
-	\section{代码2}
+\subsection{4\_2\_1.py(根据问题二情况的求解代码)}
 
-	\begin{lstlisting}[language=c]
-	kk=2;
-	[mdd,ndd]=size(dd);
-	 \end{lstlisting}
+\begin{lstlisting}[language=python]
+	import random
+	import numpy as np
+	from scipy.special import comb
+	
+	def Solve(Element_S1, Element_S2, Test_Mark_S1, Test_Mark_S2, Test_Mark_Finished_Product, Dismantle_Mark_Finished_Product, Exchange_Quantity):
+	
+		Profit = 0
+		Cost = 0
+		Test_Price_S1 = 2
+		Test_Price_S2 = 3
+		Finished_Product_Defect_Rate = 0.1
+		Finished_Product_Assemble_Price = 6
+		Finished_Product_Test_Price = 3
+		Finished_Product_Sell_Price = 56
+		Finished_Product_Exchange_Loss = 6
+		Finished_Product_Dismantle_cost = 5
+		Perturbed_Finished_Product_Defect_Rate = Finished_Product_Defect_Rate + np.random.normal(0, 0.01)
+	
+		# 零件阶段
+		if Test_Mark_S1 == 1:
+			Cost += Test_Price_S1 * len(Element_S1)
+			Element_S1 = [x for x in Element_S1 if x != 0]
+		if Test_Mark_S2 == 1:
+			Cost += Test_Price_S2 * len(Element_S2)
+			Element_S2 = [x for x in Element_S2 if x != 0]
+	
+		random.shuffle(Element_S1)
+		random.shuffle(Element_S2)
+	
+		if len(Element_S1) == len(Element_S2):
+			Finished_Product = [int(a * b) for a, b in zip(Element_S1, Element_S2)]
+			Finished_Product_Form = np.array([Element_S1, Element_S2])
+			Cost += Finished_Product_Assemble_Price * len(Finished_Product)
+			Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Num_To_Select = int(len(Qualified_Finished_Products_Indices) * Perturbed_Finished_Product_Defect_Rate)
+			Qualified_Finished_Products_Selected_Indices = np.random.choice(Qualified_Finished_Products_Indices, size=Num_To_Select, replace=False)
+			for index in Qualified_Finished_Products_Selected_Indices:
+				Finished_Product[index] = 0
+			Element_S1 = []
+			Element_S2 = []
+		elif len(Element_S1) < len(Element_S2):
+			Selected_Indices_S2 = random.sample(range(len(Element_S2)), len(Element_S1))
+			Selected_Element_S2 = [Element_S2[i] for i in Selected_Indices_S2]
+			Finished_Product = [int(a * b) for a, b in zip(Element_S1, Selected_Element_S2)]
+			Finished_Product_Form = np.array([Element_S1, Selected_Element_S2])
+			Cost += Finished_Product_Assemble_Price * len(Finished_Product)
+			Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Num_To_Select = int(len(Qualified_Finished_Products_Indices) * Perturbed_Finished_Product_Defect_Rate)
+			Qualified_Finished_Products_Selected_Indices = np.random.choice(Qualified_Finished_Products_Indices, size=Num_To_Select, replace=False)
+			for index in Qualified_Finished_Products_Selected_Indices:
+				Finished_Product[index] = 0
+			Element_S1 = []
+			Element_S2 = [Element_S2[i] for i in range(len(Element_S2)) if i not in Selected_Indices_S2]
+		elif len(Element_S1) > len(Element_S2):
+			Selected_Indices_S1 = random.sample(range(len(Element_S1)), len(Element_S2))
+			Selected_Element_S1 = [Element_S1[i] for i in Selected_Indices_S1]
+			Finished_Product = [int(a * b) for a, b in zip(Selected_Element_S1, Element_S2)]
+			Finished_Product_Form = np.array([Selected_Element_S1, Element_S2])
+			Cost += Finished_Product_Assemble_Price * len(Finished_Product)
+			Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Num_To_Select = int(len(Qualified_Finished_Products_Indices) * Perturbed_Finished_Product_Defect_Rate)
+			Qualified_Finished_Products_Selected_Indices = np.random.choice(Qualified_Finished_Products_Indices, size=Num_To_Select, replace=False)
+			for index in Qualified_Finished_Products_Selected_Indices:
+				Finished_Product[index] = 0
+			Element_S1 = [Element_S1[i] for i in range(len(Element_S1)) if i not in Selected_Indices_S1]
+			Element_S2 = []
+	
+		# 成品阶段
+		if Test_Mark_Finished_Product == 1:
+			Cost += Finished_Product_Test_Price * len(Finished_Product)
+			Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Unqualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+			Profit += Finished_Product_Sell_Price * (len(Qualified_Finished_Products_Indices) - Exchange_Quantity)
+			Exchange_Quantity = 0
+			if Dismantle_Mark_Finished_Product == 1:
+				Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Products_Indices)
+				Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Products_Indices]
+				Element_S1.extend(Unqualified_Finished_Product_Form[0])
+				Element_S2.extend(Unqualified_Finished_Product_Form[1])
+		else:
+			Qualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Unqualified_Finished_Products_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+			Profit += Finished_Product_Sell_Price * (len(Finished_Product) - Exchange_Quantity)
+			Exchange_Quantity = 0
+			Cost += Finished_Product_Exchange_Loss * len(Unqualified_Finished_Products_Indices)
+			Exchange_Quantity = len(Unqualified_Finished_Products_Indices)
+			if Dismantle_Mark_Finished_Product == 1:
+				Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Products_Indices)
+				Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Products_Indices]
+				Element_S1.extend(Unqualified_Finished_Product_Form[0])
+				Element_S2.extend(Unqualified_Finished_Product_Form[1])
+	
+		return Profit, Cost, Element_S1, Element_S2, Exchange_Quantity
+	
+	S1 = 1000
+	S2 = 1000
+	Defect_Rate_S1 = 0.1
+	Defect_Rate_S2 = 0.1
+	
+	Time = 1
+	Simulation_Number = 100
+	Profits = np.zeros(16)
+	Costs = np.zeros(16)
+	Purchase_Price_S1 = 4
+	Purchase_Price_S2 = 18
+	
+	Decision_Matrix = np.zeros((16, 4), dtype=int)
+	for i in range(16):
+		Binary_Representation = format(i, '04b')
+		for j in range(4):
+			Decision_Matrix[i, j] = int(Binary_Representation[j])
+	
+	for i in range(0, 16):
+		Test_Mark_S1 = Decision_Matrix[i][0]
+		Test_Mark_S2 = Decision_Matrix[i][1]
+		Test_Mark_Finished_Product = Decision_Matrix[i][2]
+		Dismantle_Mark_Finished_Product = Decision_Matrix[i][3]
+		for j in range(0, Time):
+			Element_S1 = []
+			Element_S2 = []
+			Exchange_Quantity = 0
+			k = 0
+			while k < Simulation_Number:
+				random.seed(j * Time + k)
+				np.random.seed(j * Time + k)
+				Perturbed_Defect_Rate_S1 = Defect_Rate_S1 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S2 = Defect_Rate_S2 + np.random.normal(0, 0.01)
+				Bad_S1 = int(Perturbed_Defect_Rate_S1 * S1)
+				Bad_S2 = int(Perturbed_Defect_Rate_S2 * S2)
+				Prepared_Element_S1 = np.ones(S1)
+				Random_Indices_S1 = np.random.choice(S1, size=Bad_S1, replace=False)
+				Prepared_Element_S1[Random_Indices_S1] = 0
+				Element_S1.extend(Prepared_Element_S1)
+				Prepared_Element_S2 = np.ones(S2)
+				Random_Indices_S2 = np.random.choice(S2, size=Bad_S2, replace=False)
+				Prepared_Element_S2[Random_Indices_S2] = 0
+				Element_S2.extend(Prepared_Element_S2)
+				Costs[i] += Purchase_Price_S1 * len(Prepared_Element_S1) + Purchase_Price_S2 * len(Prepared_Element_S2)
+				Profit, Cost, Element_S1, Element_S2, Exchange_Quantity = Solve(Element_S1, Element_S2, Test_Mark_S1, Test_Mark_S2, Test_Mark_Finished_Product, Dismantle_Mark_Finished_Product, Exchange_Quantity)
+				Profits[i] += Profit
+				Costs[i] += Cost
+				k += 1
+	
+	Profits = Profits / (Simulation_Number * Time)
+	Costs = Costs / (Simulation_Number * Time)
+	Pure_Profits = (Profits - Costs) / S1
+	print(Pure_Profits)
+	Max_Index = np.argmax(Pure_Profits)
+	Binary_Max_Index = format(Max_Index, '04b')
+	print("最大值是:", Pure_Profits[Max_Index])
+	print("最大值的索引是:", Max_Index)
+	print("最大值的索引的二进制表示是:", Binary_Max_Index)
+	
+\end{lstlisting}
+\subsection{4\_3.py(根据问题三情况的求解代码)}
+\begin{lstlisting}[language=python]
+	import random
+	import numpy as np
+	from scipy.special import comb
+	
+	def Solve(Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Decision_Vector, Exchange_Quantity):
+	
+		Profit = 0
+		Cost = 0
+		Test_Price_S1 = 1
+		Test_Price_S2 = 1
+		Test_Price_S3 = 2
+		Test_Price_S4 = 1
+		Test_Price_S5 = 1
+		Test_Price_S6 = 2
+		Test_Price_S7 = 1
+		Test_Price_S8 = 2
+		Semi_Finished_Product_S1_Defect_Rate = 0.1
+		Semi_Finished_Product_S1_Assemble_Price = 8
+		Semi_Finished_Product_S1_Test_Price = 4
+		Semi_Finished_Product_S1_Dismantle_cost = 6
+		Semi_Finished_Product_S2_Defect_Rate = 0.1
+		Semi_Finished_Product_S2_Assemble_Price = 8
+		Semi_Finished_Product_S2_Test_Price = 4
+		Semi_Finished_Product_S2_Dismantle_cost = 6
+		Semi_Finished_Product_S3_Defect_Rate = 0.1
+		Semi_Finished_Product_S3_Assemble_Price = 8
+		Semi_Finished_Product_S3_Test_Price = 4
+		Semi_Finished_Product_S3_Dismantle_cost = 6
+		Finished_Product_Defect_Rate = 0.1
+		Finished_Product_Assemble_Price = 8
+		Finished_Product_Test_Price = 6
+		Finished_Product_Dismantle_cost = 10
+		Finished_Product_Sell_Price = 200
+		Finished_Product_Exchange_Loss = 40
+	
+		Perturbed_Semi_Finished_Product_S1_Defect_Rate = Semi_Finished_Product_S1_Defect_Rate + np.random.normal(0, 0.01)
+		Perturbed_Semi_Finished_Product_S2_Defect_Rate = Semi_Finished_Product_S2_Defect_Rate + np.random.normal(0, 0.01)
+		Perturbed_Semi_Finished_Product_S3_Defect_Rate = Semi_Finished_Product_S3_Defect_Rate + np.random.normal(0, 0.01)
+	
+		Test_Mark_S1 = Decision_Vector[0]
+		Test_Mark_S2 = Decision_Vector[1]
+		Test_Mark_S3 = Decision_Vector[2]
+		Test_Mark_S4 = Decision_Vector[3]
+		Test_Mark_S5 = Decision_Vector[4]
+		Test_Mark_S6 = Decision_Vector[5]
+		Test_Mark_S7 = Decision_Vector[6]
+		Test_Mark_S8 = Decision_Vector[7]
+		Test_Mark_Semi_Finished_Product_S1 = Decision_Vector[8]
+		Dismantle_Mark_Semi_Finished_Product_S1 = Decision_Vector[9]
+		Test_Mark_Semi_Finished_Product_S2 = Decision_Vector[10]
+		Dismantle_Mark_Semi_Finished_Product_S2 = Decision_Vector[11]
+		Test_Mark_Semi_Finished_Product_S3 = Decision_Vector[12]
+		Dismantle_Mark_Semi_Finished_Product_S3 = Decision_Vector[13]
+		Test_Mark_Finished_Product = Decision_Vector[14]
+		Dismantle_Mark_Finished_Product = Decision_Vector[15]
+	
+		# 零件阶段
+		if Test_Mark_S1 == 1:
+			Cost += Test_Price_S1 * len(Element_S1)
+			Element_S1 = [x for x in Element_S1 if x != 0]
+		if Test_Mark_S2 == 1:
+			Cost += Test_Price_S2 * len(Element_S2)
+			Element_S2 = [x for x in Element_S2 if x != 0]
+		if Test_Mark_S3 == 1:
+			Cost += Test_Price_S3 * len(Element_S3)
+			Element_S3 = [x for x in Element_S3 if x != 0]
+		if Test_Mark_S4 == 1:
+			Cost += Test_Price_S4 * len(Element_S4)
+			Element_S4 = [x for x in Element_S4 if x != 0]
+		if Test_Mark_S5 == 1:
+			Cost += Test_Price_S5 * len(Element_S5)
+			Element_S5 = [x for x in Element_S5 if x != 0]
+		if Test_Mark_S6 == 1:
+			Cost += Test_Price_S6 * len(Element_S6)
+			Element_S6 = [x for x in Element_S6 if x != 0]
+		if Test_Mark_S7 == 1:
+			Cost += Test_Price_S7 * len(Element_S7)
+			Element_S7 = [x for x in Element_S7 if x != 0]
+		if Test_Mark_S8 == 1:
+			Cost += Test_Price_S8 * len(Element_S8)
+			Element_S8 = [x for x in Element_S8 if x != 0]
+	
+		Min_S1_S2_S3 = min(len(Element_S1), len(Element_S2), len(Element_S3))
+		random.shuffle(Element_S1)
+		random.shuffle(Element_S2)
+		random.shuffle(Element_S3)
+		Selected_Element_S1 = Element_S1[:Min_S1_S2_S3]
+		Selected_Element_S2 = Element_S2[:Min_S1_S2_S3]
+		Selected_Element_S3 = Element_S3[:Min_S1_S2_S3]
+		Semi_Finished_Product_S1.extend([int(a * b * c) for a, b, c in zip(Selected_Element_S1, Selected_Element_S2, Selected_Element_S3)])
+		if len(Semi_Finished_Product_S1_Form) == 0 or (len(Semi_Finished_Product_S1_Form) == 3 and all(len(sublist) == 0 for sublist in Semi_Finished_Product_S1_Form)):
+			Semi_Finished_Product_S1_Form = np.array([Selected_Element_S1, Selected_Element_S2, Selected_Element_S3])
+		else:
+			Semi_Finished_Product_S1_Form = np.concatenate((np.array(Semi_Finished_Product_S1_Form), np.array([Selected_Element_S1, Selected_Element_S2, Selected_Element_S3])), axis=1)
+		Cost += Semi_Finished_Product_S1_Assemble_Price * Min_S1_S2_S3
+		Qualified_Semi_Finished_Product_S1_Indices = [index for index, value in enumerate(Semi_Finished_Product_S1) if value == 1]
+		Num_To_Select = int(len(Qualified_Semi_Finished_Product_S1_Indices) * Perturbed_Semi_Finished_Product_S1_Defect_Rate)
+		Qualified_Semi_Finished_Product_S1_Selected_Indices = np.random.choice(Qualified_Semi_Finished_Product_S1_Indices, size=Num_To_Select, replace=False)
+		for index in Qualified_Semi_Finished_Product_S1_Selected_Indices:
+			Semi_Finished_Product_S1[index] = 0
+		Element_S1 = Element_S1[Min_S1_S2_S3:]
+		Element_S2 = Element_S2[Min_S1_S2_S3:]
+		Element_S3 = Element_S3[Min_S1_S2_S3:]
+	
+		Min_S4_S5_S6 = min(len(Element_S4), len(Element_S5), len(Element_S6))
+		random.shuffle(Element_S4)
+		random.shuffle(Element_S5)
+		random.shuffle(Element_S6)
+		Selected_Element_S4 = Element_S4[:Min_S4_S5_S6]
+		Selected_Element_S5 = Element_S5[:Min_S4_S5_S6]
+		Selected_Element_S6 = Element_S6[:Min_S4_S5_S6]
+		Semi_Finished_Product_S2.extend([int(a * b * c) for a, b, c in zip(Selected_Element_S4, Selected_Element_S5, Selected_Element_S6)])
+		if len(Semi_Finished_Product_S2_Form) == 0 or (len(Semi_Finished_Product_S2_Form) == 3 and all(len(sublist) == 0 for sublist in Semi_Finished_Product_S2_Form)):
+			Semi_Finished_Product_S2_Form = np.array([Selected_Element_S4, Selected_Element_S5, Selected_Element_S6])
+		else:
+			Semi_Finished_Product_S2_Form = np.concatenate((np.array(Semi_Finished_Product_S2_Form), np.array([Selected_Element_S4, Selected_Element_S5, Selected_Element_S6])), axis=1)
+		Cost += Semi_Finished_Product_S2_Assemble_Price * Min_S4_S5_S6
+		Qualified_Semi_Finished_Product_S2_Indices = [index for index, value in enumerate(Semi_Finished_Product_S2) if value == 1]
+		Num_To_Select = int(len(Qualified_Semi_Finished_Product_S2_Indices) * Perturbed_Semi_Finished_Product_S2_Defect_Rate)
+		Qualified_Semi_Finished_Product_S2_Selected_Indices = np.random.choice(Qualified_Semi_Finished_Product_S2_Indices, size=Num_To_Select, replace=False)
+		for index in Qualified_Semi_Finished_Product_S2_Selected_Indices:
+			Semi_Finished_Product_S2[index] = 0
+		Element_S4 = Element_S4[Min_S4_S5_S6:]
+		Element_S5 = Element_S5[Min_S4_S5_S6:]
+		Element_S6 = Element_S6[Min_S4_S5_S6:]
+	
+		Min_S7_S8= min(len(Element_S7), len(Element_S8))
+		random.shuffle(Element_S7)
+		random.shuffle(Element_S8)
+		Selected_Element_S7 = Element_S7[:Min_S7_S8]
+		Selected_Element_S8 = Element_S8[:Min_S7_S8]
+		Semi_Finished_Product_S3.extend([int(a * b) for a, b in zip(Selected_Element_S7, Selected_Element_S8)])
+		if len(Semi_Finished_Product_S3_Form) == 0 or (len(Semi_Finished_Product_S3_Form) == 2 and all(len(sublist) == 0 for sublist in Semi_Finished_Product_S3_Form)):
+			Semi_Finished_Product_S3_Form = np.array([Selected_Element_S7, Selected_Element_S8])
+		else:
+			Semi_Finished_Product_S3_Form = np.concatenate((np.array(Semi_Finished_Product_S3_Form), np.array([Selected_Element_S7, Selected_Element_S8])), axis=1)
+		Cost += Semi_Finished_Product_S3_Assemble_Price * Min_S7_S8
+		Qualified_Semi_Finished_Product_S3_Indices = [index for index, value in enumerate(Semi_Finished_Product_S3) if value == 1]
+		Num_To_Select = int(len(Qualified_Semi_Finished_Product_S3_Indices) * Perturbed_Semi_Finished_Product_S3_Defect_Rate)
+		Qualified_Semi_Finished_Product_S3_Selected_Indices = np.random.choice(Qualified_Semi_Finished_Product_S3_Indices, size=Num_To_Select, replace=False)
+		for index in Qualified_Semi_Finished_Product_S3_Selected_Indices:
+			Semi_Finished_Product_S3[index] = 0
+		Element_S7 = Element_S7[Min_S7_S8:]
+		Element_S8 = Element_S8[Min_S7_S8:]
+	
+		# 半成品阶段
+		if Test_Mark_Semi_Finished_Product_S1 == 1:
+			Cost += Semi_Finished_Product_S1_Test_Price * len(Semi_Finished_Product_S1)
+			Qualified_Semi_Finished_Product_S1_Indices = [index for index, value in enumerate(Semi_Finished_Product_S1) if value == 1]
+			Unqualified_Semi_Finished_Product_S1_Indices = [index for index, value in enumerate(Semi_Finished_Product_S1) if value == 0]
+			Qualified_Semi_Finished_Product_S1 = [Semi_Finished_Product_S1[i] for i in range(len(Semi_Finished_Product_S1)) if i in Qualified_Semi_Finished_Product_S1_Indices]
+			Qualified_Semi_Finished_Product_S1_Form = Semi_Finished_Product_S1_Form[:, Qualified_Semi_Finished_Product_S1_Indices]
+			Passed_Semi_Finished_Product_S1 = Qualified_Semi_Finished_Product_S1
+			Passed_Semi_Finished_Product_S1_Form = Qualified_Semi_Finished_Product_S1_Form
+	
+			if Dismantle_Mark_Semi_Finished_Product_S1 == 1:
+				Cost += Semi_Finished_Product_S1_Dismantle_cost * len(Unqualified_Semi_Finished_Product_S1_Indices)
+				Unqualified_Semi_Finished_Product_S1_Form = Semi_Finished_Product_S1_Form[:, Unqualified_Semi_Finished_Product_S1_Indices]
+				Element_S1.extend(Unqualified_Semi_Finished_Product_S1_Form[0])
+				Element_S2.extend(Unqualified_Semi_Finished_Product_S1_Form[1])
+				Element_S3.extend(Unqualified_Semi_Finished_Product_S1_Form[2])
+				Semi_Finished_Product_S1 = []
+				Semi_Finished_Product_S1_Form = [[], [], []]
+			else:
+				Semi_Finished_Product_S1 = []
+				Semi_Finished_Product_S1_Form = [[], [], []]
+		else:
+			Passed_Semi_Finished_Product_S1 = Semi_Finished_Product_S1
+			Passed_Semi_Finished_Product_S1_Form = Semi_Finished_Product_S1_Form
+			Semi_Finished_Product_S1 = []
+			Semi_Finished_Product_S1_Form = [[], [], []]
+	
+		if Test_Mark_Semi_Finished_Product_S2 == 1:
+			Cost += Semi_Finished_Product_S2_Test_Price * len(Semi_Finished_Product_S2)
+			Qualified_Semi_Finished_Product_S2_Indices = [index for index, value in enumerate(Semi_Finished_Product_S2) if value == 1]
+			Unqualified_Semi_Finished_Product_S2_Indices = [index for index, value in enumerate(Semi_Finished_Product_S2) if value == 0]
+			Qualified_Semi_Finished_Product_S2 = [Semi_Finished_Product_S2[i] for i in range(len(Semi_Finished_Product_S2)) if i in Qualified_Semi_Finished_Product_S2_Indices]
+			Qualified_Semi_Finished_Product_S2_Form = Semi_Finished_Product_S2_Form[:, Qualified_Semi_Finished_Product_S2_Indices]
+			Passed_Semi_Finished_Product_S2 = Qualified_Semi_Finished_Product_S2
+			Passed_Semi_Finished_Product_S2_Form = Qualified_Semi_Finished_Product_S2_Form
+	
+			if Dismantle_Mark_Semi_Finished_Product_S2 == 1:
+				Cost += Semi_Finished_Product_S2_Dismantle_cost * len(Unqualified_Semi_Finished_Product_S2_Indices)
+				Unqualified_Semi_Finished_Product_S2_Form = Semi_Finished_Product_S2_Form[:, Unqualified_Semi_Finished_Product_S2_Indices]
+				Element_S4.extend(Unqualified_Semi_Finished_Product_S2_Form[0])
+				Element_S5.extend(Unqualified_Semi_Finished_Product_S2_Form[1])
+				Element_S6.extend(Unqualified_Semi_Finished_Product_S2_Form[2])
+				Semi_Finished_Product_S2 = []
+				Semi_Finished_Product_S2_Form = [[], [], []]
+			else:
+				Semi_Finished_Product_S2 = []
+				Semi_Finished_Product_S2_Form = [[], [], []]
+		else:
+			Passed_Semi_Finished_Product_S2 = Semi_Finished_Product_S2
+			Passed_Semi_Finished_Product_S2_Form = Semi_Finished_Product_S2_Form
+			Semi_Finished_Product_S2 = []
+			Semi_Finished_Product_S2_Form = [[], [], []]
+	
+		if Test_Mark_Semi_Finished_Product_S3 == 1:
+			Cost += Semi_Finished_Product_S3_Test_Price * len(Semi_Finished_Product_S3)
+			Qualified_Semi_Finished_Product_S3_Indices = [index for index, value in enumerate(Semi_Finished_Product_S3) if value == 1]
+			Unqualified_Semi_Finished_Product_S3_Indices = [index for index, value in enumerate(Semi_Finished_Product_S3) if value == 0]
+			Qualified_Semi_Finished_Product_S3 = [Semi_Finished_Product_S3[i] for i in range(len(Semi_Finished_Product_S3)) if i in Qualified_Semi_Finished_Product_S3_Indices]
+			Qualified_Semi_Finished_Product_S3_Form = Semi_Finished_Product_S3_Form[:, Qualified_Semi_Finished_Product_S3_Indices]
+			Passed_Semi_Finished_Product_S3 = Qualified_Semi_Finished_Product_S3
+			Passed_Semi_Finished_Product_S3_Form = Qualified_Semi_Finished_Product_S3_Form
+	
+			if Dismantle_Mark_Semi_Finished_Product_S3 == 1:
+				Cost += Semi_Finished_Product_S3_Dismantle_cost * len(Unqualified_Semi_Finished_Product_S3_Indices)
+				Unqualified_Semi_Finished_Product_S3_Form = Semi_Finished_Product_S3_Form[:, Unqualified_Semi_Finished_Product_S3_Indices]
+				Element_S7.extend(Unqualified_Semi_Finished_Product_S3_Form[0])
+				Element_S8.extend(Unqualified_Semi_Finished_Product_S3_Form[1])
+				Semi_Finished_Product_S3 = []
+				Semi_Finished_Product_S3_Form = [[], []]
+			else:
+				Semi_Finished_Product_S3 = []
+				Semi_Finished_Product_S3_Form = [[], []]
+		else:
+			Passed_Semi_Finished_Product_S3 = Semi_Finished_Product_S3
+			Passed_Semi_Finished_Product_S3_Form = Semi_Finished_Product_S3_Form
+			Semi_Finished_Product_S3 = []
+			Semi_Finished_Product_S3_Form = [[], []]
+	
+		# 成品阶段
+		Finished_Product_Number = min(len(Passed_Semi_Finished_Product_S1), len(Passed_Semi_Finished_Product_S2), len(Passed_Semi_Finished_Product_S3))
+		random.shuffle(Passed_Semi_Finished_Product_S1)
+		random.shuffle(Passed_Semi_Finished_Product_S2)
+		random.shuffle(Passed_Semi_Finished_Product_S3)
+		Selected_Indices_Semi_Finished_Product_S1 = random.sample(range(len(Passed_Semi_Finished_Product_S1)), Finished_Product_Number)
+		Selected_Semi_Finished_Product_S1 = [Passed_Semi_Finished_Product_S1[i] for i in Selected_Indices_Semi_Finished_Product_S1]
+		Selected_Semi_Finished_Product_S1_Form = Passed_Semi_Finished_Product_S1_Form[:, Selected_Indices_Semi_Finished_Product_S1]
+		Selected_Indices_Semi_Finished_Product_S2 = random.sample(range(len(Passed_Semi_Finished_Product_S2)), Finished_Product_Number)
+		Selected_Semi_Finished_Product_S2 = [Passed_Semi_Finished_Product_S2[i] for i in Selected_Indices_Semi_Finished_Product_S2]
+		Selected_Semi_Finished_Product_S2_Form = Passed_Semi_Finished_Product_S2_Form[:, Selected_Indices_Semi_Finished_Product_S2]
+		Selected_Indices_Semi_Finished_Product_S3 = random.sample(range(len(Passed_Semi_Finished_Product_S3)), Finished_Product_Number)
+		Selected_Semi_Finished_Product_S3 = [Passed_Semi_Finished_Product_S3[i] for i in Selected_Indices_Semi_Finished_Product_S3]
+		Selected_Semi_Finished_Product_S3_Form = Passed_Semi_Finished_Product_S3_Form[:, Selected_Indices_Semi_Finished_Product_S3]
+		Finished_Product = [int(a * b * c) for a, b, c in zip(Selected_Semi_Finished_Product_S1, Selected_Semi_Finished_Product_S2, Selected_Semi_Finished_Product_S3)]
+		Finished_Product_Form = np.concatenate((Selected_Semi_Finished_Product_S1_Form, Selected_Semi_Finished_Product_S2_Form, Selected_Semi_Finished_Product_S3_Form), axis=0)
+		Cost += Finished_Product_Assemble_Price * Finished_Product_Number
+		Qualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+		Num_To_Select = int(len(Qualified_Finished_Product_Indices) * Finished_Product_Defect_Rate)
+		Qualified_Finished_Product_Selected_Indices = np.random.choice(Qualified_Finished_Product_Indices, size=Num_To_Select, replace=False)
+		for index in Qualified_Finished_Product_Selected_Indices:
+			Finished_Product[index] = 0
+		Semi_Finished_Product_S1.extend([Passed_Semi_Finished_Product_S1[i] for i in range(len(Passed_Semi_Finished_Product_S1)) if i not in Selected_Indices_Semi_Finished_Product_S1])
+		Semi_Finished_Product_S2.extend([Passed_Semi_Finished_Product_S2[i] for i in range(len(Passed_Semi_Finished_Product_S2)) if i not in Selected_Indices_Semi_Finished_Product_S2])
+		Semi_Finished_Product_S3.extend([Passed_Semi_Finished_Product_S3[i] for i in range(len(Passed_Semi_Finished_Product_S3)) if i not in Selected_Indices_Semi_Finished_Product_S3])
+		Semi_Finished_Product_S1_Form = np.concatenate((Semi_Finished_Product_S1_Form, Passed_Semi_Finished_Product_S1_Form[:, [Passed_Semi_Finished_Product_S1[i] for i in range(len(Passed_Semi_Finished_Product_S1)) if i not in Selected_Indices_Semi_Finished_Product_S1]]), axis=1)
+		Semi_Finished_Product_S2_Form = np.concatenate((Semi_Finished_Product_S2_Form, Passed_Semi_Finished_Product_S2_Form[:, [Passed_Semi_Finished_Product_S2[i] for i in range(len(Passed_Semi_Finished_Product_S2)) if i not in Selected_Indices_Semi_Finished_Product_S2]]), axis=1)
+		Semi_Finished_Product_S3_Form = np.concatenate((Semi_Finished_Product_S3_Form, Passed_Semi_Finished_Product_S3_Form[:, [Passed_Semi_Finished_Product_S3[i] for i in range(len(Passed_Semi_Finished_Product_S3)) if i not in Selected_Indices_Semi_Finished_Product_S3]]), axis=1)
+	
+		if Test_Mark_Finished_Product == 1:
+			Cost += Finished_Product_Test_Price * len(Finished_Product)
+			Qualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Unqualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+			Profit += Finished_Product_Sell_Price * (len(Qualified_Finished_Product_Indices) - Exchange_Quantity)
+			Exchange_Quantity = 0
+			if Dismantle_Mark_Finished_Product == 1:
+				Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Product_Indices)
+				Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Product_Indices]
+				Semi_Finished_Product_S1.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[0], Unqualified_Finished_Product_Form[1], Unqualified_Finished_Product_Form[2])])
+				Semi_Finished_Product_S1_Form = np.concatenate((Semi_Finished_Product_S1_Form, np.array([Unqualified_Finished_Product_Form[0].tolist(), Unqualified_Finished_Product_Form[1].tolist(), Unqualified_Finished_Product_Form[2].tolist()])), axis=1)
+				Semi_Finished_Product_S2.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[3], Unqualified_Finished_Product_Form[4], Unqualified_Finished_Product_Form[5])])
+				Semi_Finished_Product_S2_Form = np.concatenate((Semi_Finished_Product_S2_Form, np.array([Unqualified_Finished_Product_Form[3].tolist(), Unqualified_Finished_Product_Form[4].tolist(), Unqualified_Finished_Product_Form[5].tolist()])), axis=1)
+				Semi_Finished_Product_S3.extend([int(a * b) for a, b in zip(Unqualified_Finished_Product_Form[6], Unqualified_Finished_Product_Form[7])])
+				Semi_Finished_Product_S3_Form = np.concatenate((Semi_Finished_Product_S3_Form, np.array([Unqualified_Finished_Product_Form[6].tolist(), Unqualified_Finished_Product_Form[7].tolist()])), axis=1)
+	
+		else:
+			Qualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 1]
+			Unqualified_Finished_Product_Indices = [index for index, value in enumerate(Finished_Product) if value == 0]
+			Profit += Finished_Product_Sell_Price * (len(Finished_Product) - Exchange_Quantity)
+			Exchange_Quantity = 0
+			Cost += Finished_Product_Exchange_Loss * len(Unqualified_Finished_Product_Indices)
+			Exchange_Quantity = len(Unqualified_Finished_Product_Indices)
+	
+			if Dismantle_Mark_Finished_Product == 1:
+				Cost += Finished_Product_Dismantle_cost * len(Unqualified_Finished_Product_Indices)
+				Unqualified_Finished_Product_Form = Finished_Product_Form[:, Unqualified_Finished_Product_Indices]
+				Semi_Finished_Product_S1.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[0], Unqualified_Finished_Product_Form[1], Unqualified_Finished_Product_Form[2])])
+				Semi_Finished_Product_S1_Form = np.concatenate((Semi_Finished_Product_S1_Form, np.array([Unqualified_Finished_Product_Form[0].tolist(), Unqualified_Finished_Product_Form[1].tolist(), Unqualified_Finished_Product_Form[2].tolist()])), axis=1)
+				Semi_Finished_Product_S2.extend([int(a * b * c) for a, b, c in zip(Unqualified_Finished_Product_Form[3], Unqualified_Finished_Product_Form[4], Unqualified_Finished_Product_Form[5])])
+				Semi_Finished_Product_S2_Form = np.concatenate((Semi_Finished_Product_S2_Form, np.array([Unqualified_Finished_Product_Form[3].tolist(), Unqualified_Finished_Product_Form[4].tolist(), Unqualified_Finished_Product_Form[5].tolist()])), axis=1)
+				Semi_Finished_Product_S3.extend([int(a * b) for a, b in zip(Unqualified_Finished_Product_Form[6], Unqualified_Finished_Product_Form[7])])
+				Semi_Finished_Product_S3_Form = np.concatenate((Semi_Finished_Product_S3_Form, np.array([Unqualified_Finished_Product_Form[6].tolist(), Unqualified_Finished_Product_Form[7].tolist()])), axis=1)
+	
+		return Profit, Cost, Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Exchange_Quantity
+	
+	class Genetic_Algorithm:
+		def __init__(self, Objective_Function, Initial_Solution, Population_Size=100, Mutation_Rate=0.1, Crossover_Rate=0.5, Max_Iter=100, Elitism_Rate=0.05):
+			self.Objective_Function = Objective_Function
+			self.Population_Size = Population_Size
+			self.Mutation_Rate = Mutation_Rate
+			self.Crossover_Rate = Crossover_Rate
+			self.Max_Iter = Max_Iter
+			self.Elitism_Rate = Elitism_Rate
+			self.Dim = len(Initial_Solution)
+			self.Population = np.random.randint(2, size=(Population_Size, self.Dim))
+	
+		def Select(self, Fitness):
+			Fitness = np.array(Fitness)
+			Fitness = Fitness - np.min(Fitness) + 1e-10
+			Probabilities = Fitness / np.sum(Fitness)
+			Cumulative_Probabilities = np.cumsum(Probabilities)
+			Selected_Indices = []
+			for _ in range(self.Population_Size):
+				r = random.random()
+				for i, cp in enumerate(Cumulative_Probabilities):
+					if r < cp:
+						Selected_Indices.append(i)
+						break
+			return self.Population[Selected_Indices]
+	
+		def Crossover(self, Parent1, Parent2):
+			if random.random() < self.Crossover_Rate:
+				Cross_Point = random.randint(0, self.Dim - 1)
+				Child1 = np.concatenate((Parent1[:Cross_Point], Parent2[Cross_Point:]))
+				Child2 = np.concatenate((Parent2[:Cross_Point], Parent1[Cross_Point:]))
+				return Child1, Child2
+			else:
+				return Parent1, Parent2
+	
+		def Mutate(self, Individual):
+			for i in range(self.Dim):
+				if random.random() < self.Mutation_Rate:
+					Individual[i] = 1 - Individual[i]
+			return Individual
+	
+		def Optimize(self):
+			for Generation in range(self.Max_Iter):
+				Fitness = [self.Objective_Function(x) for x in self.Population]
+	
+				# 选择精英个体
+				Elite_Size = int(self.Population_Size * self.Elitism_Rate)
+				Elite_Indices = np.argsort(Fitness)[-Elite_Size:]
+				Elite_Population = self.Population[Elite_Indices]
+	
+				Selected_Population = self.Select(Fitness)
+				New_Population = []
+				for i in range(0, self.Population_Size - Elite_Size, 2):
+					Parent1 = Selected_Population[i]
+					Parent2 = Selected_Population[i + 1]
+					Child1, Child2 = self.Crossover(Parent1, Parent2)
+					Child1 = self.Mutate(Child1)
+					Child2 = self.Mutate(Child2)
+					New_Population.append(Child1)
+					New_Population.append(Child2)
+	
+				# 将精英个体加入新种群
+				New_Population.extend(Elite_Population)
+				self.Population = np.array(New_Population)
+				Best_Solution = self.Population[np.argmax(Fitness)]
+				Best_Fitness = np.max(Fitness)
+	
+				print(f"Generation {Generation}: Best_Solution = {Best_Solution}, Best Fitness = {Best_Fitness}")
+	
+			return Best_Solution, Best_Fitness
+	
+	def Objective_Function(X):
+	
+		S1 = 100
+		S2 = 100
+		S3 = 100
+		S4 = 100
+		S5 = 100
+		S6 = 100
+		S7 = 100
+		S8 = 100
+		Defect_Rate_S1 = 0.1
+		Defect_Rate_S2 = 0.1
+		Defect_Rate_S3 = 0.1
+		Defect_Rate_S4 = 0.1
+		Defect_Rate_S5 = 0.1
+		Defect_Rate_S6 = 0.1
+		Defect_Rate_S7 = 0.1
+		Defect_Rate_S8 = 0.1
+	
+		Simulation_Number = 100
+		Time = 10
+		Profits = 0
+		Costs = 0
+		Purchase_Price_S1 = 2
+		Purchase_Price_S2 = 8
+		Purchase_Price_S3 = 12
+		Purchase_Price_S4 = 2
+		Purchase_Price_S5 = 8
+		Purchase_Price_S6 = 12
+		Purchase_Price_S7 = 8
+		Purchase_Price_S8 = 12
+	
+		for i in range(0, Time):
+			Decision_Vector = X
+			Element_S1 = []
+			Element_S2 = []
+			Element_S3 = []
+			Element_S4 = []
+			Element_S5 = []
+			Element_S6 = []
+			Element_S7 = []
+			Element_S8 = []
+			Semi_Finished_Product_S1 = []
+			Semi_Finished_Product_S2 = []
+			Semi_Finished_Product_S3 = []
+			Semi_Finished_Product_S1_Form = [[], [], []]
+			Semi_Finished_Product_S2_Form = [[], [], []]
+			Semi_Finished_Product_S3_Form = [[], []]
+			Exchange_Quantity = 0
+			k = 0
+			while k < Simulation_Number:
+				random.seed(i * Time + k)
+				np.random.seed(i * Time + k)
+	
+				Perturbed_Defect_Rate_S1 = Defect_Rate_S1 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S2 = Defect_Rate_S2 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S3 = Defect_Rate_S3 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S4 = Defect_Rate_S4 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S5 = Defect_Rate_S5 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S6 = Defect_Rate_S6 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S7 = Defect_Rate_S7 + np.random.normal(0, 0.01)
+				Perturbed_Defect_Rate_S8 = Defect_Rate_S8 + np.random.normal(0, 0.01)
+				Bad_S1 = int(Perturbed_Defect_Rate_S1 * S1)
+				Bad_S2 = int(Perturbed_Defect_Rate_S2 * S2)
+				Bad_S3 = int(Perturbed_Defect_Rate_S3 * S3)
+				Bad_S4 = int(Perturbed_Defect_Rate_S4 * S4)
+				Bad_S5 = int(Perturbed_Defect_Rate_S5 * S5)
+				Bad_S6 = int(Perturbed_Defect_Rate_S6 * S6)
+				Bad_S7 = int(Perturbed_Defect_Rate_S7 * S7)
+				Bad_S8 = int(Perturbed_Defect_Rate_S8 * S8)
+	
+				Prepared_Element_S1 = np.ones(S1)
+				Random_Indices_S1 = np.random.choice(S1, size=Bad_S1, replace=False)
+				Prepared_Element_S1[Random_Indices_S1] = 0
+				Element_S1.extend(Prepared_Element_S1)
+				Prepared_Element_S2 = np.ones(S2)
+				Random_Indices_S2 = np.random.choice(S2, size=Bad_S2, replace=False)
+				Prepared_Element_S2[Random_Indices_S2] = 0
+				Element_S2.extend(Prepared_Element_S2)
+				Prepared_Element_S3 = np.ones(S3)
+				Random_Indices_S3 = np.random.choice(S3, size=Bad_S3, replace=False)
+				Prepared_Element_S3[Random_Indices_S3] = 0
+				Element_S3.extend(Prepared_Element_S3)
+				Prepared_Element_S4 = np.ones(S4)
+				Random_Indices_S4 = np.random.choice(S4, size=Bad_S4, replace=False)
+				Prepared_Element_S4[Random_Indices_S4] = 0
+				Element_S4.extend(Prepared_Element_S4)
+				Prepared_Element_S5 = np.ones(S5)
+				Random_Indices_S5 = np.random.choice(S5, size=Bad_S5, replace=False)
+				Prepared_Element_S5[Random_Indices_S5] = 0
+				Element_S5.extend(Prepared_Element_S5)
+				Prepared_Element_S6 = np.ones(S6)
+				Random_Indices_S6 = np.random.choice(S6, size=Bad_S6, replace=False)
+				Prepared_Element_S6[Random_Indices_S6] = 0
+				Element_S6.extend(Prepared_Element_S6)
+				Prepared_Element_S7 = np.ones(S7)
+				Random_Indices_S7 = np.random.choice(S7, size=Bad_S7, replace=False)
+				Prepared_Element_S7[Random_Indices_S7] = 0
+				Element_S7.extend(Prepared_Element_S7)
+				Prepared_Element_S8 = np.ones(S8)
+				Random_Indices_S8 = np.random.choice(S8, size=Bad_S8, replace=False)
+				Prepared_Element_S8[Random_Indices_S8] = 0
+				Element_S8.extend(Prepared_Element_S8)
+				Costs += Purchase_Price_S1 * len(Prepared_Element_S1) + Purchase_Price_S2 * len(Prepared_Element_S2)
+				Costs += Purchase_Price_S3 * len(Prepared_Element_S3) + Purchase_Price_S4 * len(Prepared_Element_S4)
+				Costs += Purchase_Price_S5 * len(Prepared_Element_S5) + Purchase_Price_S6 * len(Prepared_Element_S6)
+				Costs += Purchase_Price_S7 * len(Prepared_Element_S7) + Purchase_Price_S8 * len(Prepared_Element_S8)
+				Profit, Cost, Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Exchange_Quantity = Solve(Element_S1, Element_S2, Element_S3, Element_S4, Element_S5, Element_S6, Element_S7, Element_S8, Semi_Finished_Product_S1, Semi_Finished_Product_S2, Semi_Finished_Product_S3, Semi_Finished_Product_S1_Form, Semi_Finished_Product_S2_Form, Semi_Finished_Product_S3_Form, Decision_Vector, Exchange_Quantity)
+				Profits += Profit
+				Costs += Cost
+				k += 1
+	
+		Profits = Profits / (Simulation_Number * Time)
+		Costs = Costs / (Simulation_Number * Time)
+		Pure_Profits = Profits - Costs
+	
+		return Pure_Profits
+	
+	Period = 1
+	Initial_Solution = np.zeros(16 * Period)
+	Genetic_Algorithm = Genetic_Algorithm(Objective_Function, Initial_Solution)
+	Best_Solution, Best_Fitness = Genetic_Algorithm.Optimize()
+	print(f"Best Solution: {Best_Solution}")
+	print(f"Best Fitness: {Best_Fitness}")
+	
+\end{lstlisting}
 \end{appendices}
 \end{document}
